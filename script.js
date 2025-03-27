@@ -217,6 +217,7 @@ const mainContent = document.querySelector('.main-content');
 // State management
 let currentQuestionIndex = 0;
 let answers = {};
+let totalAnswers = 0;
 
 // Initialize event listeners
 function initializeEventListeners() {
@@ -352,14 +353,21 @@ function renderInfoCard(infoCard) {
 // Handle option selection
 function handleOptionSelect(event) {
     const selectedValue = event.target.value;
+    const previousAnswer = answers[currentQuestionIndex];
     answers[currentQuestionIndex] = selectedValue;
+    
+    // Update total answers count if this is a new answer
+    if (!previousAnswer) {
+        totalAnswers++;
+        updateBadgeCount();
+    }
     
     // Enable continue button
     if (continueBtn) {
         continueBtn.disabled = false;
     }
 
-    // Show insight for the selected option for both questions
+    // Show insight for the selected option
     const selectedOption = surveyData.questions[currentQuestionIndex].options.find(opt => opt.value === selectedValue);
     if (selectedOption && selectedOption.insight) {
         showInsight(selectedOption.insight);
@@ -489,8 +497,25 @@ function updateProgressSteps() {
             // Completed section
             step.classList.add('completed');
         }
-        // Future sections remain default (gray)
     });
+
+    // Update recommendation badge
+    updateBadgeCount();
+}
+
+// Update badge count
+function updateBadgeCount() {
+    const recommendationsBadge = document.querySelector('.step:last-child .badge');
+    if (recommendationsBadge) {
+        recommendationsBadge.textContent = totalAnswers;
+        if (totalAnswers > 0) {
+            recommendationsBadge.classList.add('visible');
+            recommendationsBadge.classList.add('animate');
+            setTimeout(() => {
+                recommendationsBadge.classList.remove('animate');
+            }, 300);
+        }
+    }
 }
 
 // Handle save and exit
@@ -614,7 +639,17 @@ function showOutcomeScreen() {
 // Handle text input
 function handleTextInput(event) {
     const value = event.target.value.trim();
+    const previousAnswer = answers[currentQuestionIndex];
     answers[currentQuestionIndex] = value;
+    
+    // Update total answers count if this is a new answer
+    if (!previousAnswer && value) {
+        totalAnswers++;
+        updateBadgeCount();
+    } else if (previousAnswer && !value) {
+        totalAnswers--;
+        updateBadgeCount();
+    }
     
     // Enable/disable continue button based on whether there's text
     if (continueBtn) {
@@ -635,11 +670,21 @@ function initializeCheckboxListeners() {
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', (e) => {
             const value = e.target.value;
+            const previousLength = answers[currentQuestionIndex].length;
             
             if (e.target.checked) {
                 answers[currentQuestionIndex].push(value);
             } else {
                 answers[currentQuestionIndex] = answers[currentQuestionIndex].filter(v => v !== value);
+            }
+            
+            // Update total answers count if this is the first selection
+            if (previousLength === 0 && answers[currentQuestionIndex].length > 0) {
+                totalAnswers++;
+                updateBadgeCount();
+            } else if (answers[currentQuestionIndex].length === 0 && previousLength > 0) {
+                totalAnswers--;
+                updateBadgeCount();
             }
             
             // Enable continue if at least one option is selected
@@ -652,10 +697,18 @@ function initializeCheckboxListeners() {
     // Handle "None of the above"
     if (noneButton) {
         noneButton.addEventListener('click', () => {
+            const previousLength = answers[currentQuestionIndex].length;
             checkboxes.forEach(checkbox => {
                 checkbox.checked = false;
             });
             answers[currentQuestionIndex] = ['none'];
+            
+            // Update total answers count if this is the first selection
+            if (previousLength === 0) {
+                totalAnswers++;
+                updateBadgeCount();
+            }
+            
             if (continueBtn) {
                 continueBtn.disabled = false;
             }
