@@ -10,21 +10,22 @@ const surveyData = {
                 { 
                     text: "Within the next year",
                     value: "within-year",
-                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    insight: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 },
                 { 
                     text: "Within the next 3 years",
                     value: "within-three-years",
-                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    insight: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
                 },
                 { 
                     text: "More than 3 years from now",
                     value: "more-than-three",
-                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    insight: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
                 },
                 { 
                     text: "I'm not sure",
-                    value: "not-sure"
+                    value: "not-sure",
+                    insight: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                 }
             ]
         },
@@ -37,22 +38,26 @@ const surveyData = {
                 {
                     text: "By refinancing",
                     value: "refinancing",
-                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    insight: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 },
                 {
                     text: "With cash savings",
                     value: "cash-savings",
-                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    insight: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
                 },
                 {
                     text: "With a loan or HELOC",
                     value: "loan-heloc",
-                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    insight: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
                 },
                 {
                     text: "With a home sale",
                     value: "home-sale",
                     helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    insight: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                     infoCard: {
                         title: "Settling Your Home Equity Investment with a Home Sale",
                         steps: [
@@ -137,9 +142,7 @@ function renderQuestion(questionIndex) {
                     <div class="option">
                         <div class="option-text">
                             <span class="option-title">${option.text}</span>
-                            ${option.helper ? `<span class="option-helper">${option.helper}</span>` : ''}
                         </div>
-                        ${option.infoCard ? renderInfoCard(option.infoCard) : ''}
                     </div>
                 </label>
             `).join('')}
@@ -151,14 +154,26 @@ function renderQuestion(questionIndex) {
         continueBtn.disabled = !answers[currentQuestionIndex];
     }
 
-    // Reinitialize radio listeners after rendering new question
+    // Remove any existing insight
+    const existingInsight = document.querySelector('.insight-container');
+    if (existingInsight) {
+        existingInsight.remove();
+    }
+
+    // Reinitialize radio listeners
     initializeRadioListeners();
 
-    // If there's a previously selected answer for this question, select it
+    // If there's a previously selected answer for this question, select it and show insight
     if (answers[currentQuestionIndex]) {
         const radioToCheck = document.querySelector(`input[type="radio"][value="${answers[currentQuestionIndex]}"]`);
         if (radioToCheck) {
             radioToCheck.checked = true;
+            if (currentQuestionIndex === 0) {
+                const selectedOption = question.options.find(opt => opt.value === answers[currentQuestionIndex]);
+                if (selectedOption) {
+                    showInsight(selectedOption.insight);
+                }
+            }
         }
     }
 }
@@ -186,6 +201,33 @@ function handleOptionSelect(event) {
     if (continueBtn) {
         continueBtn.disabled = false;
     }
+
+    // Show insight for the selected option for both questions
+    const selectedOption = surveyData.questions[currentQuestionIndex].options.find(opt => opt.value === selectedValue);
+    if (selectedOption && selectedOption.insight) {
+        showInsight(selectedOption.insight);
+    }
+}
+
+// Show insight message
+function showInsight(insightText) {
+    let insightContainer = document.querySelector('.insight-container');
+    if (!insightContainer) {
+        insightContainer = document.createElement('div');
+        insightContainer.className = 'insight-container';
+        document.querySelector('.navigation').insertAdjacentElement('beforebegin', insightContainer);
+    }
+
+    insightContainer.innerHTML = `
+        <div class="insight">
+            <p>${insightText}</p>
+        </div>
+    `;
+
+    // Add visible class after a brief delay for animation
+    setTimeout(() => {
+        insightContainer.querySelector('.insight').classList.add('visible');
+    }, 10);
 }
 
 // Handle continue button click
@@ -230,95 +272,112 @@ function handleSaveAndExit() {
 
 // Generate recommendations based on answers
 function generateRecommendations() {
-    const recommendations = [];
-    
-    // Example logic for generating recommendations based on answers
-    if (answers[0] === 'within-three-years' && answers[1] === 'home-sale') {
-        recommendations.push({
-            title: 'Simplist',
-            description: 'Next-generation mortgage marketplace using technology to find a range of home-buying options.',
-            action: 'Learn more',
-            actionUrl: '#'
-        });
-        
-        recommendations.push({
-            title: 'Quarterly account statement',
-            description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-            action: 'View quarterly account statement',
-            actionUrl: '#'
-        });
-        
-        recommendations.push({
-            title: 'Settlement calculator',
-            description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-            action: 'View settlemet calculator',
-            actionUrl: '#'
-        });
-    }
-
-    // Add renovation-related recommendations
-    recommendations.push({
-        title: 'Renovation planner',
-        description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-        action: 'View reno planner',
+    // Top recommendation
+    const topRecommendation = {
+        title: 'Simplist',
+        description: 'Next-generation mortgage marketplace using technology to find a range of home-buying options.',
+        action: 'Try',
         actionUrl: '#'
-    });
+    };
 
-    recommendations.push({
-        title: 'Plan for the future with Enrich',
-        description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-        action: 'Learn more',
-        actionUrl: '#'
-    });
+    // Categorized recommendations
+    const categorizedRecommendations = {
+        Read: [
+            {
+                title: 'Quarterly account statement',
+                description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum.',
+                actionUrl: '#'
+            },
+            {
+                title: 'Plan for the future with Enrich',
+                description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum.',
+                actionUrl: '#'
+            }
+        ],
+        Try: [
+            {
+                title: 'Settlement calculator',
+                description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum.',
+                actionUrl: '#'
+            }
+        ],
+        Watch: [
+            {
+                title: 'Renovation planner walkthrough',
+                description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum.',
+                actionUrl: '#'
+            }
+        ],
+        Contact: [
+            {
+                title: 'Investment support',
+                description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum.',
+                actionUrl: '#'
+            }
+        ]
+    };
 
-    return recommendations;
+    return { topRecommendation, categorizedRecommendations };
 }
 
 // Show outcome screen
 function showOutcomeScreen() {
-    const recommendations = generateRecommendations();
+    const { topRecommendation, categorizedRecommendations } = generateRecommendations();
     
     mainContent.innerHTML = `
         <div class="outcome-screen">
             <h1 class="outcome-title">Recommendations based on your answers</h1>
             
             <div class="outcome-section">
-                <p class="outcome-context">Because you plan to settle my HEI through a home sale within the next three years. We're here to help when you're ready to start making progress.</p>
+                <p class="outcome-context">Because you plan to settle your HEI through a home sale within the next three years. We're here to help when you're ready to start making progress.</p>
                 
-                <div class="recommendations">
-                    ${recommendations.map(rec => `
-                        <div class="recommendation-card">
-                            <h3>${rec.title}</h3>
-                            <p>${rec.description}</p>
-                            <a href="${rec.actionUrl}" class="recommendation-link">${rec.action}</a>
+                <!-- Top Recommendation -->
+                <div class="top-recommendation">
+                    <span class="section-label">TOP RECOMMENDATION</span>
+                    <div class="recommendation-card featured">
+                        <div class="card-content">
+                            <h3>${topRecommendation.title}</h3>
+                            <p>${topRecommendation.description}</p>
                         </div>
-                    `).join('')}
+                        <a href="${topRecommendation.actionUrl}" class="recommendation-link">
+                            <span>${topRecommendation.action}</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10.8333 5L15.8333 10L10.8333 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="outcome-section">
-                <p class="outcome-context">Because in the past six months or the next six months, you have experienced or expect to experience a growing family and a major home repair or renovation.</p>
-                
-                <div class="recommendation-card">
-                    <h3>Investment support</h3>
-                    <p>Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.</p>
-                    <a href="#" class="recommendation-link">Learn more</a>
-                </div>
-            </div>
-
-            <div class="outcome-section">
-                <p class="outcome-context">Because you're looking for support around planning a renovation</p>
-                
-                <div class="recommendation-card">
-                    <h3>Renovation planner</h3>
-                    <p>Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.</p>
-                    <a href="#" class="recommendation-link">View reno planner</a>
+                <!-- Categorized Recommendations -->
+                <div class="recommendations-grid">
+                    ${Object.entries(categorizedRecommendations).map(([category, items]) => items.length ? `
+                        <div class="recommendation-category">
+                            <span class="section-label">${category.toUpperCase()}</span>
+                            <div class="recommendation-list">
+                                ${items.map(rec => `
+                                    <div class="recommendation-card">
+                                        <div class="card-content">
+                                            <h3>${rec.title}</h3>
+                                            <p>${rec.description}</p>
+                                        </div>
+                                        <a href="${rec.actionUrl}" class="recommendation-link">
+                                            <span>${category}</span>
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M10.8333 5L15.8333 10L10.8333 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : '').join('')}
                 </div>
             </div>
         </div>
     `;
 
-    // Hide the navigation footer
     document.querySelector('.navigation').style.display = 'none';
 }
 

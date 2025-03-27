@@ -105,10 +105,71 @@ body {
     font-size: 14px;
     cursor: pointer;
     transition: all var(--transition-speed) ease-in-out;
+    white-space: nowrap;
 }
 
 .save-exit-btn:hover {
     border-color: var(--neutral-300);
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .top-nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .nav-left {
+        width: 100%;
+        text-align: center;
+    }
+
+    .progress-steps {
+        width: 100%;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .step {
+        font-size: 12px;
+    }
+
+    .step-text {
+        font-size: 12px;
+    }
+
+    .nav-right {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .save-exit-btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .progress-steps {
+        gap: 0.5rem;
+    }
+
+    .step {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.25rem;
+    }
+
+    .step-number {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+    }
 }
 
 /* Main Content */
@@ -346,11 +407,11 @@ body {
     font-weight: 600;
 }
 
-/* Outcome Screen Styles */
+/* Outcome Screen */
 .outcome-screen {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 0;
+    padding: 2rem;
 }
 
 .outcome-title {
@@ -359,61 +420,175 @@ body {
     font-size: 38px;
     font-weight: 600;
     line-height: 50px;
-    margin-bottom: 3rem;
-}
-
-.outcome-section {
-    margin-bottom: 3rem;
-}
-
-.outcome-section:last-child {
-    margin-bottom: 0;
+    margin-bottom: 1rem;
 }
 
 .outcome-context {
     color: var(--text-color);
-    margin-bottom: 1.5rem;
     font-size: 18px;
-    line-height: 30px;
+    line-height: 28px;
+    margin-bottom: 3rem;
 }
 
-.recommendations {
+.section-label {
+    display: block;
+    color: var(--neutral-300);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+}
+
+/* Top Recommendation */
+.top-recommendation {
+    margin-bottom: 4rem;
+}
+
+.recommendation-card.featured {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+}
+
+.recommendation-card.featured h3 {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 1rem;
+}
+
+.recommendation-card.featured p {
+    color: white;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+}
+
+.recommendation-card.featured .recommendation-link {
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.recommendation-card.featured .recommendation-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Recommendations Grid */
+.recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.recommendation-category {
+    margin-bottom: 2rem;
+}
+
+.recommendation-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
 .recommendation-card {
-    background: var(--background-color);
+    background: white;
     border: 1px solid var(--neutral-30);
     border-radius: var(--border-radius);
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-content {
+    flex: 1;
 }
 
 .recommendation-card h3 {
     color: var(--header-color);
-    font-family: "Tiempos Headline", serif;
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 18px;
     margin-bottom: 0.5rem;
 }
 
 .recommendation-card p {
     color: var(--text-color);
-    margin-bottom: 1rem;
     font-size: 16px;
     line-height: 24px;
+    margin-bottom: 1.5rem;
 }
 
 .recommendation-link {
-    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     text-decoration: none;
+    color: var(--primary-color);
     font-weight: 600;
-    font-size: 16px;
-    transition: color var(--transition-speed) ease-in-out;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--neutral-30);
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed) ease-in-out;
 }
 
 .recommendation-link:hover {
-    color: #2B56D4;
-    text-decoration: underline;
+    border-color: var(--primary-color);
+    background-color: rgba(54, 108, 237, 0.05);
+}
+
+/* Mobile Responsive Styles for Recommendations */
+@media screen and (max-width: 768px) {
+    .outcome-title {
+        font-size: 32px;
+        line-height: 42px;
+    }
+
+    .recommendations-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recommendation-card.featured {
+        padding: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .outcome-screen {
+        padding: 1rem;
+    }
+
+    .outcome-title {
+        font-size: 28px;
+        line-height: 38px;
+    }
+
+    .recommendation-card {
+        padding: 1rem;
+    }
+}
+
+/* Insight Component */
+.insight-container {
+    padding: 0 2rem;
+    margin-bottom: 1rem;
+}
+
+.insight {
+    background-color: rgba(54, 108, 237, 0.1);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.insight.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.insight p {
+    color: var(--text-color);
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0;
 } 
