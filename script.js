@@ -237,8 +237,74 @@ function handleContinue() {
         updateProgressSteps();
         renderQuestion(currentQuestionIndex);
     } else {
-        showOutcomeScreen();
+        showLoadingScreen();
     }
+}
+
+// Show loading screen with animated steps
+function showLoadingScreen() {
+    const loadingScreen = document.createElement('div');
+    loadingScreen.className = 'loading-screen';
+    loadingScreen.innerHTML = `
+        <div class="loading-content">
+            <h2 class="loading-title">Generating recommendations...</h2>
+            <div class="loading-steps">
+                <div class="loading-step">
+                    <div class="step-icon">
+                        <div class="spinner"></div>
+                        <div class="checkmark">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <span>Lorem ipsum</span>
+                </div>
+                <div class="loading-step">
+                    <div class="step-icon">
+                        <div class="spinner"></div>
+                        <div class="checkmark">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <span>Exploring opportunities</span>
+                </div>
+                <div class="loading-step">
+                    <div class="step-icon">
+                        <div class="spinner"></div>
+                        <div class="checkmark">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <span>Crunching the numbers</span>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(loadingScreen);
+
+    // Animate checkmarks sequentially
+    const steps = loadingScreen.querySelectorAll('.loading-step');
+    const stepDelay = 1000; // 1 second between each step
+    
+    steps.forEach((step, index) => {
+        setTimeout(() => {
+            step.classList.add('completed');
+        }, (index + 1) * stepDelay);
+    });
+
+    // Show outcome screen after all animations
+    setTimeout(() => {
+        loadingScreen.classList.add('fade-out');
+        setTimeout(() => {
+            loadingScreen.remove();
+            showOutcomeScreen();
+        }, 500);
+    }, 4000);
 }
 
 // Handle back button click
