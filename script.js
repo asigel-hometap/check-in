@@ -81,6 +81,128 @@ const surveyData = {
                     value: "not-sure"
                 }
             ]
+        },
+        {
+            id: 3,
+            label: "YOUR SETTLEMENT PLAN",
+            text: "How committed are you to selling your home?",
+            reminder: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
+            options: [
+                {
+                    text: "I'm still deciding if selling my home is the right plan for me",
+                    value: "still-deciding",
+                    insight: "Taking time to evaluate your options is an important part of the process. We're here to help you make an informed decision."
+                },
+                {
+                    text: "I'm committed but haven't started making progress",
+                    value: "committed-not-started",
+                    insight: "Having a clear direction is the first step. We can help you start taking action towards your goal."
+                },
+                {
+                    text: "I'm committed and actively progressing towards my plan",
+                    value: "committed-active",
+                    insight: "You're making great progress! We'll provide resources to help you maintain momentum and achieve your goals."
+                }
+            ]
+        },
+        {
+            id: 4,
+            label: "YOUR SETTLEMENT PLAN",
+            text: "What steps have you taken so far?",
+            reminder: "Norem ipsum dolor sit amet, consectetur adipiscing elit.",
+            type: "text",
+            placeholder: "Tell us what you've been up to",
+            helper: "Ex: I've started talking to a Realtor."
+        },
+        {
+            id: 5,
+            label: "YOUR FINANCIAL WELLBEING",
+            text: "In the <span style='color: #366CED'>past six months</span>, have you experienced any of the following life events?",
+            reminder: "Select all that apply",
+            type: "checkbox",
+            options: [
+                {
+                    text: "Marital status change",
+                    value: "marital-change"
+                },
+                {
+                    text: "Growing family",
+                    value: "growing-family"
+                },
+                {
+                    text: "Employment change",
+                    value: "employment-change"
+                },
+                {
+                    text: "Major bonus, inheritance, or other financial windfall",
+                    value: "financial-windfall"
+                },
+                {
+                    text: "Major medical expense",
+                    value: "medical-expense"
+                },
+                {
+                    text: "Major home repair or renovation",
+                    value: "home-repair"
+                },
+                {
+                    text: "Bought or sold another property",
+                    value: "property-transaction"
+                },
+                {
+                    text: "Fire, flood, or natural disaster",
+                    value: "natural-disaster"
+                },
+                {
+                    text: "Other significant expense",
+                    value: "other-expense"
+                }
+            ]
+        },
+        {
+            id: 6,
+            label: "YOUR FINANCIAL WELLBEING",
+            text: "In <span style='color: #366CED'>the next six months</span> do you expect to experience any of the following life events?",
+            reminder: "Select all that apply",
+            type: "checkbox",
+            options: [
+                {
+                    text: "Marital status change",
+                    value: "marital-change"
+                },
+                {
+                    text: "Growing family",
+                    value: "growing-family"
+                },
+                {
+                    text: "Employment change",
+                    value: "employment-change"
+                },
+                {
+                    text: "Major bonus, inheritance, or other financial windfall",
+                    value: "financial-windfall"
+                },
+                {
+                    text: "Major medical expense",
+                    value: "medical-expense"
+                },
+                {
+                    text: "Major home repair or renovation",
+                    value: "home-repair"
+                },
+                {
+                    text: "Bought or sold another property",
+                    value: "property-transaction"
+                },
+                {
+                    text: "Fire, flood, or natural disaster",
+                    value: "natural-disaster"
+                },
+                {
+                    text: "Other significant expense",
+                    value: "other-expense"
+                }
+            ]
         }
     ]
 };
@@ -135,18 +257,46 @@ function renderQuestion(questionIndex) {
         <h1 class="question-title">${question.text}</h1>
         <p class="question-reminder">${question.reminder}</p>
         
-        <div class="options">
-            ${question.options.map(option => `
-                <label class="option-wrapper">
-                    <input type="radio" name="settlement" value="${option.value}">
-                    <div class="option">
-                        <div class="option-text">
-                            <span class="option-title">${option.text}</span>
+        ${question.type === 'text' ? `
+            <div class="text-input-container">
+                <input type="text" 
+                    class="text-input" 
+                    placeholder="${question.placeholder}"
+                    value="${answers[currentQuestionIndex] || ''}"
+                >
+                <p class="input-helper">${question.helper}</p>
+            </div>
+        ` : question.type === 'checkbox' ? `
+            <div class="checkbox-options">
+                ${question.options.map(option => `
+                    <label class="checkbox-wrapper">
+                        <div class="checkbox-option">
+                            <input type="checkbox" 
+                                value="${option.value}"
+                                ${(answers[currentQuestionIndex] || []).includes(option.value) ? 'checked' : ''}
+                            >
+                            <span class="checkbox-text">${option.text}</span>
                         </div>
-                    </div>
-                </label>
-            `).join('')}
-        </div>
+                    </label>
+                `).join('')}
+            </div>
+            <div class="checkbox-actions">
+                <button class="none-btn">None of the above</button>
+            </div>
+        ` : `
+            <div class="options">
+                ${question.options.map(option => `
+                    <label class="option-wrapper">
+                        <input type="radio" name="settlement" value="${option.value}">
+                        <div class="option">
+                            <div class="option-text">
+                                <span class="option-title">${option.text}</span>
+                            </div>
+                        </div>
+                    </label>
+                `).join('')}
+            </div>
+        `}
     `;
 
     // Reset continue button state
@@ -160,17 +310,24 @@ function renderQuestion(questionIndex) {
         existingInsight.remove();
     }
 
-    // Reinitialize radio listeners
-    initializeRadioListeners();
+    if (question.type === 'text') {
+        // Initialize text input listener
+        const textInput = document.querySelector('.text-input');
+        textInput.addEventListener('input', handleTextInput);
+    } else if (question.type === 'checkbox') {
+        // Initialize checkbox listeners
+        initializeCheckboxListeners();
+    } else {
+        // Reinitialize radio listeners
+        initializeRadioListeners();
 
-    // If there's a previously selected answer for this question, select it and show insight
-    if (answers[currentQuestionIndex]) {
-        const radioToCheck = document.querySelector(`input[type="radio"][value="${answers[currentQuestionIndex]}"]`);
-        if (radioToCheck) {
-            radioToCheck.checked = true;
-            if (currentQuestionIndex === 0) {
+        // If there's a previously selected answer for this question, select it and show insight
+        if (answers[currentQuestionIndex]) {
+            const radioToCheck = document.querySelector(`input[type="radio"][value="${answers[currentQuestionIndex]}"]`);
+            if (radioToCheck) {
+                radioToCheck.checked = true;
                 const selectedOption = question.options.find(opt => opt.value === answers[currentQuestionIndex]);
-                if (selectedOption) {
+                if (selectedOption && selectedOption.insight) {
                     showInsight(selectedOption.insight);
                 }
             }
@@ -318,14 +475,21 @@ function handleBack() {
 
 // Update progress steps
 function updateProgressSteps() {
+    const currentSection = currentQuestionIndex < 4 ? 0 : 1; // 0 = Settlement, 1 = Financial wellbeing
+    const completedSection = currentQuestionIndex >= 4 ? 0 : -1; // Mark Settlement as completed when in Financial wellbeing
+
     progressSteps.forEach((step, index) => {
-        if (index === currentQuestionIndex) {
+        // Clear existing classes
+        step.classList.remove('active', 'completed');
+        
+        if (index === currentSection) {
+            // Current section
             step.classList.add('active');
-        } else if (index < currentQuestionIndex) {
+        } else if (index === completedSection) {
+            // Completed section
             step.classList.add('completed');
-        } else {
-            step.classList.remove('active', 'completed');
         }
+        // Future sections remain default (gray)
     });
 }
 
@@ -445,6 +609,58 @@ function showOutcomeScreen() {
     `;
 
     document.querySelector('.navigation').style.display = 'none';
+}
+
+// Handle text input
+function handleTextInput(event) {
+    const value = event.target.value.trim();
+    answers[currentQuestionIndex] = value;
+    
+    // Enable/disable continue button based on whether there's text
+    if (continueBtn) {
+        continueBtn.disabled = !value;
+    }
+}
+
+// Initialize checkbox listeners
+function initializeCheckboxListeners() {
+    const checkboxes = document.querySelectorAll('.checkbox-option input[type="checkbox"]');
+    const noneButton = document.querySelector('.none-btn');
+    
+    // Initialize answer array if not exists
+    if (!answers[currentQuestionIndex]) {
+        answers[currentQuestionIndex] = [];
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            const value = e.target.value;
+            
+            if (e.target.checked) {
+                answers[currentQuestionIndex].push(value);
+            } else {
+                answers[currentQuestionIndex] = answers[currentQuestionIndex].filter(v => v !== value);
+            }
+            
+            // Enable continue if at least one option is selected
+            if (continueBtn) {
+                continueBtn.disabled = answers[currentQuestionIndex].length === 0;
+            }
+        });
+    });
+
+    // Handle "None of the above"
+    if (noneButton) {
+        noneButton.addEventListener('click', () => {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            answers[currentQuestionIndex] = ['none'];
+            if (continueBtn) {
+                continueBtn.disabled = false;
+            }
+        });
+    }
 }
 
 // Initialize the survey
