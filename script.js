@@ -1,31 +1,49 @@
+// Calculate settlement deadline (900 days from today)
+const settlementDeadline = new Date();
+settlementDeadline.setDate(settlementDeadline.getDate() + 900);
+
+// Format date as Month DD, YYYY
+function formatDate(date) {
+    return date.toLocaleDateString('en-US', {
+        month: 'long',
+        day: '2-digit',
+        year: 'numeric',
+    });
+}
+
 // Survey data
 const surveyData = {
     questions: [
         {
-            id: 1,
-            label: "YOUR SETTLEMENT PLAN",
-            text: "When do you plan to settle your Home Equity Investment?",
-            reminder: "As a reminder, your settlement must be settled on or before January 01, 2032",
+            id: 'settlement_timeline',
+            section: 'Settlement',
+            type: 'radio',
+            title: 'When do you plan to settle your Home Equity Investment?',
+            label: 'YOUR SETTLEMENT PLAN',
+            reminder: `As a reminder, your settlement must be settled on or before <span style='font-weight: bold'>${formatDate(settlementDeadline)}</span>.`,
             options: [
-                { 
-                    text: "Within the next year",
-                    value: "within-year",
-                    insight: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                {
+                    value: 'within_year',
+                    text: 'Within the next year',
+                    insight: 'Okay, great! We will make sure to review all the steps for a smooth settlement process together.'
                 },
-                { 
-                    text: "Within the next 3 years",
-                    value: "within-three-years",
-                    insight: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                {
+                    value: 'within_three_years',
+                    text: 'Within the next 3 years',
+                    insight: 'Planning ahead is smart. We can help you understand your options and prepare for settlement.',
+                    checkDeadline: true
                 },
-                { 
-                    text: "More than 3 years from now",
-                    value: "more-than-three",
-                    insight: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                {
+                    value: 'more_than_three_years',
+                    text: 'More than 3 years from now',
+                    insight: "It's important to note that your settlement deadline may be approaching. Let's discuss your options to ensure a timely settlement.",
+                    checkDeadline: true
                 },
-                { 
+                {
+                    value: 'not_sure',
                     text: "I'm not sure",
-                    value: "not-sure",
-                    insight: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    insight: "That's okay! We're here to help you understand your options and create a settlement plan that works for you.",
+                    checkDeadline: true
                 }
             ]
         },
@@ -33,31 +51,31 @@ const surveyData = {
             id: 2,
             label: "YOUR SETTLEMENT PLAN",
             text: "How do you plan to settle?",
-            reminder: "Norem ipsum dolor sit amet, consectetur adipiscing elit.",
+            reminder: "You have several options, and we'll help you explore them all.",
             options: [
                 {
                     text: "By refinancing",
                     value: "refinancing",
                     helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    insight: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    insight: "Terrific. That's a popular option with our homeowners, and we have some excellent partners to help you through this process when you're ready."
                 },
                 {
                     text: "With cash savings",
                     value: "cash-savings",
                     helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    insight: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                    insight: "Okay! Whether you have the money on hand right now or plan to, we'll help you review the best ways to make the most of your savings.",
                 },
                 {
                     text: "With a loan or HELOC",
                     value: "loan-heloc",
                     helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    insight: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    insight: "Is this a sign that your credit score is in good shape? Good for you!",
                 },
                 {
                     text: "With a home sale",
                     value: "home-sale",
                     helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    insight: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    insight: "I might have guessed! This is the most common option for homeowners, and we have some great resources to help you through the process.",
                     infoCard: {
                         title: "Settling Your Home Equity Investment with a Home Sale",
                         steps: [
@@ -78,7 +96,8 @@ const surveyData = {
                 },
                 {
                     text: "I'm not sure",
-                    value: "not-sure"
+                    value: "not-sure",
+                    insight: "That's okay! We'll help you explore your options and create a settlement plan that works for you.",
                 }
             ]
         },
@@ -447,7 +466,7 @@ function renderRadioQuestion(question) {
     container.className = 'question-container';
     container.innerHTML = `
         <span class="question-label">${question.label}</span>
-        <h1 class="question-title">${question.text}</h1>
+        <h1 class="question-title">${question.title || question.text}</h1>
         <p class="question-reminder">${question.reminder || ''}</p>
         <div class="options">
             ${question.options.map(option => `
@@ -480,26 +499,40 @@ function renderInfoCard(infoCard) {
 }
 
 // Handle option selection
-function handleOptionSelect(event) {
-    const selectedValue = event.target.value;
-    const previousAnswer = answers[currentQuestionIndex];
-    answers[currentQuestionIndex] = selectedValue;
+function handleOptionSelect(e) {
+    const selectedValue = e.target.value;
+    const currentQuestion = surveyData.questions[currentQuestionIndex];
     
-    // Update total answers count if this is a new answer
-    if (!previousAnswer) {
-        totalAnswers++;
-        updateBadgeCount();
-    }
-    
-    // Enable continue button
-    if (continueBtn) {
-        continueBtn.disabled = false;
+    if (currentQuestion.id === 'settlement_timeline') {
+        const selectedOption = currentQuestion.options.find(opt => opt.value === selectedValue);
+        
+        if (selectedOption.checkDeadline) {
+            // Calculate days until deadline
+            const daysUntilDeadline = Math.ceil((settlementDeadline - new Date()) / (1000 * 60 * 60 * 24));
+            
+            if (selectedValue === 'within_three_years' && daysUntilDeadline < 1000) { // ~3 years in days
+                showInsight(`Great! Planning ahead is smart since your settlement deadline is coming up in less than 3 years. We'll work together to create a settlement plan that meets this timeline.`);
+            } else if (selectedValue === 'more_than_three_years') {
+                showInsight(`Okay, we'll revisit this after you complete the check-in. Please note that your investment must be settled by ${formatDate(settlementDeadline)}. We're here to help keep that as stress-free as possible.`);
+            } else if (selectedValue === 'not_sure') {
+                showInsight(`No problem. We'll be sure to review your HEI pricing and settlement options to help you make an informed decision well before your settlement deadline of ${formatDate(settlementDeadline)}.`);
+            } else {
+                showInsight(selectedOption.insight);
+            }
+        } else {
+            showInsight(selectedOption.insight);
+        }
+    } else {
+        const selectedOption = currentQuestion.options.find(opt => opt.value === selectedValue);
+        if (selectedOption && selectedOption.insight) {
+            showInsight(selectedOption.insight);
+        }
     }
 
-    // Show insight for the selected option
-    const selectedOption = surveyData.questions[currentQuestionIndex].options.find(opt => opt.value === selectedValue);
-    if (selectedOption && selectedOption.insight) {
-        showInsight(selectedOption.insight);
+    // Update answers and continue button
+    answers[currentQuestionIndex] = selectedValue;
+    if (continueBtn) {
+        continueBtn.disabled = false;
     }
 }
 
