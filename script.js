@@ -203,6 +203,44 @@ const surveyData = {
                     value: "other-expense"
                 }
             ]
+        },
+        {
+            id: 'financial_wellbeing_support',
+            section: 'Financial wellbeing',
+            type: 'multi_select_with_other',
+            title: 'How could we better support your financial wellbeing or home equity needs?',
+            label: 'YOUR FINANCIAL WELLBEING',
+            options: [
+                {
+                    id: 'financial_education',
+                    text: 'Financial education',
+                    insight: 'We offer resources and guidance to help you make informed financial decisions.'
+                },
+                {
+                    id: 'increasing_liquidity',
+                    text: 'Increasing liquidity/accessing equity',
+                    insight: 'We can explore options to help you access your home equity.'
+                },
+                {
+                    id: 'hei_questions',
+                    text: 'Getting answers to questions about my HEI',
+                    insight: 'Our team is here to help clarify any aspects of your Home Equity Investment.'
+                },
+                {
+                    id: 'home_renovation',
+                    text: 'Planning a home renovation',
+                    insight: 'We can provide guidance on home improvement projects and financing options.'
+                },
+                {
+                    id: 'lower_payments',
+                    text: 'Lowering my monthly payments or financial obligations',
+                    insight: 'We can discuss strategies to help manage your financial commitments.'
+                }
+            ],
+            otherOption: {
+                id: 'other_support',
+                placeholder: 'Please specify...'
+            }
         }
     ]
 };
@@ -249,60 +287,31 @@ function initializeRadioListeners() {
 }
 
 // Render current question
-function renderQuestion(questionIndex) {
-    const question = surveyData.questions[questionIndex];
-    
-    // Update question content
-    questionContainer.innerHTML = `
-        <span class="question-label">${question.label}</span>
-        <h1 class="question-title">${question.text}</h1>
-        <p class="question-reminder">${question.reminder}</p>
-        
-        ${question.type === 'text' ? `
-            <div class="text-input-container">
-                <input type="text" 
-                    class="text-input" 
-                    placeholder="${question.placeholder}"
-                    value="${answers[currentQuestionIndex] || ''}"
-                >
-                <p class="input-helper">${question.helper}</p>
-            </div>
-        ` : question.type === 'checkbox' ? `
-            <div class="checkbox-options">
-                ${question.options.map(option => `
-                    <label class="checkbox-wrapper">
-                        <div class="checkbox-option">
-                            <input type="checkbox" 
-                                value="${option.value}"
-                                ${(answers[currentQuestionIndex] || []).includes(option.value) ? 'checked' : ''}
-                            >
-                            <span class="checkbox-text">${option.text}</span>
-                        </div>
-                    </label>
-                `).join('')}
-            </div>
-            <div class="checkbox-actions">
-                <button class="none-btn">None of the above</button>
-            </div>
-        ` : `
-            <div class="options">
-                ${question.options.map(option => `
-                    <label class="option-wrapper">
-                        <input type="radio" name="settlement" value="${option.value}">
-                        <div class="option">
-                            <div class="option-text">
-                                <span class="option-title">${option.text}</span>
-                            </div>
-                        </div>
-                    </label>
-                `).join('')}
-            </div>
-        `}
-    `;
+function renderQuestion(index) {
+    const question = surveyData.questions[index];
+    let container;
+
+    switch (question.type) {
+        case 'multi_select_with_other':
+            container = renderMultiSelectWithOther(question);
+            break;
+        case 'text':
+            container = renderTextQuestion(question);
+            break;
+        case 'checkbox':
+            container = renderCheckboxQuestion(question);
+            break;
+        default:
+            container = renderRadioQuestion(question);
+    }
+
+    // Clear existing content and append new container
+    questionContainer.innerHTML = '';
+    questionContainer.appendChild(container);
 
     // Reset continue button state
     if (continueBtn) {
-        continueBtn.disabled = !answers[currentQuestionIndex];
+        continueBtn.disabled = !answers[index];
     }
 
     // Remove any existing insight
@@ -311,29 +320,149 @@ function renderQuestion(questionIndex) {
         existingInsight.remove();
     }
 
+    // Initialize appropriate listeners based on question type
     if (question.type === 'text') {
-        // Initialize text input listener
-        const textInput = document.querySelector('.text-input');
+        const textInput = container.querySelector('.text-input');
         textInput.addEventListener('input', handleTextInput);
     } else if (question.type === 'checkbox') {
-        // Initialize checkbox listeners
         initializeCheckboxListeners();
-    } else {
-        // Reinitialize radio listeners
+    } else if (!question.type || question.type === 'radio') {
         initializeRadioListeners();
 
         // If there's a previously selected answer for this question, select it and show insight
-        if (answers[currentQuestionIndex]) {
-            const radioToCheck = document.querySelector(`input[type="radio"][value="${answers[currentQuestionIndex]}"]`);
+        if (answers[index]) {
+            const radioToCheck = container.querySelector(`input[type="radio"][value="${answers[index]}"]`);
             if (radioToCheck) {
                 radioToCheck.checked = true;
-                const selectedOption = question.options.find(opt => opt.value === answers[currentQuestionIndex]);
+                const selectedOption = question.options.find(opt => opt.value === answers[index]);
                 if (selectedOption && selectedOption.insight) {
                     showInsight(selectedOption.insight);
                 }
             }
         }
     }
+}
+
+// Helper function to render text question
+function renderTextQuestion(question) {
+    const container = document.createElement('div');
+    container.className = 'question-container';
+    container.innerHTML = `
+        <span class="question-label">${question.label}</span>
+        <h1 class="question-title">${question.text}</h1>
+        <p class="question-reminder">${question.reminder}</p>
+        <div class="text-input-container">
+            <input type="text" 
+                class="text-input" 
+                placeholder="${question.placeholder}"
+                value="${answers[currentQuestionIndex] || ''}"
+            >
+            <p class="input-helper">${question.helper}</p>
+        </div>
+    `;
+    return container;
+}
+
+// Helper function to render checkbox question
+function renderCheckboxQuestion(question) {
+    const container = document.createElement('div');
+    container.className = 'question-container';
+    container.innerHTML = `
+        <span class="question-label">${question.label}</span>
+        <h1 class="question-title">${question.text}</h1>
+        <p class="question-reminder">${question.reminder}</p>
+        <div class="options multi-select">
+            ${question.options.map(option => `
+                <label class="option checkbox-option">
+                    <input type="checkbox" 
+                        value="${option.value}"
+                        ${(answers[currentQuestionIndex] || []).includes(option.value) ? 'checked' : ''}
+                    >
+                    <span class="checkbox-custom"></span>
+                    <span class="option-text">${option.text}</span>
+                </label>
+            `).join('')}
+            <label class="option checkbox-option">
+                <input type="checkbox" value="none">
+                <span class="checkbox-custom"></span>
+                <span class="option-text">None of the above</span>
+            </label>
+        </div>
+    `;
+
+    // Add event listeners for checkboxes and none option
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+    const noneCheckbox = container.querySelector('input[value="none"]');
+    
+    // Initialize answer array if not exists
+    if (!answers[currentQuestionIndex]) {
+        answers[currentQuestionIndex] = [];
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            const value = e.target.value;
+            const previousLength = answers[currentQuestionIndex].length;
+            
+            if (value === 'none' && e.target.checked) {
+                // If "None of the above" is selected, uncheck all other options
+                checkboxes.forEach(cb => {
+                    if (cb !== noneCheckbox) {
+                        cb.checked = false;
+                    }
+                });
+                answers[currentQuestionIndex] = ['none'];
+            } else if (value !== 'none' && e.target.checked) {
+                // If any other option is selected, uncheck "None of the above"
+                noneCheckbox.checked = false;
+                answers[currentQuestionIndex] = answers[currentQuestionIndex].filter(v => v !== 'none');
+                answers[currentQuestionIndex].push(value);
+            } else {
+                // Option was unchecked
+                answers[currentQuestionIndex] = answers[currentQuestionIndex].filter(v => v !== value);
+            }
+            
+            // Update total answers count
+            if (previousLength === 0 && answers[currentQuestionIndex].length > 0) {
+                totalAnswers++;
+                updateBadgeCount();
+            } else if (answers[currentQuestionIndex].length === 0 && previousLength > 0) {
+                totalAnswers--;
+                updateBadgeCount();
+            }
+            
+            // Enable continue if at least one option is selected
+            if (continueBtn) {
+                continueBtn.disabled = answers[currentQuestionIndex].length === 0;
+            }
+        });
+    });
+
+    return container;
+}
+
+// Helper function to render radio question
+function renderRadioQuestion(question) {
+    const container = document.createElement('div');
+    container.className = 'question-container';
+    container.innerHTML = `
+        <span class="question-label">${question.label}</span>
+        <h1 class="question-title">${question.text}</h1>
+        <p class="question-reminder">${question.reminder || ''}</p>
+        <div class="options">
+            ${question.options.map(option => `
+                <label class="option-wrapper">
+                    <input type="radio" name="settlement" value="${option.value}">
+                    <div class="option">
+                        <div class="option-text">
+                            <span class="option-title">${option.text}</span>
+                        </div>
+                    </div>
+                </label>
+            `).join('')}
+        </div>
+    `;
+    return container;
 }
 
 // Render info card
@@ -380,7 +509,13 @@ function showInsight(insightText) {
     if (!insightContainer) {
         insightContainer = document.createElement('div');
         insightContainer.className = 'insight-container';
-        document.querySelector('.navigation').insertAdjacentElement('beforebegin', insightContainer);
+        
+        // Insert after options container on desktop, before navigation on mobile
+        if (window.innerWidth > 768) {
+            document.querySelector('.options').insertAdjacentElement('afterend', insightContainer);
+        } else {
+            document.querySelector('.navigation').insertAdjacentElement('beforebegin', insightContainer);
+        }
     }
 
     insightContainer.innerHTML = `
@@ -394,6 +529,26 @@ function showInsight(insightText) {
         insightContainer.querySelector('.insight').classList.add('visible');
     }, 10);
 }
+
+// Update insight position on window resize
+window.addEventListener('resize', () => {
+    const insightContainer = document.querySelector('.insight-container');
+    if (!insightContainer) return;
+
+    if (window.innerWidth > 768) {
+        // Move to after options on desktop
+        const optionsContainer = document.querySelector('.options');
+        if (optionsContainer) {
+            optionsContainer.insertAdjacentElement('afterend', insightContainer);
+        }
+    } else {
+        // Move to before navigation on mobile
+        const navigation = document.querySelector('.navigation');
+        if (navigation) {
+            navigation.insertAdjacentElement('beforebegin', insightContainer);
+        }
+    }
+});
 
 // Handle continue button click
 function handleContinue() {
@@ -714,6 +869,102 @@ function initializeCheckboxListeners() {
             }
         });
     }
+}
+
+// Add function to handle multi-select with other option
+function renderMultiSelectWithOther(question) {
+    const container = document.createElement('div');
+    container.className = 'question-container';
+
+    // Add question header
+    container.innerHTML = `
+        <div class="question-header">
+            <div class="label">${question.label}</div>
+            <h1>${question.title}</h1>
+        </div>
+        <div class="options multi-select">
+            ${question.options.map(option => `
+                <label class="option checkbox-option">
+                    <input type="checkbox" name="${question.id}" value="${option.id}">
+                    <span class="checkbox-custom"></span>
+                    <span class="option-text">${option.text}</span>
+                </label>
+            `).join('')}
+            <label class="option checkbox-option other-option">
+                <input type="checkbox" name="${question.id}" value="other">
+                <span class="checkbox-custom"></span>
+                <span class="option-text">Other</span>
+                <input type="text" class="other-input" placeholder="${question.otherOption.placeholder}" disabled>
+            </label>
+        </div>
+    `;
+
+    // Add event listeners for checkboxes
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+    const otherInput = container.querySelector('.other-input');
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            if (e.target.value === 'other') {
+                otherInput.disabled = !e.target.checked;
+                if (e.target.checked) {
+                    otherInput.focus();
+                }
+            }
+            updateContinueButton();
+        });
+    });
+
+    otherInput.addEventListener('input', updateContinueButton);
+
+    return container;
+}
+
+// Update the validation for multi-select with other
+function isQuestionAnswered(index) {
+    const question = surveyData.questions[index];
+    if (question.type === 'multi_select_with_other') {
+        const checkboxes = document.querySelectorAll(`input[name="${question.id}"]`);
+        const otherCheckbox = document.querySelector(`input[name="${question.id}"][value="other"]`);
+        const otherInput = document.querySelector('.other-input');
+        
+        let isAnyChecked = false;
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                isAnyChecked = true;
+                if (checkbox === otherCheckbox && !otherInput.value.trim()) {
+                    isAnyChecked = false;
+                }
+            }
+        });
+        return isAnyChecked;
+    }
+    // ... existing validation code ...
+}
+
+// Update the getQuestionResponse function
+function getQuestionResponse(index) {
+    const question = surveyData.questions[index];
+    if (question.type === 'multi_select_with_other') {
+        const selectedOptions = [];
+        const checkboxes = document.querySelectorAll(`input[name="${question.id}"]`);
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                if (checkbox.value === 'other') {
+                    const otherInput = document.querySelector('.other-input');
+                    selectedOptions.push({
+                        id: question.otherOption.id,
+                        text: otherInput.value.trim()
+                    });
+                } else {
+                    const option = question.options.find(opt => opt.id === checkbox.value);
+                    selectedOptions.push(option);
+                }
+            }
+        });
+        return selectedOptions;
+    }
+    // ... existing response code ...
 }
 
 // Initialize the survey
