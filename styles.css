@@ -40,6 +40,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: linear-gradient(180deg, #F8FAFF 0%, rgba(248, 250, 255, 0) 100%);
 }
 
 /* Top Navigation */
@@ -323,37 +324,87 @@ body {
 }
 
 .option {
-    padding: 1.5rem;
-    border: 2px solid var(--neutral-30);
-    border-radius: var(--border-radius);
-    transition: all var(--transition-speed) ease-in-out;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: white;
 }
 
-.option-wrapper:hover .option {
-    border-color: var(--primary-color);
-    background-color: rgba(54, 108, 237, 0.05);
+.option:hover {
+    border-color: #366CED;
 }
 
-.option-wrapper input[type="radio"]:checked + .option {
-    border-color: var(--primary-color);
-    background-color: rgba(54, 108, 237, 0.1);
+.option.expanded {
+    border-color: #366CED;
+    background-color: white;
+}
+
+.option.expanded .option-title {
+    color: #366CED;
 }
 
 .option-text {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 4px;
 }
 
 .option-title {
-    color: var(--header-color);
-    font-weight: 600;
+    font-weight: 500;
+    color: #111827;
+    transition: color 0.3s ease;
 }
 
 .option-helper {
-    color: var(--neutral-300);
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 14px;
+    color: #6B7280;
+}
+
+.option-insight-wrapper {
+    margin-top: 12px;
+    padding-top: 12px;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.option-insight {
+    background-color: rgba(54, 108, 237, 0.05);
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.option-insight p {
+    font-size: 14px;
+    color: #4B5563;
+    line-height: 1.5;
+    margin: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + .option {
+    border-color: #366CED;
+    background-color: white;
+}
+
+input[type="radio"]:checked + .option .option-title {
+    color: #366CED;
 }
 
 /* Navigation Footer */

@@ -277,6 +277,119 @@ let answers = {};
 let totalAnswers = 0;
 let recommendationPreferences = {};
 
+// Define all possible recommendations
+const allRecommendations = {
+    settlement: {
+        'refinancing': {
+            title: 'Settling Your Home Equity Investment with a Refinance',
+            description: 'Learn about the refinancing process, what to consider, and how to prepare for settlement.',
+            url: 'https://www.hometap.com/blog/settling-home-equity-investment-refinance',
+            category: 'Read'
+        },
+        'home-sale': {
+            title: 'Settling Your Home Equity Investment with a Home Sale',
+            description: 'A comprehensive guide to settling your investment through a home sale.',
+            url: 'https://www.hometap.com/blog/settling-home-equity-investment-home-sale',
+            category: 'Read'
+        },
+        'cash-savings': {
+            title: 'Using Cash Savings to Settle Your HEI',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            url: '#',
+            category: 'Read'
+        },
+        'heloc': {
+            title: 'Settling with a Home Equity Line of Credit',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            url: '#',
+            category: 'Read'
+        }
+    },
+    timeline: {
+        'within_year': {
+            title: 'Contact Investment Support',
+            description: 'Ready to start your settlement? Our Investment Support team is here to help.',
+            action: 'Contact',
+            actionUrl: 'mailto:homeowners@hometap.com',
+            category: 'Contact'
+        },
+        'within_three_years': {
+            title: 'Settlement Calculator',
+            description: 'Use our calculator to estimate your settlement amount and explore your options.',
+            url: '#',
+            category: 'Try'
+        },
+        'more_than_three_years': {
+            title: 'Quarterly Account Statement',
+            description: 'Review your latest statement to stay informed about your investment.',
+            url: '#',
+            category: 'Read'
+        },
+        'not_sure': {
+            title: 'Understanding Your Settlement Options',
+            description: 'Explore different ways to settle your Home Equity Investment.',
+            url: '#',
+            category: 'Watch'
+        }
+    },
+    lifeEvents: {
+        'job_change': {
+            title: 'Career Transitions and Your HEI',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Understanding how job changes affect your investment.',
+            url: '#',
+            category: 'Read'
+        },
+        'retirement': {
+            title: 'Planning for Retirement',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Strategies for managing your HEI during retirement.',
+            url: '#',
+            category: 'Try'
+        },
+        'marriage': {
+            title: 'Marriage and Your Home Investment',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. What newlyweds should know about HEIs.',
+            url: '#',
+            category: 'Read'
+        },
+        'divorce': {
+            title: 'Managing Your HEI During Divorce',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Important considerations for your investment.',
+            url: '#',
+            category: 'Contact'
+        },
+        'birth': {
+            title: 'Growing Family Guide',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Financial planning for new parents.',
+            url: '#',
+            category: 'Read'
+        },
+        'medical': {
+            title: 'Health & Financial Wellness',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Resources for managing medical expenses.',
+            url: '#',
+            category: 'Contact'
+        },
+        'education': {
+            title: 'Education Funding Options',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Exploring ways to finance education.',
+            url: '#',
+            category: 'Try'
+        },
+        'business': {
+            title: 'Business Owner Resources',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Managing your HEI while running a business.',
+            url: '#',
+            category: 'Watch'
+        },
+        'relocation': {
+            title: 'Relocation and Your HEI',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. What to know about moving with an HEI.',
+            url: '#',
+            category: 'Read'
+        }
+    }
+};
+
 // Initialize event listeners
 function initializeEventListeners() {
     // Navigation button clicks
@@ -478,6 +591,11 @@ function renderRadioQuestion(question) {
                             <span class="option-title">${option.text}</span>
                             ${option.helper ? `<span class="option-helper">${option.helper}</span>` : ''}
                         </div>
+                        <div class="option-insight-wrapper" style="display: none;">
+                            <div class="option-insight">
+                                <p>${option.insight || ''}</p>
+                            </div>
+                        </div>
                     </div>
                 </label>
             `).join('')}
@@ -507,29 +625,44 @@ function handleOptionSelect(e) {
     const currentQuestion = surveyData.questions[currentQuestionIndex];
     console.log('Current question:', currentQuestion);
     
-    if (currentQuestion.id === 'settlement_timeline') {
-        const selectedOption = currentQuestion.options.find(opt => opt.value === selectedValue);
+    // Hide all insights first
+    const allInsights = document.querySelectorAll('.option-insight-wrapper');
+    allInsights.forEach(insight => {
+        insight.style.display = 'none';
+    });
+    
+    // Remove expanded class from all options
+    const allOptions = document.querySelectorAll('.option');
+    allOptions.forEach(option => {
+        option.classList.remove('expanded');
+    });
+    
+    // Show insight for selected option
+    const selectedOption = currentQuestion.options.find(opt => opt.value === selectedValue);
+    if (selectedOption) {
+        let insightText = selectedOption.insight;
         
-        if (selectedOption.checkDeadline) {
-            // Calculate days until deadline
+        // Special handling for settlement timeline question
+        if (currentQuestion.id === 'settlement_timeline' && selectedOption.checkDeadline) {
             const daysUntilDeadline = Math.ceil((settlementDeadline - new Date()) / (1000 * 60 * 60 * 24));
             
-            if (selectedValue === 'within_three_years' && daysUntilDeadline < 1000) { // ~3 years in days
-                showInsight(`Great! Planning ahead is smart since your settlement deadline is coming up in less than 3 years. We'll work together to create a settlement plan that meets this timeline.`);
+            if (selectedValue === 'within_three_years' && daysUntilDeadline < 1000) {
+                insightText = `Great! Planning ahead is smart since your settlement deadline is coming up in less than 3 years. We'll work together to create a settlement plan that meets this timeline.`;
             } else if (selectedValue === 'more_than_three_years') {
-                showInsight(`Okay, we'll revisit this after you complete the check-in. Please note that your investment must be settled by ${formatDate(settlementDeadline)}. We're here to help keep that as stress-free as possible.`);
+                insightText = `Okay, we'll revisit this after you complete the check-in. Please note that your investment must be settled by ${formatDate(settlementDeadline)}. We're here to help keep that as stress-free as possible.`;
             } else if (selectedValue === 'not_sure') {
-                showInsight(`No problem. We'll be sure to review your HEI pricing and settlement options to help you make an informed decision well before your settlement deadline of ${formatDate(settlementDeadline)}.`);
-            } else {
-                showInsight(selectedOption.insight);
+                insightText = `No problem. We'll be sure to review your HEI pricing and settlement options to help you make an informed decision well before your settlement deadline of ${formatDate(settlementDeadline)}.`;
             }
-        } else {
-            showInsight(selectedOption.insight);
         }
-    } else {
-        const selectedOption = currentQuestion.options.find(opt => opt.value === selectedValue);
-        if (selectedOption && selectedOption.insight) {
-            showInsight(selectedOption.insight);
+        
+        // Find and show the insight for the selected option
+        const selectedOptionElement = e.target.closest('.option-wrapper').querySelector('.option');
+        const insightWrapperElement = selectedOptionElement.querySelector('.option-insight-wrapper');
+        const insightElement = selectedOptionElement.querySelector('.option-insight');
+        if (insightElement) {
+            insightElement.innerHTML = `<p>${insightText}</p>`;
+            insightWrapperElement.style.display = 'block';
+            selectedOptionElement.classList.add('expanded');
         }
     }
 
@@ -741,75 +874,148 @@ function handleSaveAndExit() {
 
 // Generate recommendations based on answers
 function generateRecommendations() {
-    // Top recommendation
-    const topRecommendation = {
-        title: 'Simplist',
-        description: 'Next-generation mortgage marketplace using technology to find a range of home-buying options.',
-        action: 'Try',
-        actionUrl: '#'
-    };
-
-    // Categorized recommendations
+    const settlementMethod = answers[1]; // Question 2 is "How do you plan to settle?"
+    const timeline = answers[0]; // Question 1 is timeline
+    const lifeEvents = answers[4] || []; // Question 5 is life events (multi-select)
+    
+    console.log('Life events:', lifeEvents);
+    
+    // Start with an empty set of categorized recommendations
     const categorizedRecommendations = {
-        Read: [
-            {
-                title: 'Quarterly account statement',
-                description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum.',
-                actionUrl: '#'
-            },
-            {
-                title: 'Plan for the future with Enrich',
-                description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum.',
-                actionUrl: '#'
-            }
-        ],
-        Try: [
-            {
-                title: 'Settlement calculator',
-                description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum.',
-                actionUrl: '#'
-            }
-        ],
-        Watch: [
-            {
-                title: 'Renovation planner walkthrough',
-                description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum.',
-                actionUrl: '#'
-            }
-        ],
-        Contact: [
-            {
-                title: 'Investment support',
-                description: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum.',
-                actionUrl: '#'
-            }
-        ]
+        Read: [],
+        Try: [],
+        Watch: [],
+        Contact: []
     };
 
-    // Modify recommendations based on user preferences
-    if (recommendationPreferences['home-sale']) {
-        // Enhance home sale related recommendations
+    // Add settlement method recommendation
+    if (settlementMethod && allRecommendations.settlement[settlementMethod]) {
+        const rec = allRecommendations.settlement[settlementMethod];
+        categorizedRecommendations[rec.category].push({
+            title: rec.title,
+            description: rec.description,
+            actionUrl: rec.url
+        });
+    }
+
+    // Add timeline-based recommendation
+    if (timeline && allRecommendations.timeline[timeline]) {
+        const rec = allRecommendations.timeline[timeline];
+        categorizedRecommendations[rec.category].push({
+            title: rec.title,
+            description: rec.description,
+            actionUrl: rec.actionUrl || rec.url
+        });
+    }
+
+    // Map Question 5 values to recommendation keys
+    const lifeEventMap = {
+        'marital-change': 'marriage',
+        'growing-family': 'birth',
+        'employment-change': 'job_change',
+        'medical-expense': 'medical',
+        'property-transaction': 'relocation',
+        'financial-windfall': 'business',
+        'home-repair': 'business',
+        'natural-disaster': 'business',
+        'other-expense': 'business'
+    };
+
+    // Add life event recommendations
+    if (lifeEvents && lifeEvents.length > 0) {
+        lifeEvents.forEach(event => {
+            if (event !== 'none') {
+                const recommendationKey = lifeEventMap[event];
+                if (recommendationKey && allRecommendations.lifeEvents[recommendationKey]) {
+                    const rec = allRecommendations.lifeEvents[recommendationKey];
+                    categorizedRecommendations[rec.category].push({
+                        title: rec.title,
+                        description: rec.description,
+                        actionUrl: rec.url
+                    });
+                }
+            }
+        });
+    }
+
+    // Determine top recommendation based on user's responses
+    let topRecommendation;
+    
+    if (timeline === 'within_year' || timeline === 'within_three_years') {
+        // If they're planning to settle soon, prioritize their settlement method guide
+        topRecommendation = settlementMethod && allRecommendations.settlement[settlementMethod];
+    } else if (lifeEvents && lifeEvents.length === 1 && lifeEvents[0] !== 'none') {
+        // If they selected exactly one life event, prioritize that recommendation
+        const recommendationKey = lifeEventMap[lifeEvents[0]];
+        topRecommendation = recommendationKey && allRecommendations.lifeEvents[recommendationKey];
+    } else {
+        // Otherwise, prioritize their timeline-based recommendation
+        topRecommendation = timeline && allRecommendations.timeline[timeline];
+    }
+
+    // If no specific top recommendation can be determined, use a default
+    if (!topRecommendation) {
         topRecommendation = {
-            title: 'Home Sale Planning Guide',
-            description: 'Comprehensive guide to help you prepare your home for sale and maximize its value.',
+            title: 'Plan Your Settlement',
+            description: 'Explore your options and create a settlement plan that works for you.',
             action: 'Try',
             actionUrl: '#'
         };
     }
 
-    return { topRecommendation, categorizedRecommendations };
+    return { 
+        topRecommendation, 
+        categorizedRecommendations 
+    };
 }
 
 // Show outcome screen
 function showOutcomeScreen() {
     const { topRecommendation, categorizedRecommendations } = generateRecommendations();
+    const settlementMethod = answers[1]; // Question 2 is "How do you plan to settle?"
+    const timeline = answers[0]; // Question 1 is timeline
+    
+    console.log('Answers:', answers);
+    console.log('Settlement Method:', settlementMethod);
+    console.log('Timeline:', timeline);
+    
+    // Format the context message based on user's answers
+    let contextMessage = '';
+    if (settlementMethod && timeline) {
+        const methodText = {
+            'refinancing': 'through refinancing',
+            'cash-savings': 'using cash savings',
+            'loan-heloc': 'with a loan or HELOC',
+            'home-sale': 'through a home sale',
+            'not-sure': ''
+        }[settlementMethod];
+
+        const timelineText = {
+            'within_year': 'within the next year',
+            'within_three_years': 'within the next three years',
+            'more_than_three_years': 'in more than three years',
+            'not_sure': ''
+        }[timeline];
+
+        if (settlementMethod === 'not-sure') {
+            contextMessage = "Because you're still exploring your settlement options, we've prepared some resources to help you make an informed decision.";
+        } else if (timeline === 'not_sure') {
+            contextMessage = `Because you're planning to settle your HEI ${methodText}, we've prepared some resources to help you create a timeline that works for you.`;
+        } else {
+            contextMessage = `Because you plan to settle your HEI ${methodText} ${timelineText}, we've prepared some resources to help you make progress.`;
+        }
+    } else {
+        contextMessage = "We've prepared some resources to help you explore your settlement options.";
+    }
+    
+    console.log('Context Message:', contextMessage);
     
     mainContent.innerHTML = `
         <div class="outcome-screen">
             <h1 class="outcome-title">Recommendations based on your answers</h1>
             
             <div class="outcome-section">
-                <p class="outcome-context">Because you plan to settle your HEI through a home sale within the next three years. We're here to help when you're ready to start making progress.</p>
+                <p class="outcome-context">${contextMessage}</p>
                 
                 <!-- Top Recommendation -->
                 <div class="top-recommendation">
@@ -819,8 +1025,8 @@ function showOutcomeScreen() {
                             <h3>${topRecommendation.title}</h3>
                             <p>${topRecommendation.description}</p>
                         </div>
-                        <a href="${topRecommendation.actionUrl}" class="recommendation-link">
-                            <span>${topRecommendation.action}</span>
+                        <a href="${topRecommendation.actionUrl || topRecommendation.url}" class="recommendation-link">
+                            <span>${topRecommendation.action || 'Read'}</span>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M10.8333 5L15.8333 10L10.8333 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
