@@ -1129,4 +1129,125 @@ body {
     .other-option {
         flex-wrap: wrap;
     }
+}
+
+/* Recommendation Modal */
+.recommendation-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 24px 24px 0 0;
+    padding: 2rem;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.recommendation-modal.visible {
+    transform: translateY(0);
+}
+
+.recommendation-modal-header {
+    margin-bottom: 1rem;
+}
+
+.recommendation-modal-header h2 {
+    color: var(--header-color);
+    font-family: "Tiempos Headline", serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.recommendation-modal-subheader {
+    color: var(--text-color);
+    font-size: 18px;
+    line-height: 28px;
+    margin-bottom: 1.5rem;
+}
+
+.recommendation-modal-body {
+    color: var(--text-color);
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 2rem;
+}
+
+.recommendation-modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.recommendation-modal-actions button {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-family: 'Mulish', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.recommendation-modal-actions .primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.recommendation-modal-actions .primary-btn:hover {
+    background-color: #2B56D4;
+}
+
+.recommendation-modal-actions .secondary-btn {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--neutral-30);
+}
+
+.recommendation-modal-actions .secondary-btn:hover {
+    border-color: var(--neutral-300);
+}
+
+@media screen and (max-width: 768px) {
+    .recommendation-modal {
+        padding: 1.5rem;
+        /* Ensure content is visible above footer */
+        padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+        /* Account for mobile browser chrome */
+        max-height: 85vh;
+        /* Smoother scrolling on iOS */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .recommendation-modal-header h2 {
+        font-size: 22px;
+    }
+
+    .recommendation-modal-subheader {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .recommendation-modal-actions {
+        flex-direction: column;
+        margin-top: 1.5rem;
+        /* Ensure buttons are visible */
+        position: sticky;
+        bottom: 0;
+        background: white;
+        padding-top: 1rem;
+        margin-bottom: env(safe-area-inset-bottom);
+    }
+
+    .recommendation-modal-actions button {
+        width: 100%;
+        padding: 1rem;
+    }
 } 

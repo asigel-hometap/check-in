@@ -275,6 +275,7 @@ const mainContent = document.querySelector('.main-content');
 let currentQuestionIndex = 0;
 let answers = {};
 let totalAnswers = 0;
+let recommendationPreferences = {};
 
 // Initialize event listeners
 function initializeEventListeners() {
@@ -299,7 +300,7 @@ function initializeEventListeners() {
 
 // Initialize radio button listeners
 function initializeRadioListeners() {
-    const radioInputs = document.querySelectorAll('input[type="radio"][name="settlement"]');
+    const radioInputs = document.querySelectorAll('input[type="radio"]');
     radioInputs.forEach(radio => {
         radio.addEventListener('change', handleOptionSelect);
     });
@@ -471,10 +472,11 @@ function renderRadioQuestion(question) {
         <div class="options">
             ${question.options.map(option => `
                 <label class="option-wrapper">
-                    <input type="radio" name="settlement" value="${option.value}">
+                    <input type="radio" name="question_${question.id}" value="${option.value}">
                     <div class="option">
                         <div class="option-text">
                             <span class="option-title">${option.text}</span>
+                            ${option.helper ? `<span class="option-helper">${option.helper}</span>` : ''}
                         </div>
                     </div>
                 </label>
@@ -500,8 +502,10 @@ function renderInfoCard(infoCard) {
 
 // Handle option selection
 function handleOptionSelect(e) {
+    console.log('Option selected:', e.target.value);
     const selectedValue = e.target.value;
     const currentQuestion = surveyData.questions[currentQuestionIndex];
+    console.log('Current question:', currentQuestion);
     
     if (currentQuestion.id === 'settlement_timeline') {
         const selectedOption = currentQuestion.options.find(opt => opt.value === selectedValue);
@@ -531,8 +535,10 @@ function handleOptionSelect(e) {
 
     // Update answers and continue button
     answers[currentQuestionIndex] = selectedValue;
+    console.log('Updated answers:', answers);
     if (continueBtn) {
         continueBtn.disabled = false;
+        console.log('Continue button enabled');
     }
 }
 
@@ -585,11 +591,31 @@ window.addEventListener('resize', () => {
 
 // Handle continue button click
 function handleContinue() {
+    console.log('Continue button clicked');
+    const currentQuestion = surveyData.questions[currentQuestionIndex];
+    console.log('Current question:', currentQuestion);
+    console.log('Current answers:', answers);
+    
+    // Check if this is the settlement plan question
+    if (currentQuestion.id === 2) {
+        console.log('Found settlement plan question');
+        const selectedValue = answers[currentQuestionIndex];
+        console.log('Selected value:', selectedValue);
+        if (selectedValue && selectedValue !== 'not-sure') {
+            console.log('Showing recommendation modal for:', selectedValue);
+            showRecommendationModal(selectedValue);
+            return; // Don't advance to next question yet
+        }
+    }
+    
+    // Normal continue behavior for other questions
     if (currentQuestionIndex < surveyData.questions.length - 1) {
+        console.log('Advancing to next question');
         currentQuestionIndex++;
         updateProgressSteps();
         renderQuestion(currentQuestionIndex);
     } else {
+        console.log('Showing loading screen');
         showLoadingScreen();
     }
 }
@@ -759,6 +785,17 @@ function generateRecommendations() {
             }
         ]
     };
+
+    // Modify recommendations based on user preferences
+    if (recommendationPreferences['home-sale']) {
+        // Enhance home sale related recommendations
+        topRecommendation = {
+            title: 'Home Sale Planning Guide',
+            description: 'Comprehensive guide to help you prepare your home for sale and maximize its value.',
+            action: 'Try',
+            actionUrl: '#'
+        };
+    }
 
     return { topRecommendation, categorizedRecommendations };
 }
@@ -998,6 +1035,64 @@ function getQuestionResponse(index) {
         return selectedOptions;
     }
     // ... existing response code ...
+}
+
+// Function to show recommendation modal
+function showRecommendationModal(settlementMethod) {
+    console.log('Creating recommendation modal for:', settlementMethod);
+    const modal = document.createElement('div');
+    modal.className = 'recommendation-modal';
+    
+    // Format settlement method for display
+    const formattedMethod = settlementMethod
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    
+    modal.innerHTML = `
+        <div class="recommendation-modal-header">
+            <h2>Recommendation Found!</h2>
+        </div>
+        <div class="recommendation-modal-subheader">
+            Settling your HEI with a ${formattedMethod}
+        </div>
+        <div class="recommendation-modal-body">
+            It starts with having a plan. We can review the settlement requirements as well as some specialized partnerships that can make this process as easy as possible for you.
+        </div>
+        <div class="recommendation-modal-actions">
+            <button class="primary-btn">Yes, add this to my plan</button>
+            <button class="secondary-btn">No thanks, maybe later</button>
+        </div>
+    `;
+    
+    console.log('Appending modal to document body');
+    document.body.appendChild(modal);
+    
+    // Add event listeners to buttons
+    const primaryBtn = modal.querySelector('.primary-btn');
+    const secondaryBtn = modal.querySelector('.secondary-btn');
+    
+    const handleResponse = (accepted) => {
+        console.log('Modal response:', accepted);
+        recommendationPreferences[settlementMethod] = accepted;
+        modal.classList.remove('visible');
+        setTimeout(() => {
+            modal.remove();
+            // Continue to next question
+            currentQuestionIndex++;
+            updateProgressSteps();
+            renderQuestion(currentQuestionIndex);
+        }, 300);
+    };
+    
+    primaryBtn.addEventListener('click', () => handleResponse(true));
+    secondaryBtn.addEventListener('click', () => handleResponse(false));
+    
+    // Show modal with animation
+    setTimeout(() => {
+        console.log('Adding visible class to modal');
+        modal.classList.add('visible');
+    }, 10);
 }
 
 // Initialize the survey
