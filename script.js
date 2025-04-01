@@ -224,40 +224,41 @@ const surveyData = {
             ]
         },
         {
-            id: 'financial_wellbeing_support',
+            id: 7,
             section: 'Financial wellbeing',
             type: 'multi_select_with_other',
             title: 'How could we better support your financial wellbeing or home equity needs?',
             label: 'YOUR FINANCIAL WELLBEING',
+            reminder: 'Select all that apply',
             options: [
                 {
-                    id: 'financial_education',
+                    value: 'financial_education',
                     text: 'Financial education',
                     insight: 'We offer resources and guidance to help you make informed financial decisions.'
                 },
                 {
-                    id: 'increasing_liquidity',
+                    value: 'increasing_liquidity',
                     text: 'Increasing liquidity/accessing equity',
                     insight: 'We can explore options to help you access your home equity.'
                 },
                 {
-                    id: 'hei_questions',
+                    value: 'hei_questions',
                     text: 'Getting answers to questions about my HEI',
                     insight: 'Our team is here to help clarify any aspects of your Home Equity Investment.'
                 },
                 {
-                    id: 'home_renovation',
+                    value: 'home_renovation',
                     text: 'Planning a home renovation',
                     insight: 'We can provide guidance on home improvement projects and financing options.'
                 },
                 {
-                    id: 'lower_payments',
+                    value: 'lower_payments',
                     text: 'Lowering my monthly payments or financial obligations',
                     insight: 'We can discuss strategies to help manage your financial commitments.'
                 }
             ],
             otherOption: {
-                id: 'other_support',
+                value: 'other_support',
                 placeholder: 'Please specify...'
             }
         }
@@ -276,6 +277,8 @@ let currentQuestionIndex = 0;
 let answers = {};
 let totalAnswers = 0;
 let recommendationPreferences = {};
+let topRecommendation = null;
+let categorizedRecommendations = {};
 
 // Define all possible recommendations
 const allRecommendations = {
@@ -284,25 +287,29 @@ const allRecommendations = {
             title: 'Settling Your Home Equity Investment with a Refinance',
             description: 'Learn about the refinancing process, what to consider, and how to prepare for settlement.',
             url: 'https://www.hometap.com/blog/settling-home-equity-investment-refinance',
-            category: 'Read'
+            category: 'Read',
+            minutes_to_complete: 3
         },
         'home-sale': {
             title: 'Settling Your Home Equity Investment with a Home Sale',
             description: 'A comprehensive guide to settling your investment through a home sale.',
             url: 'https://www.hometap.com/blog/settling-home-equity-investment-home-sale',
-            category: 'Read'
+            category: 'Read',
+            minutes_to_complete: 3
         },
         'cash-savings': {
             title: 'Using Cash Savings to Settle Your HEI',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             url: '#',
-            category: 'Read'
+            category: 'Read',
+            minutes_to_complete: 3
         },
         'heloc': {
             title: 'Settling with a Home Equity Line of Credit',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             url: '#',
-            category: 'Read'
+            category: 'Read',
+            minutes_to_complete: 3
         }
     },
     timeline: {
@@ -311,25 +318,29 @@ const allRecommendations = {
             description: 'Ready to start your settlement? Our Investment Support team is here to help.',
             action: 'Contact',
             actionUrl: 'mailto:homeowners@hometap.com',
-            category: 'Contact'
+            category: 'Contact',
+            minutes_to_complete: 15
         },
         'within_three_years': {
             title: 'Settlement Calculator',
             description: 'Use our calculator to estimate your settlement amount and explore your options.',
             url: '#',
-            category: 'Try'
+            category: 'Try',
+            minutes_to_complete: 5
         },
         'more_than_three_years': {
             title: 'Quarterly Account Statement',
             description: 'Review your latest statement to stay informed about your investment.',
             url: '#',
-            category: 'Read'
+            category: 'Read',
+            minutes_to_complete: 10
         },
         'not_sure': {
             title: 'Understanding Your Settlement Options',
             description: 'Explore different ways to settle your Home Equity Investment.',
             url: '#',
-            category: 'Watch'
+            category: 'Watch',
+            minutes_to_complete: 2
         }
     },
     lifeEvents: {
@@ -337,58 +348,384 @@ const allRecommendations = {
             title: 'Career Transitions and Your HEI',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Understanding how job changes affect your investment.',
             url: '#',
-            category: 'Read'
+            category: 'Read',
+            minutes_to_complete: 3
         },
         'retirement': {
             title: 'Planning for Retirement',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Strategies for managing your HEI during retirement.',
             url: '#',
-            category: 'Try'
+            category: 'Try',
+            minutes_to_complete: 2
         },
         'marriage': {
             title: 'Marriage and Your Home Investment',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. What newlyweds should know about HEIs.',
             url: '#',
-            category: 'Read'
+            category: 'Read',
+            minutes_to_complete: 7
         },
         'divorce': {
             title: 'Managing Your HEI During Divorce',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Important considerations for your investment.',
             url: '#',
-            category: 'Contact'
+            category: 'Contact',
+            minutes_to_complete: 15
         },
         'birth': {
             title: 'Growing Family Guide',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Financial planning for new parents.',
             url: '#',
-            category: 'Read'
+            category: 'Read',
+            minutes_to_complete: 7
         },
         'medical': {
             title: 'Health & Financial Wellness',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Resources for managing medical expenses.',
             url: '#',
-            category: 'Contact'
+            category: 'Contact',
+            minutes_to_complete: 10
         },
         'education': {
             title: 'Education Funding Options',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Exploring ways to finance education.',
             url: '#',
-            category: 'Try'
+            category: 'Try',
+            minutes_to_complete: 11
         },
         'business': {
             title: 'Business Owner Resources',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Managing your HEI while running a business.',
             url: '#',
-            category: 'Watch'
+            category: 'Watch',
+            minutes_to_complete: 12
         },
         'relocation': {
             title: 'Relocation and Your HEI',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. What to know about moving with an HEI.',
             url: '#',
-            category: 'Read'
+            category: 'Read',
+            minutes_to_complete: 3
+        }
+    },
+    support: {
+        'financial_education': {
+            title: 'Financial Education Resources',
+            description: 'Access our library of educational content to help you make informed financial decisions.',
+            url: '#',
+            category: 'Read',
+            minutes_to_complete: 20
+        },
+        'increasing_liquidity': {
+            title: 'Home Equity Access Guide',
+            description: 'Learn about different ways to tap into your home equity and which option might be right for you.',
+            url: '#',
+            category: 'Try',
+            minutes_to_complete: 24
+        },
+        'hei_questions': {
+            title: 'Schedule a HEI Review',
+            description: 'Book a session with our team to review your Home Equity Investment and get answers to your questions.',
+            url: '#',
+            category: 'Contact',
+            minutes_to_complete: 30
+        },
+        'home_renovation': {
+            title: 'Home Improvement Planning',
+            description: 'Get guidance on planning and financing your home renovation projects.',
+            url: '#',
+            category: 'Watch',
+            minutes_to_complete: 10
+        },
+        'lower_payments': {
+            title: 'Financial Obligation Management',
+            description: 'Explore strategies and options for managing your monthly payments and financial commitments.',
+            url: '#',
+            category: 'Try',
+            minutes_to_complete: 10
         }
     }
 };
+
+// Add this at the top of the file with other global variables
+let selectedRecommendations = new Set();
+let animatingNumber = null;
+
+function animateNumber(start, end, element, duration = 1000) {
+    if (animatingNumber) {
+        cancelAnimationFrame(animatingNumber);
+    }
+    
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const current = Math.round(start + (end - start) * easeOutQuart);
+        
+        element.textContent = current;
+        
+        if (progress < 1) {
+            animatingNumber = requestAnimationFrame(update);
+        } else {
+            animatingNumber = null;
+        }
+    }
+    
+    animatingNumber = requestAnimationFrame(update);
+}
+
+function updatePlanTotalMinutes() {
+    const planTotalElement = document.getElementById('planTotalMinutes');
+    if (!planTotalElement || !topRecommendation) return;
+    
+    const currentTotal = parseInt(planTotalElement.textContent, 10);
+    
+    // Calculate new total (including top recommendation)
+    let newTotal = topRecommendation.minutes_to_complete;
+    selectedRecommendations.forEach(recId => {
+        const [category, index] = recId.split('-');
+        const rec = categorizedRecommendations[category][parseInt(index)];
+        if (rec) {
+            newTotal += rec.minutes_to_complete;
+        }
+    });
+    
+    // Animate the number change
+    animateNumber(currentTotal, newTotal, planTotalElement);
+}
+
+function toggleRecommendation(category, index, checkbox) {
+    if (!categorizedRecommendations[category] || !categorizedRecommendations[category][index]) return;
+    
+    const recId = `${category}-${index}`;
+    
+    if (checkbox.checked) {
+        selectedRecommendations.add(recId);
+    } else {
+        selectedRecommendations.delete(recId);
+    }
+    
+    // Update the plan section
+    updatePlanSection();
+    updatePlanTotalMinutes();
+}
+
+function updatePlanSection() {
+    const planList = document.getElementById('planList');
+    if (!planList || !topRecommendation) return;
+    
+    let planHTML = `
+        <div class="plan-item">
+            <h3>${topRecommendation.title}</h3>
+            <span class="time-to-complete">${topRecommendation.minutes_to_complete} min</span>
+        </div>
+    `;
+    
+    selectedRecommendations.forEach(recId => {
+        const [category, index] = recId.split('-');
+        const rec = categorizedRecommendations[category][parseInt(index)];
+        if (rec) {
+            planHTML += `
+                <div class="plan-item">
+                    <h3>${rec.title}</h3>
+                    <span class="time-to-complete">${rec.minutes_to_complete} min</span>
+                </div>
+            `;
+        }
+    });
+    
+    planList.innerHTML = planHTML;
+}
+
+function showNotification(message, duration = 3000) {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Trigger animation
+    setTimeout(() => notification.classList.add('show'), 10);
+    
+    // Remove after duration
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, duration);
+}
+
+function showOutcomeScreen() {
+    const recommendations = generateRecommendations();
+    topRecommendation = recommendations.topRecommendation;
+    categorizedRecommendations = recommendations.categorizedRecommendations;
+    const settlementMethod = answers[1];
+    const timeline = answers[0];
+    const supportNeeds = answers[7] || [];
+    
+    // Reset selected recommendations
+    selectedRecommendations.clear();
+    
+    // Calculate initial total minutes (just top recommendation)
+    let totalMinutes = topRecommendation.minutes_to_complete;
+
+    // Format the context message based on user's answers
+    let contextMessage = '';
+    if (settlementMethod && timeline) {
+        const methodText = {
+            'refinancing': 'through refinancing',
+            'cash-savings': 'using cash savings',
+            'loan-heloc': 'with a loan or HELOC',
+            'home-sale': 'through a home sale',
+            'not-sure': ''
+        }[settlementMethod];
+
+        const timelineText = {
+            'within_year': 'within the next year',
+            'within_three_years': 'within the next three years',
+            'more_than_three_years': 'in more than three years',
+            'not_sure': ''
+        }[timeline];
+
+        // Format support needs text
+        let supportText = '';
+        if (supportNeeds.length > 0) {
+            const supportLabels = supportNeeds
+                .filter(need => need !== 'other')
+                .map(need => {
+                    const option = surveyData.questions[7].options.find(opt => opt.value === need);
+                    return option ? option.text.toLowerCase() : '';
+                })
+                .filter(text => text);
+
+            if (supportLabels.length > 0) {
+                if (supportLabels.length === 1) {
+                    supportText = ` and are looking for help with ${supportLabels[0]}`;
+                } else if (supportLabels.length === 2) {
+                    supportText = ` and are looking for help with ${supportLabels[0]} and ${supportLabels[1]}`;
+                } else {
+                    const lastLabel = supportLabels.pop();
+                    supportText = ` and are looking for help with ${supportLabels.join(', ')}, and ${lastLabel}`;
+                }
+            }
+        }
+
+        if (settlementMethod === 'not-sure') {
+            contextMessage = "Because you're still exploring your settlement options" + supportText + ", we've prepared some resources to help you make an informed decision.";
+        } else if (timeline === 'not_sure') {
+            contextMessage = `Because you're planning to settle your HEI ${methodText}${supportText}, we've prepared some resources to help you create a timeline that works for you.`;
+        } else {
+            contextMessage = `Because you plan to settle your HEI ${methodText} ${timelineText}${supportText}, we've prepared some resources to help you make progress.`;
+        }
+    } else {
+        contextMessage = "We've prepared some resources to help you explore your settlement options.";
+    }
+    
+    mainContent.innerHTML = `
+        <div class="outcome-screen">
+            <h1 class="outcome-title">Recommendations based on your answers</h1>
+            
+            <div class="outcome-section">
+                <div class="time-estimate">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 6V10L13 13M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>These recommendations will take approximately <span id="planTotalMinutes">${totalMinutes}</span> minutes to complete</span>
+                </div>
+                
+                <div class="plan-section">
+                    <div class="plan-header">
+                        <h2>Your Plan</h2>
+                        <button class="collapse-button" onclick="this.closest('.plan-section').classList.toggle('collapsed')">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 13L10 8L5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="planList" class="plan-list">
+                        <!-- Plan items will be inserted here -->
+                    </div>
+                </div>
+                
+                <p class="outcome-context">${contextMessage}</p>
+                
+                <!-- Top Recommendation -->
+                <div class="top-recommendation">
+                    <span class="section-label">TOP RECOMMENDATION</span>
+                    <div class="recommendation-card featured">
+                        <div class="card-content">
+                            <h3>${topRecommendation.title}</h3>
+                            <p>${topRecommendation.description}</p>
+                            <span class="time-to-complete">${topRecommendation.minutes_to_complete} min</span>
+                        </div>
+                        <a href="${topRecommendation.actionUrl || topRecommendation.url}" class="recommendation-link">
+                            <span>${topRecommendation.action || 'Read'}</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10.8333 5L15.8333 10L10.8333 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Categorized Recommendations -->
+                <div class="recommendations-grid">
+                    ${Object.entries(categorizedRecommendations)
+                        .filter(([category, items]) => items.length > 0)
+                        .map(([category, items]) => `
+                            <div class="recommendation-category">
+                                <span class="section-label">${category.toUpperCase()}</span>
+                                <div class="recommendation-list">
+                                    ${items.map((rec, index) => `
+                                        <div class="recommendation-card">
+                                            <div class="card-content">
+                                                <h3>${rec.title}</h3>
+                                                <p>${rec.description}</p>
+                                                <a href="${rec.url}" class="recommendation-link" target="_blank">
+                                                    ${rec.category === 'Contact' ? 'Schedule a call' : 'Learn more'}
+                                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M4.16667 10H15.8333M15.8333 10L10 4.16667M15.8333 10L10 15.8333" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <label class="recommendation-checkbox">
+                                                <input type="checkbox" onchange="toggleRecommendation('${category}', ${index}, this)">
+                                                <span class="recommendation-checkmark"></span>
+                                            </label>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                </div>
+            </div>
+        </div>
+        
+        <div class="sticky-footer">
+            <button class="secondary-button" onclick="showNotification('Progress saved for later')">Save for later</button>
+            <button class="primary-button" onclick="showModal('⭐ All done ⭐')">Email me my plan</button>
+        </div>
+    `;
+
+    // Initialize the plan section with the top recommendation
+    updatePlanSection();
+    
+    document.querySelector('.navigation').style.display = 'none';
+}
+
+function showModal(message) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>${message}</h2>
+            <button onclick="this.closest('.modal').remove()">Close</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
 
 // Initialize event listeners
 function initializeEventListeners() {
@@ -500,12 +837,23 @@ function renderTextQuestion(question) {
 function renderCheckboxQuestion(question) {
     const container = document.createElement('div');
     container.className = 'question-container';
+
+    // Randomize options if this is question 5 or 6
+    let displayOptions = [...question.options];
+    if (question.id === 5 || question.id === 6) {
+        // Fisher-Yates shuffle algorithm
+        for (let i = displayOptions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [displayOptions[i], displayOptions[j]] = [displayOptions[j], displayOptions[i]];
+        }
+    }
+
     container.innerHTML = `
         <span class="question-label">${question.label}</span>
         <h1 class="question-title">${question.text}</h1>
         <p class="question-reminder">${question.reminder}</p>
         <div class="options multi-select">
-            ${question.options.map(option => `
+            ${displayOptions.map(option => `
                 <label class="option checkbox-option">
                     <input type="checkbox" 
                         value="${option.value}"
@@ -729,6 +1077,13 @@ function handleContinue() {
     console.log('Current question:', currentQuestion);
     console.log('Current answers:', answers);
     
+    // Check if we're on the last question first
+    if (currentQuestionIndex === surveyData.questions.length - 1) {
+        console.log('On last question, showing loading screen');
+        showLoadingScreen();
+        return;
+    }
+    
     // Check if this is the settlement plan question
     if (currentQuestion.id === 2) {
         console.log('Found settlement plan question');
@@ -742,15 +1097,10 @@ function handleContinue() {
     }
     
     // Normal continue behavior for other questions
-    if (currentQuestionIndex < surveyData.questions.length - 1) {
-        console.log('Advancing to next question');
-        currentQuestionIndex++;
-        updateProgressSteps();
-        renderQuestion(currentQuestionIndex);
-    } else {
-        console.log('Showing loading screen');
-        showLoadingScreen();
-    }
+    console.log('Advancing to next question');
+    currentQuestionIndex++;
+    updateProgressSteps();
+    renderQuestion(currentQuestionIndex);
 }
 
 // Show loading screen with animated steps
@@ -877,8 +1227,10 @@ function generateRecommendations() {
     const settlementMethod = answers[1]; // Question 2 is "How do you plan to settle?"
     const timeline = answers[0]; // Question 1 is timeline
     const lifeEvents = answers[4] || []; // Question 5 is life events (multi-select)
+    const supportNeeds = answers[7] || []; // Question 7 is financial wellbeing support
     
     console.log('Life events:', lifeEvents);
+    console.log('Support needs:', supportNeeds);
     
     // Start with an empty set of categorized recommendations
     const categorizedRecommendations = {
@@ -894,7 +1246,8 @@ function generateRecommendations() {
         categorizedRecommendations[rec.category].push({
             title: rec.title,
             description: rec.description,
-            actionUrl: rec.url
+            actionUrl: rec.url,
+            minutes_to_complete: rec.minutes_to_complete
         });
     }
 
@@ -904,7 +1257,8 @@ function generateRecommendations() {
         categorizedRecommendations[rec.category].push({
             title: rec.title,
             description: rec.description,
-            actionUrl: rec.actionUrl || rec.url
+            actionUrl: rec.actionUrl || rec.url,
+            minutes_to_complete: rec.minutes_to_complete
         });
     }
 
@@ -931,9 +1285,25 @@ function generateRecommendations() {
                     categorizedRecommendations[rec.category].push({
                         title: rec.title,
                         description: rec.description,
-                        actionUrl: rec.url
+                        actionUrl: rec.url,
+                        minutes_to_complete: rec.minutes_to_complete
                     });
                 }
+            }
+        });
+    }
+
+    // Add support recommendations
+    if (supportNeeds && supportNeeds.length > 0) {
+        supportNeeds.forEach(need => {
+            if (need !== 'other' && allRecommendations.support[need]) {
+                const rec = allRecommendations.support[need];
+                categorizedRecommendations[rec.category].push({
+                    title: rec.title,
+                    description: rec.description,
+                    actionUrl: rec.url,
+                    minutes_to_complete: rec.minutes_to_complete
+                });
             }
         });
     }
@@ -948,6 +1318,9 @@ function generateRecommendations() {
         // If they selected exactly one life event, prioritize that recommendation
         const recommendationKey = lifeEventMap[lifeEvents[0]];
         topRecommendation = recommendationKey && allRecommendations.lifeEvents[recommendationKey];
+    } else if (supportNeeds && supportNeeds.length === 1 && supportNeeds[0] !== 'other') {
+        // If they selected exactly one support need, prioritize that recommendation
+        topRecommendation = allRecommendations.support[supportNeeds[0]];
     } else {
         // Otherwise, prioritize their timeline-based recommendation
         topRecommendation = timeline && allRecommendations.timeline[timeline];
@@ -959,7 +1332,8 @@ function generateRecommendations() {
             title: 'Plan Your Settlement',
             description: 'Explore your options and create a settlement plan that works for you.',
             action: 'Try',
-            actionUrl: '#'
+            actionUrl: '#',
+            minutes_to_complete: 5
         };
     }
 
@@ -967,104 +1341,6 @@ function generateRecommendations() {
         topRecommendation, 
         categorizedRecommendations 
     };
-}
-
-// Show outcome screen
-function showOutcomeScreen() {
-    const { topRecommendation, categorizedRecommendations } = generateRecommendations();
-    const settlementMethod = answers[1]; // Question 2 is "How do you plan to settle?"
-    const timeline = answers[0]; // Question 1 is timeline
-    
-    console.log('Answers:', answers);
-    console.log('Settlement Method:', settlementMethod);
-    console.log('Timeline:', timeline);
-    
-    // Format the context message based on user's answers
-    let contextMessage = '';
-    if (settlementMethod && timeline) {
-        const methodText = {
-            'refinancing': 'through refinancing',
-            'cash-savings': 'using cash savings',
-            'loan-heloc': 'with a loan or HELOC',
-            'home-sale': 'through a home sale',
-            'not-sure': ''
-        }[settlementMethod];
-
-        const timelineText = {
-            'within_year': 'within the next year',
-            'within_three_years': 'within the next three years',
-            'more_than_three_years': 'in more than three years',
-            'not_sure': ''
-        }[timeline];
-
-        if (settlementMethod === 'not-sure') {
-            contextMessage = "Because you're still exploring your settlement options, we've prepared some resources to help you make an informed decision.";
-        } else if (timeline === 'not_sure') {
-            contextMessage = `Because you're planning to settle your HEI ${methodText}, we've prepared some resources to help you create a timeline that works for you.`;
-        } else {
-            contextMessage = `Because you plan to settle your HEI ${methodText} ${timelineText}, we've prepared some resources to help you make progress.`;
-        }
-    } else {
-        contextMessage = "We've prepared some resources to help you explore your settlement options.";
-    }
-    
-    console.log('Context Message:', contextMessage);
-    
-    mainContent.innerHTML = `
-        <div class="outcome-screen">
-            <h1 class="outcome-title">Recommendations based on your answers</h1>
-            
-            <div class="outcome-section">
-                <p class="outcome-context">${contextMessage}</p>
-                
-                <!-- Top Recommendation -->
-                <div class="top-recommendation">
-                    <span class="section-label">TOP RECOMMENDATION</span>
-                    <div class="recommendation-card featured">
-                        <div class="card-content">
-                            <h3>${topRecommendation.title}</h3>
-                            <p>${topRecommendation.description}</p>
-                        </div>
-                        <a href="${topRecommendation.actionUrl || topRecommendation.url}" class="recommendation-link">
-                            <span>${topRecommendation.action || 'Read'}</span>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M10.8333 5L15.8333 10L10.8333 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Categorized Recommendations -->
-                <div class="recommendations-grid">
-                    ${Object.entries(categorizedRecommendations).map(([category, items]) => items.length ? `
-                        <div class="recommendation-category">
-                            <span class="section-label">${category.toUpperCase()}</span>
-                            <div class="recommendation-list">
-                                ${items.map(rec => `
-                                    <div class="recommendation-card">
-                                        <div class="card-content">
-                                            <h3>${rec.title}</h3>
-                                            <p>${rec.description}</p>
-                                        </div>
-                                        <a href="${rec.actionUrl}" class="recommendation-link">
-                                            <span>${category}</span>
-                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M10.8333 5L15.8333 10L10.8333 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    ` : '').join('')}
-                </div>
-            </div>
-        </div>
-    `;
-
-    document.querySelector('.navigation').style.display = 'none';
 }
 
 // Handle text input
@@ -1152,25 +1428,33 @@ function renderMultiSelectWithOther(question) {
     const container = document.createElement('div');
     container.className = 'question-container';
 
-    // Add question header
+    // Initialize answer array if not exists
+    if (!answers[currentQuestionIndex]) {
+        answers[currentQuestionIndex] = [];
+    }
+
     container.innerHTML = `
-        <div class="question-header">
-            <div class="label">${question.label}</div>
-            <h1>${question.title}</h1>
-        </div>
+        <span class="question-label">${question.label}</span>
+        <h1 class="question-title">${question.title}</h1>
+        <p class="question-reminder">${question.reminder || ''}</p>
         <div class="options multi-select">
             ${question.options.map(option => `
                 <label class="option checkbox-option">
-                    <input type="checkbox" name="${question.id}" value="${option.id}">
+                    <input type="checkbox" name="${question.id}" value="${option.value}"
+                        ${(answers[currentQuestionIndex] || []).includes(option.value) ? 'checked' : ''}>
                     <span class="checkbox-custom"></span>
                     <span class="option-text">${option.text}</span>
                 </label>
             `).join('')}
             <label class="option checkbox-option other-option">
-                <input type="checkbox" name="${question.id}" value="other">
+                <input type="checkbox" name="${question.id}" value="other"
+                    ${(answers[currentQuestionIndex] || []).includes('other') ? 'checked' : ''}>
                 <span class="checkbox-custom"></span>
                 <span class="option-text">Other</span>
-                <input type="text" class="other-input" placeholder="${question.otherOption.placeholder}" disabled>
+                <input type="text" class="other-input" 
+                    placeholder="${question.otherOption.placeholder}" 
+                    disabled
+                    value="${answers[currentQuestionIndex]?.otherValue || ''}">
             </label>
         </div>
     `;
@@ -1179,19 +1463,65 @@ function renderMultiSelectWithOther(question) {
     const checkboxes = container.querySelectorAll('input[type="checkbox"]');
     const otherInput = container.querySelector('.other-input');
 
+    const updateContinueButtonState = () => {
+        if (!continueBtn) return;
+        
+        // Check if any checkbox is checked
+        let isValid = false;
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                if (checkbox.value === 'other') {
+                    // For "Other" option, require text input
+                    isValid = otherInput.value.trim().length > 0;
+                } else {
+                    isValid = true;
+                }
+            }
+        });
+        
+        continueBtn.disabled = !isValid;
+    };
+
+    // Enable the "Other" input if it was previously selected
+    if (answers[currentQuestionIndex]?.includes('other')) {
+        otherInput.disabled = false;
+    }
+
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', (e) => {
             if (e.target.value === 'other') {
                 otherInput.disabled = !e.target.checked;
                 if (e.target.checked) {
                     otherInput.focus();
+                } else {
+                    otherInput.value = ''; // Clear the input when unchecked
+                    delete answers[currentQuestionIndex].otherValue;
                 }
             }
-            updateContinueButton();
+            
+            // Update answers array
+            if (e.target.checked) {
+                if (!answers[currentQuestionIndex].includes(e.target.value)) {
+                    answers[currentQuestionIndex].push(e.target.value);
+                }
+            } else {
+                answers[currentQuestionIndex] = answers[currentQuestionIndex].filter(v => v !== e.target.value);
+            }
+            
+            updateContinueButtonState();
         });
     });
 
-    otherInput.addEventListener('input', updateContinueButton);
+    otherInput.addEventListener('input', (e) => {
+        // Store the "other" text input value
+        if (answers[currentQuestionIndex].includes('other')) {
+            answers[currentQuestionIndex].otherValue = e.target.value.trim();
+        }
+        updateContinueButtonState();
+    });
+
+    // Initialize continue button state
+    updateContinueButtonState();
 
     return container;
 }
@@ -1229,11 +1559,11 @@ function getQuestionResponse(index) {
                 if (checkbox.value === 'other') {
                     const otherInput = document.querySelector('.other-input');
                     selectedOptions.push({
-                        id: question.otherOption.id,
+                        id: question.otherOption.value,
                         text: otherInput.value.trim()
                     });
                 } else {
-                    const option = question.options.find(opt => opt.id === checkbox.value);
+                    const option = question.options.find(opt => opt.value === checkbox.value);
                     selectedOptions.push(option);
                 }
             }
