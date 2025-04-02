@@ -419,22 +419,22 @@ const allRecommendations = {
         'increasing_liquidity': {
             title: 'Home Equity Access Guide',
             description: 'Learn about different ways to tap into your home equity and which option might be right for you.',
-            url: '#',
-            category: 'Try',
+            url: 'https://www.hometap.com/homeowner-resources/options-for-tapping-into-your-homes-equity',
+            category: 'Read',
             minutes_to_complete: 24
         },
         'hei_questions': {
             title: 'Schedule a HEI Review',
             description: 'Book a session with our team to review your Home Equity Investment and get answers to your questions.',
-            url: '#',
+            url: 'mailto:homeowners@hometap.com',
             category: 'Contact',
             minutes_to_complete: 30
         },
         'home_renovation': {
-            title: 'Home Improvement Planning',
+            title: 'Renovation Calculator',
             description: 'Get guidance on planning and financing your home renovation projects.',
-            url: '#',
-            category: 'Watch',
+            url: 'https://www.hometap.com/blog/how-to-evaluate-your-home-renovation-estimate',
+            category: 'Try',
             minutes_to_complete: 10
         },
         'lower_payments': {
@@ -1611,60 +1611,57 @@ function getQuestionResponse(index) {
 
 // Function to show recommendation modal
 function showRecommendationModal(settlementMethod) {
-    console.log('Creating recommendation modal for:', settlementMethod);
-    const modal = document.createElement('div');
-    modal.className = 'recommendation-modal';
-    
     // Format settlement method for display
     const formattedMethod = settlementMethod
         .split('-')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
     
+    const modal = document.createElement('div');
+    modal.className = 'recommendation-modal';
+    
     modal.innerHTML = `
-        <div class="recommendation-modal-header">
+        <div class="recommendation-modal-content">
             <h2>Recommendation Found!</h2>
-        </div>
-        <div class="recommendation-modal-subheader">
-            Settling your HEI with a ${formattedMethod}
-        </div>
-        <div class="recommendation-modal-body">
-            It starts with having a plan. We can review the settlement requirements as well as some specialized partnerships that can make this process as easy as possible for you.
-        </div>
-        <div class="recommendation-modal-actions">
-            <button class="primary-btn">Yes, add this to my plan</button>
-            <button class="secondary-btn">No thanks, maybe later</button>
+            <p>Settling your HEI with ${formattedMethod}</p>
+            <p>It starts with having a plan. We can review the settlement requirements as well as some specialized partnerships that can make this process as easy as possible for you.</p>
+            <div class="recommendation-modal-buttons">
+                <button class="primary-button" onclick="handleRecommendationAccept('${settlementMethod}'); this.closest('.recommendation-modal').remove();">
+                    Yes, add this to my plan
+                </button>
+                <button class="secondary-button" onclick="handleRecommendationDecline('${settlementMethod}'); this.closest('.recommendation-modal').remove();">
+                    No thanks, maybe later
+                </button>
+            </div>
         </div>
     `;
     
-    console.log('Appending modal to document body');
     document.body.appendChild(modal);
+    // Trigger reflow before adding show class
+    modal.offsetHeight;
+    modal.classList.add('show');
+}
+
+// Function to handle accepting a recommendation
+function handleRecommendationAccept(settlementMethod) {
+    // Store the recommendation preference
+    recommendationPreferences[settlementMethod] = true;
     
-    // Add event listeners to buttons
-    const primaryBtn = modal.querySelector('.primary-btn');
-    const secondaryBtn = modal.querySelector('.secondary-btn');
+    // Continue to next question
+    currentQuestionIndex++;
+    updateProgressSteps();
+    renderQuestion(currentQuestionIndex);
+}
+
+// Function to handle declining a recommendation
+function handleRecommendationDecline(settlementMethod) {
+    // Store the recommendation preference
+    recommendationPreferences[settlementMethod] = false;
     
-    const handleResponse = (accepted) => {
-        console.log('Modal response:', accepted);
-        recommendationPreferences[settlementMethod] = accepted;
-        modal.classList.remove('visible');
-        setTimeout(() => {
-            modal.remove();
-            // Continue to next question
-            currentQuestionIndex++;
-            updateProgressSteps();
-            renderQuestion(currentQuestionIndex);
-        }, 300);
-    };
-    
-    primaryBtn.addEventListener('click', () => handleResponse(true));
-    secondaryBtn.addEventListener('click', () => handleResponse(false));
-    
-    // Show modal with animation
-    setTimeout(() => {
-        console.log('Adding visible class to modal');
-        modal.classList.add('visible');
-    }, 10);
+    // Continue to next question
+    currentQuestionIndex++;
+    updateProgressSteps();
+    renderQuestion(currentQuestionIndex);
 }
 
 // Initialize the survey
