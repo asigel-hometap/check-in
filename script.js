@@ -516,29 +516,65 @@ function toggleRecommendation(category, index, checkbox) {
 
 function updatePlanSection() {
     const planList = document.getElementById('planList');
-    if (!planList || !topRecommendation) return;
-    
-    let planHTML = `
-        <div class="plan-item">
-            <h3>${topRecommendation.title}</h3>
-            <span class="time-to-complete">${topRecommendation.minutes_to_complete} min</span>
-        </div>
-    `;
-    
+    const planTotalMinutes = document.getElementById('planTotalMinutes');
+    planList.innerHTML = '';
+    let totalMinutes = 0;
+
+    // Map categories to action verbs
+    const categoryToVerb = {
+        'Read': 'Read',
+        'Try': 'Try',
+        'Watch': 'Watch',
+        'Contact': 'Contact'
+    };
+
+    // Add top recommendation first
+    if (topRecommendation) {
+        const listItem = document.createElement('div');
+        listItem.className = 'plan-item';
+        
+        // Get the action verb from the category
+        const actionVerb = categoryToVerb[topRecommendation.category] || 'Read';
+        
+        listItem.innerHTML = `
+            <div>
+                <span class="action-verb">${actionVerb}</span>
+                ${topRecommendation.title}
+            </div>
+            <div class="time-estimate">${topRecommendation.minutes_to_complete} min</div>
+        `;
+        
+        planList.appendChild(listItem);
+        totalMinutes += topRecommendation.minutes_to_complete;
+    }
+
+    // Add selected recommendations
     selectedRecommendations.forEach(recId => {
         const [category, index] = recId.split('-');
         const rec = categorizedRecommendations[category][parseInt(index)];
         if (rec) {
-            planHTML += `
-                <div class="plan-item">
-                    <h3>${rec.title}</h3>
-                    <span class="time-to-complete">${rec.minutes_to_complete} min</span>
+            const listItem = document.createElement('div');
+            listItem.className = 'plan-item';
+            
+            // Get the action verb from the category
+            const actionVerb = categoryToVerb[rec.category] || 'Read';
+            
+            listItem.innerHTML = `
+                <div>
+                    <span class="action-verb">${actionVerb}</span>
+                    ${rec.title}
                 </div>
+                <div class="time-estimate">${rec.minutes_to_complete} min</div>
             `;
+            
+            planList.appendChild(listItem);
+            totalMinutes += rec.minutes_to_complete;
         }
     });
-    
-    planList.innerHTML = planHTML;
+
+    // Animate the total minutes change
+    const currentTotal = parseInt(planTotalMinutes.textContent, 10) || 0;
+    animateNumber(currentTotal, totalMinutes, planTotalMinutes);
 }
 
 function showNotification(message, duration = 3000) {
@@ -617,7 +653,7 @@ function showOutcomeScreen() {
         } else if (timeline === 'not_sure') {
             contextMessage = `Because you're planning to settle your HEI ${methodText}${supportText}, we've prepared some resources to help you create a timeline that works for you.`;
         } else {
-            contextMessage = `Because you plan to settle your HEI ${methodText} ${timelineText}${supportText}, we've prepared some resources to help you make progress.`;
+            contextMessage = `Because you plan to settle your HEI ${methodText} ${timelineText}${supportText}, we've prepared some resources to help you make progress. Click the checkbox to add items to your personal homeownership plan and we'll email this to you when you're done. We can check back in another 3 months to see what progress you've made and what else we can help you with.`;
         }
     } else {
         contextMessage = "We've prepared some resources to help you explore your settlement options.";
@@ -628,27 +664,6 @@ function showOutcomeScreen() {
             <h1 class="outcome-title">Recommendations based on your answers</h1>
             
             <div class="outcome-section">
-                <div class="time-estimate">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 6V10L13 13M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span>These recommendations will take approximately <span id="planTotalMinutes">${totalMinutes}</span> minutes to complete</span>
-                </div>
-                
-                <div class="plan-section">
-                    <div class="plan-header">
-                        <h2>Your Plan</h2>
-                        <button class="collapse-button" onclick="this.closest('.plan-section').classList.toggle('collapsed')">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 13L10 8L5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div id="planList" class="plan-list">
-                        <!-- Plan items will be inserted here -->
-                    </div>
-                </div>
-                
                 <p class="outcome-context">${contextMessage}</p>
                 
                 <!-- Top Recommendation -->
@@ -704,8 +719,29 @@ function showOutcomeScreen() {
         </div>
         
         <div class="sticky-footer">
-            <button class="secondary-button" onclick="showNotification('Progress saved for later')">Save for later</button>
-            <button class="primary-button" onclick="showModal('⭐ All done ⭐')">Email me my plan</button>
+            <div class="plan-section">
+                <div class="plan-header">
+                    <h2>Your Plan</h2>
+                    <div class="time-estimate">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 6V10L13 13M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Estimated time to complete: <span id="planTotalMinutes">${totalMinutes}</span> minutes</span>
+                    </div>
+                    <button class="collapse-button" onclick="this.closest('.plan-section').classList.toggle('collapsed')">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 13L10 8L5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="planList" class="plan-list">
+                    <!-- Plan items will be inserted here -->
+                </div>
+            </div>
+            <div class="footer-buttons">
+                <button class="secondary-button" onclick="showNotification('Progress saved for later')">Save for later</button>
+                <button class="primary-button" onclick="showModal('⭐ All done ⭐')">Email me my plan</button>
+            </div>
         </div>
     `;
 

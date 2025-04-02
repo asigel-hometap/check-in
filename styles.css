@@ -1322,14 +1322,34 @@ input[type="radio"]:checked + .option .option-title {
 
 .plan-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 16px;
+    gap: 16px;
 }
 
 .plan-header h2 {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.plan-header .time-estimate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 14px;
+    margin-left: auto;
+}
+
+.plan-header .time-estimate svg {
+    color: #366ced;
+}
+
+.plan-header .time-estimate span:last-child {
+    color: #366ced;
     font-weight: 600;
 }
 
@@ -1339,11 +1359,19 @@ input[type="radio"]:checked + .option .option-title {
     padding: 8px;
     cursor: pointer;
     color: #666;
-    transition: all 0.2s ease;
+    transition: color 0.2s;
 }
 
 .collapse-button:hover {
-    color: #333;
+    color: #366ced;
+}
+
+.collapse-button svg {
+    transition: transform 0.3s ease;
+}
+
+.plan-section.collapsed .collapse-button svg {
+    transform: rotate(180deg);
 }
 
 .plan-list {
@@ -1437,42 +1465,101 @@ input[type="radio"]:checked + .option .option-title {
     left: 0;
     right: 0;
     background: white;
-    padding: 16px 24px;
+    padding: 16px 0;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
     gap: 16px;
     z-index: 1000;
     font-family: 'Mulish', sans-serif;
 }
 
-.primary-button, .secondary-button {
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: 'Mulish', sans-serif;
+.sticky-footer > * {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: calc(100% - 48px); /* Account for padding */
+    padding: 0 24px;
 }
 
-.primary-button {
-    background: #366ced;
-    color: white;
+/* Plan Section in Footer */
+.sticky-footer .plan-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 0 auto; /* Center the plan section */
+    width: calc(100% - 48px); /* Account for padding */
+    max-width: 1200px;
+}
+
+.sticky-footer .plan-section.collapsed .plan-list {
+    display: none;
+}
+
+.sticky-footer .plan-section.collapsed .collapse-button svg {
+    transform: rotate(180deg);
+}
+
+.sticky-footer .plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.sticky-footer .plan-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--header-color);
+}
+
+.sticky-footer .collapse-button {
+    background: none;
     border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--neutral-300);
+    transition: all 0.2s ease;
 }
 
-.primary-button:hover {
-    background: #2B56D4;
+.sticky-footer .collapse-button:hover {
+    color: var(--neutral-500);
 }
 
-.secondary-button {
+.sticky-footer .plan-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.sticky-footer .plan-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
     background: white;
-    color: #366ced;
-    border: 1px solid #366ced;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.secondary-button:hover {
-    background: #f0f7ff;
+.sticky-footer .plan-item h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.action-verb {
+    color: #366ced;
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+/* Adjust main content padding for sticky footer */
+.outcome-screen {
+    padding-bottom: 160px;
 }
 
 /* Notification */
@@ -1546,11 +1633,6 @@ input[type="radio"]:checked + .option .option-title {
     color: #366ced;
 }
 
-/* Adjust main content padding for sticky footer */
-.outcome-screen {
-    padding-bottom: 80px;
-}
-
 /* Recommendation checkbox styles */
 .recommendation-checkbox {
     position: absolute;
@@ -1612,4 +1694,39 @@ input[type="radio"]:checked + .option .option-title {
     position: relative;
     padding: 24px;
     padding-right: 56px; /* Increased right padding to accommodate checkbox */
+}
+
+.footer-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.primary-button, .secondary-button {
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Mulish', sans-serif;
+}
+
+.primary-button {
+    background: #366ced;
+    color: white;
+    border: none;
+}
+
+.primary-button:hover {
+    background: #2B56D4;
+}
+
+.secondary-button {
+    background: white;
+    color: #366ced;
+    border: 1px solid #366ced;
+}
+
+.secondary-button:hover {
+    background: #f0f7ff;
 } 
