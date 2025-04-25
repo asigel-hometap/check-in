@@ -307,7 +307,7 @@ const allRecommendations = {
             type: 'Article',
             minutes_to_complete: 3
         },
-        'heloc': {
+        'loan-heloc': {
             title: 'Settling with a Home Equity Line of Credit',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             url: '#',
@@ -1382,10 +1382,11 @@ function generateRecommendations() {
             type: 'Article'
         };
     } else {
-        // Ensure the top recommendation has a type
+        // Ensure all properties are copied over
         topRecommendation = {
             ...topRecommendation,
-            type: topRecommendation.type || 'Article'
+            type: topRecommendation.type || 'Article',
+            minutes_to_complete: topRecommendation.minutes_to_complete || 5
         };
     }
 
@@ -1601,41 +1602,91 @@ function getQuestionResponse(index) {
 
 // Function to show recommendation modal
 function showRecommendationModal(settlementMethod) {
+    console.log('Opening modal for settlement method:', settlementMethod);
+    
     // Format settlement method for display
     const formattedMethod = settlementMethod
         .split('-')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
     
+    // Get the recommendation data
+    const recommendation = allRecommendations.settlement[settlementMethod];
+    console.log('Found recommendation:', recommendation);
+    
+    // Check if we have a valid recommendation
+    if (!recommendation) {
+        console.error('No recommendation found for settlement method:', settlementMethod);
+        // Fallback to continue without showing modal
+        currentQuestionIndex++;
+        updateProgressSteps();
+        renderQuestion(currentQuestionIndex);
+        return;
+    }
+    
+    // Create modal HTML
     const modal = document.createElement('div');
-    modal.className = 'recommendation-modal';
+    modal.className = 'recommendation-modal-overlay';
     
     modal.innerHTML = `
-        <div class="recommendation-modal-content">
-            <h2>Recommendation Found!</h2>
-            <p>Settling your HEI with ${formattedMethod}</p>
-            <p>It starts with having a plan. We can review the settlement requirements as well as some specialized partnerships that can make this process as easy as possible for you.</p>
+        <div class="recommendation-modal">
+            <button class="recommendation-modal-close" onclick="handleRecommendationDecline('${settlementMethod}'); this.closest('.recommendation-modal-overlay').remove();">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <h2>We found a recommendation for you!</h2>
+            <p>Consider adding it to your plan.</p>
+            <div class="recommendation-card">
+                <div class="time-estimate">${recommendation.minutes_to_complete} MIN</div>
+                <div class="plan-item-text">
+                    <h3>${recommendation.title}</h3>
+                    <p>${recommendation.description}</p>
+                    <div class="recommendation-type">
+                        <div class="recommendation-type-icon ${(recommendation.type || 'Article').toLowerCase()}"></div>
+                        ${recommendation.type || 'Article'}
+                    </div>
+                </div>
+            </div>
             <div class="recommendation-modal-buttons">
-                <button class="primary-button" onclick="handleRecommendationAccept('${settlementMethod}'); this.closest('.recommendation-modal').remove();">
-                    Yes, add this to my plan
+                <button class="secondary-button" onclick="handleRecommendationDecline('${settlementMethod}'); this.closest('.recommendation-modal-overlay').remove();">
+                    Maybe later
                 </button>
-                <button class="secondary-button" onclick="handleRecommendationDecline('${settlementMethod}'); this.closest('.recommendation-modal').remove();">
-                    No thanks, maybe later
+                <button class="primary-button" onclick="handleRecommendationAccept('${settlementMethod}'); this.closest('.recommendation-modal-overlay').remove();">
+                    Add to my plan
                 </button>
             </div>
         </div>
     `;
     
+    // Add click handler to close modal when clicking overlay
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            handleRecommendationDecline(settlementMethod);
+            modal.remove();
+        }
+    });
+    
+    // Prevent scrolling while modal is open
+    document.body.classList.add('modal-open');
+    
+    // Add modal to body
     document.body.appendChild(modal);
-    // Trigger reflow before adding show class
-    modal.offsetHeight;
-    modal.classList.add('show');
+    
+    // Trigger animations
+    requestAnimationFrame(() => {
+        modal.classList.add('show');
+        modal.querySelector('.recommendation-modal').classList.add('show');
+    });
 }
 
-// Function to handle accepting a recommendation
-function handleRecommendationAccept(settlementMethod) {
+// Update the decline handler to remove modal-open class
+function handleRecommendationDecline(settlementMethod) {
     // Store the recommendation preference
-    recommendationPreferences[settlementMethod] = true;
+    recommendationPreferences[settlementMethod] = false;
+    
+    // Remove modal-open class
+    document.body.classList.remove('modal-open');
     
     // Continue to next question
     currentQuestionIndex++;
@@ -1643,10 +1694,13 @@ function handleRecommendationAccept(settlementMethod) {
     renderQuestion(currentQuestionIndex);
 }
 
-// Function to handle declining a recommendation
-function handleRecommendationDecline(settlementMethod) {
+// Update the accept handler to remove modal-open class
+function handleRecommendationAccept(settlementMethod) {
     // Store the recommendation preference
-    recommendationPreferences[settlementMethod] = false;
+    recommendationPreferences[settlementMethod] = true;
+    
+    // Remove modal-open class
+    document.body.classList.remove('modal-open');
     
     // Continue to next question
     currentQuestionIndex++;
