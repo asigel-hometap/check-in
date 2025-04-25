@@ -939,15 +939,6 @@ function renderCheckboxQuestion(question) {
                 answers[currentQuestionIndex] = answers[currentQuestionIndex].filter(v => v !== value);
             }
             
-            // Update total answers count
-            if (previousLength === 0 && answers[currentQuestionIndex].length > 0) {
-                totalAnswers++;
-                updateBadgeCount();
-            } else if (answers[currentQuestionIndex].length === 0 && previousLength > 0) {
-                totalAnswers--;
-                updateBadgeCount();
-            }
-            
             // Enable continue if at least one option is selected
             if (continueBtn) {
                 continueBtn.disabled = answers[currentQuestionIndex].length === 0;
@@ -1231,24 +1222,6 @@ function updateProgressSteps() {
             step.classList.add('completed');
         }
     });
-
-    // Update recommendation badge
-    updateBadgeCount();
-}
-
-// Update badge count
-function updateBadgeCount() {
-    const recommendationsBadge = document.querySelector('.step:last-child .badge');
-    if (recommendationsBadge) {
-        recommendationsBadge.textContent = totalAnswers;
-        if (totalAnswers > 0) {
-            recommendationsBadge.classList.add('visible');
-            recommendationsBadge.classList.add('animate');
-            setTimeout(() => {
-                recommendationsBadge.classList.remove('animate');
-            }, 300);
-        }
-    }
 }
 
 // Handle save and exit
@@ -1385,15 +1358,6 @@ function handleTextInput(event) {
     const previousAnswer = answers[currentQuestionIndex];
     answers[currentQuestionIndex] = value;
     
-    // Update total answers count if this is a new answer
-    if (!previousAnswer && value) {
-        totalAnswers++;
-        updateBadgeCount();
-    } else if (previousAnswer && !value) {
-        totalAnswers--;
-        updateBadgeCount();
-    }
-    
     // Enable/disable continue button based on whether there's text
     if (continueBtn) {
         continueBtn.disabled = !value;
@@ -1421,15 +1385,6 @@ function initializeCheckboxListeners() {
                 answers[currentQuestionIndex] = answers[currentQuestionIndex].filter(v => v !== value);
             }
             
-            // Update total answers count if this is the first selection
-            if (previousLength === 0 && answers[currentQuestionIndex].length > 0) {
-                totalAnswers++;
-                updateBadgeCount();
-            } else if (answers[currentQuestionIndex].length === 0 && previousLength > 0) {
-                totalAnswers--;
-                updateBadgeCount();
-            }
-            
             // Enable continue if at least one option is selected
             if (continueBtn) {
                 continueBtn.disabled = answers[currentQuestionIndex].length === 0;
@@ -1445,12 +1400,6 @@ function initializeCheckboxListeners() {
                 checkbox.checked = false;
             });
             answers[currentQuestionIndex] = ['none'];
-            
-            // Update total answers count if this is the first selection
-            if (previousLength === 0) {
-                totalAnswers++;
-                updateBadgeCount();
-            }
             
             if (continueBtn) {
                 continueBtn.disabled = false;
@@ -1669,4 +1618,32 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeEventListeners();
     updateProgressSteps();
     renderQuestion(currentQuestionIndex);
-}); 
+});
+
+function updateProgress(currentStep) {
+    const progressBar = document.querySelector('.progress-bar');
+    const progressSegments = document.querySelectorAll('.progress-segment');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    if (!progressBar || !progressSegments.length || !navLinks.length) return;
+
+    const totalSteps = 3;
+    const stepWidth = (currentStep / totalSteps) * 100;
+    progressBar.style.width = `${stepWidth}%`;
+
+    progressSegments.forEach((segment, index) => {
+        if (index < currentStep) {
+            segment.classList.add('completed');
+        } else {
+            segment.classList.remove('completed');
+        }
+    });
+
+    navLinks.forEach((link, index) => {
+        if (index < currentStep) {
+            link.classList.add('completed');
+        } else {
+            link.classList.remove('completed');
+        }
+    });
+} 
