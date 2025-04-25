@@ -19,29 +19,28 @@ const surveyData = {
             section: 'Settlement',
             type: 'radio',
             title: 'When do you plan to settle your Home Equity Investment?',
-            label: 'YOUR SETTLEMENT PLAN',
             reminder: `As a reminder, your settlement must be settled on or before <span style='font-weight: bold'>${formatDate(settlementDeadline)}</span>.`,
             options: [
                 {
                     value: 'within_year',
-                    text: 'Within the next year',
+                    text: 'In the next 12 months',
                     insight: 'Okay, great! We will make sure to review all the steps for a smooth settlement process together.'
                 },
                 {
                     value: 'within_three_years',
-                    text: 'Within the next 3 years',
+                    text: 'In 1 to 3 years',
                     insight: 'Planning ahead is smart. We can help you understand your options and prepare for settlement.',
                     checkDeadline: true
                 },
                 {
                     value: 'more_than_three_years',
-                    text: 'More than 3 years from now',
+                    text: 'In more than 3 years',
                     insight: "It's important to note that your settlement deadline may be approaching. Let's discuss your options to ensure a timely settlement.",
                     checkDeadline: true
                 },
                 {
                     value: 'not_sure',
-                    text: "I'm not sure",
+                    text: "Not sure",
                     insight: "That's okay! We're here to help you understand your options and create a settlement plan that works for you.",
                     checkDeadline: true
                 }
@@ -49,32 +48,31 @@ const surveyData = {
         },
         {
             id: 2,
-            label: "YOUR SETTLEMENT PLAN",
-            text: "How do you plan to settle?",
-            reminder: "You have several options, and we'll help you explore them all.",
+            text: "How do you plan to fund settlement?",
+            // reminder: "You have several options, and we'll help you explore them all.",
             options: [
                 {
-                    text: "By refinancing",
+                    text: "Refinancing mortgage and other debts",
                     value: "refinancing",
-                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    // helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     insight: "Terrific. That's a popular option with our homeowners, and we have some excellent partners to help you through this process when you're ready."
                 },
                 {
-                    text: "With cash savings",
+                    text: "Savings",
                     value: "cash-savings",
-                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    // helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     insight: "Okay! Whether you have the money on hand right now or plan to, we'll help you review the best ways to make the most of your savings.",
                 },
                 {
-                    text: "With a loan or HELOC",
+                    text: "Home Equity Loan or Home Equity Line of Credit (HELOC)",
                     value: "loan-heloc",
-                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    // helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     insight: "Is this a sign that your credit score is in good shape? Good for you!",
                 },
                 {
-                    text: "With a home sale",
+                    text: "Proceeds from a home sale",
                     value: "home-sale",
-                    helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    // helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     insight: "I might have guessed! This is the most common option for homeowners, and we have some great resources to help you through the process.",
                     infoCard: {
                         title: "Settling Your Home Equity Investment with a Home Sale",
@@ -103,22 +101,21 @@ const surveyData = {
         },
         {
             id: 3,
-            label: "YOUR SETTLEMENT PLAN",
-            text: "How committed are you to selling your home?",
-            reminder: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
+            text: "How much planning have you done so far?",
+            // reminder: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
             options: [
                 {
-                    text: "I'm still deciding if selling my home is the right plan for me",
+                    text: "I'm still deciding if my settlement plan is right plan for me",
                     value: "still-deciding",
                     insight: "Taking time to evaluate your options is an important part of the process. We're here to help you make an informed decision."
                 },
                 {
-                    text: "I'm committed but haven't started making progress",
+                    text: "I'm committed, but haven't started making progress",
                     value: "committed-not-started",
                     insight: "Having a clear direction is the first step. We can help you start taking action towards your goal."
                 },
                 {
-                    text: "I'm committed and actively progressing towards my plan",
+                    text: "I've taken steps towards my settlement plan",
                     value: "committed-active",
                     insight: "You're making great progress! We'll provide resources to help you maintain momentum and achieve your goals."
                 }
@@ -126,18 +123,16 @@ const surveyData = {
         },
         {
             id: 4,
-            label: "YOUR SETTLEMENT PLAN",
             text: "What steps have you taken so far?",
-            reminder: "Norem ipsum dolor sit amet, consectetur adipiscing elit.",
+            reminder: "This helps us choose resources that'll meet you where you are",
             type: "text",
             placeholder: "Tell us what you've been up to",
             helper: "Ex: I've started talking to a Realtor."
         },
         {
             id: 5,
-            label: "YOUR FINANCIAL WELLBEING",
-            text: "In the <span style='color: #366CED'>past six months</span>, have you experienced any of the following life events?",
-            reminder: "Select all that apply",
+            text: "In the <span style='color: #25be8a'>past six months</span>, have you experienced any of the following life events?",
+            reminder: "Select all that apply to you or an immediate family member",
             type: "checkbox",
             options: [
                 {
@@ -180,9 +175,8 @@ const surveyData = {
         },
         {
             id: 6,
-            label: "YOUR FINANCIAL WELLBEING",
-            text: "In <span style='color: #366CED'>the next six months</span> do you expect to experience any of the following life events?",
-            reminder: "Select all that apply",
+            text: "In <span style='color: #25be8a'>the next six months</span> do you expect to experience any of the following life events?",
+            reminder: "Select all that apply to you or an immediate family member",
             type: "checkbox",
             options: [
                 {
@@ -227,8 +221,7 @@ const surveyData = {
             id: 7,
             section: 'Financial wellbeing',
             type: 'multi_select_with_other',
-            title: 'How could we better support your financial wellbeing or home equity needs?',
-            label: 'YOUR FINANCIAL WELLBEING',
+            title: 'What is most important to your financial wellbeing?',
             reminder: 'Select all that apply',
             options: [
                 {
@@ -652,8 +645,8 @@ function showOutcomeScreen() {
 
     // Add title and context
     outcomeMain.innerHTML = `
-        <h1 class="outcome-title">Recommendations based on your answers</h1>
-        <p class="outcome-context">Because you plan to settle your HEI through a home sale within the next three years. We're here to help when you're ready to start making progress.</p>
+        <h1 class="outcome-title">Build your plan</h1>
+        <p class="outcome-context">Choose from resources curated just for you</p>
     `;
 
     // Add top recommendation
@@ -758,6 +751,17 @@ function showOutcomeScreen() {
         navigation.style.display = 'none';
     }
 
+    // Create and append sticky footer
+    const stickyFooter = document.createElement('div');
+    stickyFooter.className = 'sticky-footer';
+    stickyFooter.innerHTML = `
+        <div class="footer-buttons">
+            <button class="secondary-button">Back to questions</button>
+            <button class="primary-button" onclick="handleSavePlan()">Save plan</button>
+        </div>
+    `;
+    document.body.appendChild(stickyFooter);
+
     // Initialize the plan section
     try {
         updatePlanSection();
@@ -765,6 +769,9 @@ function showOutcomeScreen() {
     } catch (error) {
         console.error('Error initializing plan section:', error);
     }
+
+    // Update progress to show step 3 as active
+    updateProgress(3);
 
     // Log success
     console.log('Outcome screen rendered successfully');
@@ -834,9 +841,11 @@ function renderQuestion(index) {
     questionContainer.innerHTML = '';
     questionContainer.appendChild(container);
 
-    // Reset continue button state
-    if (continueBtn) {
-        continueBtn.disabled = !answers[index];
+    // Update continue button text for last question
+    if (continueBtn && index === surveyData.questions.length - 1) {
+        continueBtn.textContent = 'Build my plan';
+    } else if (continueBtn) {
+        continueBtn.textContent = 'Continue';
     }
 
     // Remove any existing insight
@@ -873,7 +882,6 @@ function renderTextQuestion(question) {
     const container = document.createElement('div');
     container.className = 'question-container';
     container.innerHTML = `
-        <span class="question-label">${question.label}</span>
         <h1 class="question-title">${question.text}</h1>
         <p class="question-reminder">${question.reminder}</p>
         <div class="text-input-container">
@@ -904,7 +912,6 @@ function renderCheckboxQuestion(question) {
     }
 
     container.innerHTML = `
-        <span class="question-label">${question.label}</span>
         <h1 class="question-title">${question.text}</h1>
         <p class="question-reminder">${question.reminder}</p>
         <div class="options multi-select">
@@ -973,7 +980,6 @@ function renderRadioQuestion(question) {
     const container = document.createElement('div');
     container.className = 'question-container';
     container.innerHTML = `
-        <span class="question-label">${question.label}</span>
         <h1 class="question-title">${question.title || question.text}</h1>
         <p class="question-reminder">${question.reminder || ''}</p>
         <div class="options">
@@ -1122,6 +1128,11 @@ function handleContinue() {
     const currentQuestion = surveyData.questions[currentQuestionIndex];
     console.log('Current question:', currentQuestion);
     console.log('Current answers:', answers);
+    
+    // Update button text for last question
+    if (currentQuestionIndex === surveyData.questions.length - 1) {
+        continueBtn.textContent = 'Build my plan';
+    }
     
     // Check if we're on the last question first
     if (currentQuestionIndex === surveyData.questions.length - 1) {
@@ -1461,7 +1472,6 @@ function renderMultiSelectWithOther(question) {
     }
 
     container.innerHTML = `
-        <span class="question-label">${question.label}</span>
         <h1 class="question-title">${question.title}</h1>
         <p class="question-reminder">${question.reminder || ''}</p>
         <div class="options multi-select">
@@ -1779,4 +1789,9 @@ function updateProgress(currentStep) {
             link.classList.remove('completed');
         }
     });
+}
+
+// Add handler for save plan button
+function handleSavePlan() {
+    showNotification('Plan saved successfully');
 } 

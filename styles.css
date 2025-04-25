@@ -236,15 +236,6 @@ body {
     max-width: 720px;
 }
 
-.question-label {
-    display: block;
-    color: var(--neutral-300);
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    letter-spacing: 0.05em;
-}
-
 .question-title {
     color: var(--header-color);
     font-family: "Tiempos Headline", serif;
