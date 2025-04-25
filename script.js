@@ -616,117 +616,170 @@ function showNotification(message, duration = 3000) {
 }
 
 function showOutcomeScreen() {
+    // First, ensure we have the main content container
+    let mainContent = document.querySelector('.main-content');
+    if (!mainContent) {
+        mainContent = document.createElement('div');
+        mainContent.className = 'main-content';
+        document.body.appendChild(mainContent);
+    }
+
+    // Generate recommendations
     const recommendations = generateRecommendations();
+    if (!recommendations || !recommendations.topRecommendation) {
+        console.error('Failed to generate recommendations');
+        return;
+    }
+
+    // Update global variables
     topRecommendation = recommendations.topRecommendation;
     categorizedRecommendations = recommendations.categorizedRecommendations;
-    
-    // Reset selected recommendations and automatically select top recommendation
+
+    // Ensure type exists for top recommendation
+    const topRecType = (topRecommendation.type || 'Article').toLowerCase();
+    console.log('Top recommendation type:', topRecType);
+
+    // Reset selected recommendations
     selectedRecommendations.clear();
     selectedRecommendations.add('top-0');
-    
+
     // Calculate dates
     const startDate = new Date();
     const endDate = new Date();
     endDate.setDate(startDate.getDate() + 90);
 
-    // Format dates
-    const formatDate = (date) => {
-        return date.toLocaleDateString('en-US', {
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric'
-        });
-    };
+    // Create the outcome screen container
+    const outcomeScreen = document.createElement('div');
+    outcomeScreen.className = 'outcome-screen';
 
-    mainContent.innerHTML = `
-        <div class="outcome-screen">
-            <div class="outcome-main">
-                <h1 class="outcome-title">Recommendations based on your answers</h1>
-                <p class="outcome-context">Because you plan to settle your HEI through a home sale within the next three years. We're here to help when you're ready to start making progress.</p>
-                
-                <!-- Top Recommendation -->
-                <div class="recommendation-category">
-                    <h2 class="category-header">Top recommendation</h2>
-                    <div class="recommendation-card">
-                        <h3>${topRecommendation.title}</h3>
-                        <p>${topRecommendation.description}</p>
-                        <div class="time-estimate">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            ${topRecommendation.minutes_to_complete} min
-                        </div>
-                        <button class="add-to-plan added" onclick="toggleRecommendation('top', 0, this)">
-                            <svg class="plus-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: none;">
-                                <path d="M8 3.33333V12.6667M12.6667 8H3.33334" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: block;">
-                                <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+    // Create main content section
+    const outcomeMain = document.createElement('div');
+    outcomeMain.className = 'outcome-main';
 
-                <!-- Other Recommendations -->
-                ${Object.entries(categorizedRecommendations)
-                    .filter(([category, items]) => items.length > 0)
-                    .map(([category, items]) => `
-                        <div class="recommendation-category">
-                            <h2 class="category-header">${category}</h2>
-                            ${items.map((rec, index) => `
-                                <div class="recommendation-card">
-                                    <h3>${rec.title}</h3>
-                                    <p>${rec.description}</p>
-                                    <div class="time-estimate">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                            <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        ${rec.minutes_to_complete} min
-                                    </div>
-                                    <button class="add-to-plan" onclick="toggleRecommendation('${category}', ${index}, this)">
-                                        <svg class="plus-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                            <path d="M8 3.33333V12.6667M12.6667 8H3.33334" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: none;">
-                                            <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `).join('')}
+    // Add title and context
+    outcomeMain.innerHTML = `
+        <h1 class="outcome-title">Recommendations based on your answers</h1>
+        <p class="outcome-context">Because you plan to settle your HEI through a home sale within the next three years. We're here to help when you're ready to start making progress.</p>
+    `;
+
+    // Add top recommendation
+    const topRecSection = document.createElement('div');
+    topRecSection.className = 'recommendation-category';
+    topRecSection.innerHTML = `
+        <h2 class="category-header">Top recommendation</h2>
+        <div class="recommendation-card">
+            <div class="time-badge">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                ${topRecommendation.minutes_to_complete} MIN
             </div>
+            <h3>${topRecommendation.title}</h3>
+            <p>${topRecommendation.description}</p>
+            <div class="recommendation-type">
+                <div class="recommendation-type-icon ${topRecType}"></div>
+                ${topRecommendation.type || 'Article'}
+            </div>
+            <button class="add-to-plan added" onclick="toggleRecommendation('top', 0, this)">
+                <svg class="plus-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: none;">
+                    <path d="M8 3.33333V12.6667M12.6667 8H3.33334" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: block;">
+                    <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    `;
+    outcomeMain.appendChild(topRecSection);
 
-            <div class="outcome-sidebar">
-                <!-- Personality Type Placeholder -->
-                <div class="personality-type">
-                    <p>[personality_type]</p>
-                    <p>To progress you should do xyz...</p>
-                </div>
+    // Add other recommendations
+    Object.entries(categorizedRecommendations)
+        .filter(([category, items]) => items.length > 0)
+        .forEach(([category, items]) => {
+            const categorySection = document.createElement('div');
+            categorySection.className = 'recommendation-category';
+            categorySection.innerHTML = `
+                <h2 class="category-header">${category}</h2>
+                ${items.map((rec, index) => {
+                    const recType = (rec.type || 'Article').toLowerCase();
+                    return `
+                        <div class="recommendation-card">
+                            <div class="time-badge">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                ${rec.minutes_to_complete} MIN
+                            </div>
+                            <h3>${rec.title}</h3>
+                            <p>${rec.description}</p>
+                            <div class="recommendation-type">
+                                <div class="recommendation-type-icon ${recType}"></div>
+                                ${rec.type || 'Article'}
+                            </div>
+                            <button class="add-to-plan" onclick="toggleRecommendation('${category}', ${index}, this)">
+                                <svg class="plus-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M8 3.33333V12.6667M12.6667 8H3.33334" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: none;">
+                                    <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+            outcomeMain.appendChild(categorySection);
+        });
 
-                <!-- Plan Section -->
-                <div class="plan-section">
-                    <div class="plan-header">
-                        <div class="plan-header-content">
-                            <h2>My plan</h2>
-                            <p class="next-checkin">Your next quarterly check-in is on ${formatDate(endDate)}</p>
-                        </div>
-                        <div class="plan-total">
-                            <span class="plan-total-label">Total time:</span>
-                            <span id="planTotalMinutes" class="plan-total-minutes">0</span>
-                        </div>
-                    </div>
-                    <div id="planList" class="plan-list">
-                        <!-- Plan items will be inserted here -->
-                    </div>
+    // Create sidebar
+    const outcomeSidebar = document.createElement('div');
+    outcomeSidebar.className = 'outcome-sidebar';
+    outcomeSidebar.innerHTML = `
+        <div class="personality-type">
+            <p>[personality_type]</p>
+            <p>To progress you should do xyz...</p>
+        </div>
+        <div class="plan-section">
+            <div class="plan-header">
+                <div class="plan-header-content">
+                    <h2>My plan</h2>
+                    <p class="next-checkin">Your next quarterly check-in is on ${formatDate(endDate)}</p>
                 </div>
+                <div class="plan-total">
+                    <span class="plan-total-label">Total time:</span>
+                    <span id="planTotalMinutes" class="plan-total-minutes">0</span>
+                </div>
+            </div>
+            <div id="planList" class="plan-list">
+                <!-- Plan items will be inserted here -->
             </div>
         </div>
     `;
 
-    // Initialize the plan section with the top recommendation
-    updatePlanSection();
-    updatePlanTotalMinutes();
+    // Append main content and sidebar to outcome screen
+    outcomeScreen.appendChild(outcomeMain);
+    outcomeScreen.appendChild(outcomeSidebar);
+
+    // Clear main content and append outcome screen
+    mainContent.innerHTML = '';
+    mainContent.appendChild(outcomeScreen);
+
+    // Hide navigation if it exists
+    const navigation = document.querySelector('.navigation');
+    if (navigation) {
+        navigation.style.display = 'none';
+    }
+
+    // Initialize the plan section
+    try {
+        updatePlanSection();
+        updatePlanTotalMinutes();
+    } catch (error) {
+        console.error('Error initializing plan section:', error);
+    }
+
+    // Log success
+    console.log('Outcome screen rendered successfully');
 }
 
 function showModal(message) {
@@ -1229,8 +1282,7 @@ function generateRecommendations() {
     const lifeEvents = answers[4] || []; // Question 5 is life events (multi-select)
     const supportNeeds = answers[7] || []; // Question 7 is financial wellbeing support
     
-    console.log('Life events:', lifeEvents);
-    console.log('Support needs:', supportNeeds);
+    console.log('Generating recommendations with:', { settlementMethod, timeline, lifeEvents, supportNeeds });
     
     // Start with an empty set of categorized recommendations
     const categorizedRecommendations = {
@@ -1248,7 +1300,8 @@ function generateRecommendations() {
             title: rec.title,
             description: rec.description,
             actionUrl: rec.url,
-            minutes_to_complete: rec.minutes_to_complete
+            minutes_to_complete: rec.minutes_to_complete,
+            type: rec.type || 'Article' // Ensure type is set
         });
     }
 
@@ -1259,7 +1312,8 @@ function generateRecommendations() {
             title: rec.title,
             description: rec.description,
             actionUrl: rec.actionUrl || rec.url,
-            minutes_to_complete: rec.minutes_to_complete
+            minutes_to_complete: rec.minutes_to_complete,
+            type: rec.type || 'Article' // Ensure type is set
         });
     }
 
@@ -1287,7 +1341,8 @@ function generateRecommendations() {
                         title: rec.title,
                         description: rec.description,
                         actionUrl: rec.url,
-                        minutes_to_complete: rec.minutes_to_complete
+                        minutes_to_complete: rec.minutes_to_complete,
+                        type: rec.type || 'Article' // Ensure type is set
                     });
                 }
             }
@@ -1303,7 +1358,8 @@ function generateRecommendations() {
                     title: rec.title,
                     description: rec.description,
                     actionUrl: rec.url,
-                    minutes_to_complete: rec.minutes_to_complete
+                    minutes_to_complete: rec.minutes_to_complete,
+                    type: rec.type || 'Article' // Ensure type is set
                 });
             }
         });
@@ -1334,14 +1390,19 @@ function generateRecommendations() {
             description: 'Explore your options and create a settlement plan that works for you.',
             action: 'Try',
             actionUrl: '#',
-            minutes_to_complete: 5
+            minutes_to_complete: 5,
+            type: 'Article'
+        };
+    } else {
+        // Ensure the top recommendation has a type
+        topRecommendation = {
+            ...topRecommendation,
+            type: topRecommendation.type || 'Article'
         };
     }
 
-    return { 
-        topRecommendation, 
-        categorizedRecommendations 
-    };
+    console.log('Generated recommendations:', { topRecommendation, categorizedRecommendations });
+    return { topRecommendation, categorizedRecommendations };
 }
 
 // Handle text input
