@@ -11,6 +11,16 @@ function formatDate(date) {
     });
 }
 
+// Add this helper function at the top with other utility functions
+function getTodayFormatted() {
+    const today = new Date();
+    return today.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    });
+}
+
 // Survey data
 const surveyData = {
     questions: [
@@ -294,7 +304,7 @@ const allRecommendations = {
         },
         'cash-savings': {
             title: 'Using Cash Savings to Settle Your HEI',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            description: 'Learn how to settle your Investment with cash savings.',
             url: '#',
             category: 'Plan for the future',
             type: 'Article',
@@ -302,7 +312,7 @@ const allRecommendations = {
         },
         'loan-heloc': {
             title: 'Settling with a Home Equity Line of Credit',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            description: 'Learn how to settle your Investment with a Home Equity Line of Credit.',
             url: '#',
             category: 'Plan for the future',
             type: 'Article',
@@ -656,7 +666,7 @@ function showOutcomeScreen() {
         <h2 class="category-header">Top recommendation</h2>
         <div class="recommendation-card">
             <div class="time-badge">
-                <div class="time-estimate">${topRecommendation.minutes_to_complete} MIN</div>
+                ${topRecommendation.minutes_to_complete} MIN
             </div>
             <h3>${topRecommendation.title}</h3>
             <p>${topRecommendation.description}</p>
@@ -689,7 +699,7 @@ function showOutcomeScreen() {
                     return `
                         <div class="recommendation-card">
                             <div class="time-badge">
-                                <div class="time-estimate">${rec.minutes_to_complete} MIN</div>
+                                ${rec.minutes_to_complete} MIN
                             </div>
                             <h3>${rec.title}</h3>
                             <p>${rec.description}</p>
@@ -723,12 +733,17 @@ function showOutcomeScreen() {
         <div class="plan-section">
             <div class="plan-header">
                 <div class="plan-header-content">
-                    <h2>My plan</h2>
-                    <p class="next-checkin">Your next quarterly check-in is on ${formatDate(endDate)}</p>
-                </div>
-                <div class="plan-total">
-                    <span class="plan-total-label">Total time:</span>
-                    <span id="planTotalMinutes" class="plan-total-minutes">0</span>
+                    <div class="plan-header-top">
+                        <h2>Your plan</h2>
+                        <div class="time-badge">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M8 14.6667C11.6819 14.6667 14.6667 11.6819 14.6667 8C14.6667 4.3181 11.6819 1.33333 8 1.33333C4.3181 1.33333 1.33333 4.3181 1.33333 8C1.33333 11.6819 4.3181 14.6667 8 14.6667Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 4V8L10.6667 9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="time-text">EST.</span> <span class="time-number" id="planTotalMinutes">0</span><span class="time-text">&nbsp;MIN</span>
+                        </div>
+                    </div>
+                    <p class="plan-dates">${getTodayFormatted()} – ${formatDate(endDate)}</p>
                 </div>
             </div>
             <div id="planList" class="plan-list">
@@ -771,7 +786,8 @@ function showOutcomeScreen() {
     }
 
     // Update progress to show step 3 as active
-    updateProgress(3);
+    currentQuestionIndex = surveyData.questions.length; // Set to end of questions
+    updateProgressSteps();
 
     // Log success
     console.log('Outcome screen rendered successfully');
@@ -1232,7 +1248,7 @@ function showLoadingScreen() {
         setTimeout(() => {
             loadingScreen.remove();
             // Force a progress update to show all sections as complete
-            updateProgress(3);
+            updateProgressSteps();
             // Show the outcome screen
             showOutcomeScreen();
         }, 500);
@@ -1250,21 +1266,34 @@ function handleBack() {
 
 // Update progress steps
 function updateProgressSteps() {
-    const currentSection = currentQuestionIndex < 4 ? 0 : 1; // 0 = Settlement, 1 = Financial wellbeing
-    const completedSection = currentQuestionIndex >= 4 ? 0 : -1; // Mark Settlement as completed when in Financial wellbeing
-
-    progressSteps.forEach((step, index) => {
-        // Clear existing classes
+    const progressSteps = document.querySelectorAll('.step');
+    
+    // Clear existing classes from all steps
+    progressSteps.forEach(step => {
         step.classList.remove('active', 'completed');
-        
-        if (index === currentSection) {
-            // Current section
-            step.classList.add('active');
-        } else if (index === completedSection) {
-            // Completed section
-            step.classList.add('completed');
-        }
     });
+
+    // If we're on the outcome screen (after all questions)
+    if (currentQuestionIndex >= surveyData.questions.length) {
+        // Mark all previous steps as completed
+        progressSteps[0].classList.add('completed');
+        progressSteps[1].classList.add('completed');
+        // Mark the last step as active
+        progressSteps[2].classList.add('active');
+    } else {
+        // For questions 0-3: first section active
+        // For questions 4-6: second section active
+        // For question 7: third section active
+        const currentSection = currentQuestionIndex < 4 ? 0 : (currentQuestionIndex < 7 ? 1 : 2);
+        
+        // Mark previous sections as completed
+        for (let i = 0; i < currentSection; i++) {
+            progressSteps[i].classList.add('completed');
+        }
+        
+        // Mark current section as active
+        progressSteps[currentSection].classList.add('active');
+    }
 }
 
 // Handle save and exit

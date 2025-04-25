@@ -450,18 +450,75 @@ input[type="radio"]:checked + .option .option-title {
     margin-bottom: 1rem;
 }
 
+/* Plan header structure */
+.plan-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--neutral-100);
+}
+
+.plan-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.plan-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.plan-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--neutral-900);
+    margin: 0;
+}
+
+.plan-dates {
+    font-size: 12px;
+    color: var(--neutral-500);
+    margin: 0;
+}
+
+/* Base time badge styles */
 .time-badge {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    color: var(--neutral-300);
+    gap: 8px;
+    border-radius: 8px;
     font-size: 14px;
     font-weight: 500;
-    margin-bottom: 12px;
 }
 
-.time-badge svg {
-    color: var(--primary-color);
+/* Recommendation card time badge */
+.recommendation-card .time-badge {
+    padding: 2px 10px;
+    margin: 0px 0px 10px 0px;
+    background: #F1F5F9;
+    color: #64748B;
+}
+
+/* Plan header time badge */
+.plan-header .time-badge {
+    padding: 8px 12px;
+    background: #E1E9FC;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.plan-header .time-badge svg {
+    color: #366CED;
+}
+
+.plan-header .time-text {
+    color: #64748B;
+}
+
+.plan-header .time-number {
+    color: #366CED;
 }
 
 /* Type Indicator Styles */
@@ -593,6 +650,7 @@ input[type="radio"]:checked + .option .option-title {
     right: calc((100% - 1400px) / 2 + 2rem);
     top: 10rem;
     width: 440px;
+    background-color: #FFFFFF;
 }
 
 /* Personality Type Placeholder */
@@ -620,30 +678,52 @@ input[type="radio"]:checked + .option .option-title {
 }
 
 .plan-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-    width: 100%;
+    padding: 24px;
+    border-bottom: 1px solid var(--neutral-100);
 }
 
 .plan-header-content {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
+    width: 100%;
+}
+
+.plan-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .plan-header h2 {
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 600;
-    color: #1A1A1A;
+    color: var(--neutral-900);
     margin: 0;
 }
 
-.next-checkin {
-    font-size: 14px;
-    color: #6B7280;
+.plan-dates {
+    font-size: 12px;
+    color: var(--neutral-500);
     margin: 0;
+}
+
+.time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--primary-50);
+    border-radius: 8px;
+    color: var(--primary-700);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.time-badge svg {
+    color: var(--primary-700);
 }
 
 .plan-list {
