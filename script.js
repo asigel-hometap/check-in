@@ -287,28 +287,32 @@ const allRecommendations = {
             title: 'Settling Your Home Equity Investment with a Refinance',
             description: 'Learn about the refinancing process, what to consider, and how to prepare for settlement.',
             url: 'https://www.hometap.com/blog/settling-home-equity-investment-refinance',
-            category: 'Read',
+            category: 'Plan for the future',
+            type: 'Article',
             minutes_to_complete: 3
         },
         'home-sale': {
             title: 'Settling Your Home Equity Investment with a Home Sale',
             description: 'A comprehensive guide to settling your investment through a home sale.',
             url: 'https://www.hometap.com/blog/settling-home-equity-investment-home-sale',
-            category: 'Read',
+            category: 'Plan for the future',
+            type: 'Article',
             minutes_to_complete: 3
         },
         'cash-savings': {
             title: 'Using Cash Savings to Settle Your HEI',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             url: '#',
-            category: 'Read',
+            category: 'Plan for the future',
+            type: 'Article',
             minutes_to_complete: 3
         },
         'heloc': {
             title: 'Settling with a Home Equity Line of Credit',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             url: '#',
-            category: 'Read',
+            category: 'Plan for the future',
+            type: 'Article',
             minutes_to_complete: 3
         }
     },
@@ -316,95 +320,108 @@ const allRecommendations = {
         'within_year': {
             title: 'Contact Investment Support',
             description: 'Ready to start your settlement? Our Investment Support team is here to help.',
-            action: 'Contact',
+            action: 'Email',
             actionUrl: 'mailto:homeowners@hometap.com',
-            category: 'Contact',
+            category: 'Plan for the future',
+            type: 'Contact',
             minutes_to_complete: 15
         },
         'within_three_years': {
             title: 'Settlement Calculator',
             description: 'Use our calculator to estimate your settlement amount and explore your options.',
             url: '#',
-            category: 'Try',
+            category: 'Stay on track',
+            type: 'Guides & More',
             minutes_to_complete: 5
         },
         'more_than_three_years': {
             title: 'Quarterly Account Statement',
             description: 'Review your latest statement to stay informed about your investment.',
             url: '#',
-            category: 'Read',
+            category: 'Stay on track',
+            type: 'Guides & More',
             minutes_to_complete: 10
         },
         'not_sure': {
             title: 'Understanding Your Settlement Options',
             description: 'Explore different ways to settle your Home Equity Investment.',
             url: '#',
-            category: 'Watch',
+            category: 'Plan for the future',
+            type: 'Video',
             minutes_to_complete: 2
         }
     },
     lifeEvents: {
         'job_change': {
             title: 'Career Transitions and Your HEI',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Understanding how job changes affect your investment.',
-            url: '#',
-            category: 'Read',
+            description: 'Learn how to manage your Investment during major life events.',
+            url: 'https://go.hometap.com/dashboard/resources/your-home-equity-investment-through-life-events',
+            category: 'Stay on track',
+            type: 'Article',
             minutes_to_complete: 3
         },
         'retirement': {
             title: 'Planning for Retirement',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Strategies for managing your HEI during retirement.',
             url: '#',
-            category: 'Try',
+            category: 'Plan for the future',
+            type: 'Article',
             minutes_to_complete: 2
         },
         'marriage': {
             title: 'Marriage and Your Home Investment',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. What newlyweds should know about HEIs.',
             url: '#',
-            category: 'Read',
+            category: 'Stay on track',
+            type: 'Article',
             minutes_to_complete: 7
         },
         'divorce': {
             title: 'Managing Your HEI During Divorce',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Important considerations for your investment.',
             url: '#',
-            category: 'Contact',
+            category: 'Stay on track',
+            type: 'Article',
             minutes_to_complete: 15
         },
         'birth': {
             title: 'Growing Family Guide',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Financial planning for new parents.',
             url: '#',
-            category: 'Read',
+            category: 'Plan for the future',
+            type: 'Video',
             minutes_to_complete: 7
         },
         'medical': {
             title: 'Health & Financial Wellness',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Resources for managing medical expenses.',
             url: '#',
-            category: 'Contact',
+            category: 'Stay on track',
+            type: 'Guides & More',
             minutes_to_complete: 10
         },
         'education': {
             title: 'Education Funding Options',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Exploring ways to finance education.',
             url: '#',
-            category: 'Try',
+            category: 'Plan for the future',
+            type: 'Article',
             minutes_to_complete: 11
         },
         'business': {
             title: 'Business Owner Resources',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Managing your HEI while running a business.',
             url: '#',
-            category: 'Watch',
+            category: 'Plan for the future',
+            type: 'Video',
             minutes_to_complete: 12
         },
         'relocation': {
             title: 'Relocation and Your HEI',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. What to know about moving with an HEI.',
             url: '#',
-            category: 'Read',
+            category: 'Plan for the future',
+            type: 'Article',
             minutes_to_complete: 3
         }
     },
@@ -413,35 +430,40 @@ const allRecommendations = {
             title: 'Financial Education Resources',
             description: 'Access our library of educational content to help you make informed financial decisions.',
             url: '#',
-            category: 'Read',
+            category: 'Stay on track',
+            type: 'Guides & More',
             minutes_to_complete: 20
         },
         'increasing_liquidity': {
             title: 'Home Equity Access Guide',
             description: 'Learn about different ways to tap into your home equity and which option might be right for you.',
             url: 'https://www.hometap.com/homeowner-resources/options-for-tapping-into-your-homes-equity',
-            category: 'Read',
+            category: 'Stay on track',
+            type: 'Guides & More',
             minutes_to_complete: 24
         },
         'hei_questions': {
             title: 'Schedule a HEI Review',
             description: 'Book a session with our team to review your Home Equity Investment and get answers to your questions.',
             url: 'mailto:homeowners@hometap.com',
-            category: 'Contact',
+            category: 'Stay on track',
+            type: 'Contact',
             minutes_to_complete: 30
         },
         'home_renovation': {
             title: 'Renovation Calculator',
             description: 'Get guidance on planning and financing your home renovation projects.',
             url: 'https://www.hometap.com/blog/how-to-evaluate-your-home-renovation-estimate',
-            category: 'Try',
+            category: 'Plan for the future',
+            type: 'Guides & More',
             minutes_to_complete: 10
         },
         'lower_payments': {
             title: 'Financial Obligation Management',
             description: 'Explore strategies and options for managing your monthly payments and financial commitments.',
             url: '#',
-            category: 'Try',
+            category: 'Stay on track',
+            type: 'Guides & More',
             minutes_to_complete: 10
         }
     }
@@ -479,34 +501,43 @@ function animateNumber(start, end, element, duration = 1000) {
 }
 
 function updatePlanTotalMinutes() {
-    const planTotalElement = document.getElementById('planTotalMinutes');
-    if (!planTotalElement || !topRecommendation) return;
-    
-    const currentTotal = parseInt(planTotalElement.textContent, 10);
-    
-    // Calculate new total (including top recommendation)
-    let newTotal = topRecommendation.minutes_to_complete;
-    selectedRecommendations.forEach(recId => {
-        const [category, index] = recId.split('-');
-        const rec = categorizedRecommendations[category][parseInt(index)];
-        if (rec) {
-            newTotal += rec.minutes_to_complete;
-        }
+    const totalMinutesElement = document.getElementById('planTotalMinutes');
+    if (!totalMinutesElement) return;
+
+    let total = 0;
+
+    // Add top recommendation minutes if selected
+    if (selectedRecommendations.has('top-0')) {
+        total += topRecommendation.minutes_to_complete;
+    }
+
+    // Add other selected recommendations minutes
+    Object.entries(categorizedRecommendations).forEach(([category, items]) => {
+        items.forEach((rec, index) => {
+            if (selectedRecommendations.has(`${category}-${index}`)) {
+                total += rec.minutes_to_complete;
+            }
+        });
     });
-    
-    // Animate the number change
-    animateNumber(currentTotal, newTotal, planTotalElement);
+
+    totalMinutesElement.textContent = total;
 }
 
-function toggleRecommendation(category, index, checkbox) {
-    if (!categorizedRecommendations[category] || !categorizedRecommendations[category][index]) return;
-    
+function toggleRecommendation(category, index, button) {
     const recId = `${category}-${index}`;
+    const plusIcon = button.querySelector('.plus-icon');
+    const checkIcon = button.querySelector('.check-icon');
     
-    if (checkbox.checked) {
-        selectedRecommendations.add(recId);
-    } else {
+    if (selectedRecommendations.has(recId)) {
         selectedRecommendations.delete(recId);
+        button.classList.remove('added');
+        plusIcon.style.display = 'block';
+        checkIcon.style.display = 'none';
+    } else {
+        selectedRecommendations.add(recId);
+        button.classList.add('added');
+        plusIcon.style.display = 'none';
+        checkIcon.style.display = 'block';
     }
     
     // Update the plan section
@@ -516,65 +547,56 @@ function toggleRecommendation(category, index, checkbox) {
 
 function updatePlanSection() {
     const planList = document.getElementById('planList');
-    const planTotalMinutes = document.getElementById('planTotalMinutes');
+    if (!planList) return;
+
+    // Clear the current plan list
     planList.innerHTML = '';
-    let totalMinutes = 0;
 
-    // Map categories to action verbs
-    const categoryToVerb = {
-        'Read': 'Read',
-        'Try': 'Try',
-        'Watch': 'Watch',
-        'Contact': 'Contact'
-    };
-
-    // Add top recommendation first
-    if (topRecommendation) {
-        const listItem = document.createElement('div');
-        listItem.className = 'plan-item';
-        
-        // Get the action verb from the category
-        const actionVerb = categoryToVerb[topRecommendation.category] || 'Read';
-        
-        listItem.innerHTML = `
-            <div>
-                <span class="action-verb">${actionVerb}</span>
-                ${topRecommendation.title}
+    // Add top recommendation if selected
+    if (selectedRecommendations.has('top-0')) {
+        const planItem = document.createElement('div');
+        planItem.className = 'plan-item';
+        planItem.innerHTML = `
+            <div class="plan-item-content">
+                <div class="plan-item-header">
+                    <span class="action-verb">Read</span>
+                    <h3>${topRecommendation.title}</h3>
+                </div>
+                <div class="time-estimate">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    ${topRecommendation.minutes_to_complete} min
+                </div>
             </div>
-            <div class="time-estimate">${topRecommendation.minutes_to_complete} min</div>
         `;
-        
-        planList.appendChild(listItem);
-        totalMinutes += topRecommendation.minutes_to_complete;
+        planList.appendChild(planItem);
     }
 
-    // Add selected recommendations
-    selectedRecommendations.forEach(recId => {
-        const [category, index] = recId.split('-');
-        const rec = categorizedRecommendations[category][parseInt(index)];
-        if (rec) {
-            const listItem = document.createElement('div');
-            listItem.className = 'plan-item';
-            
-            // Get the action verb from the category
-            const actionVerb = categoryToVerb[rec.category] || 'Read';
-            
-            listItem.innerHTML = `
-                <div>
-                    <span class="action-verb">${actionVerb}</span>
-                    ${rec.title}
-                </div>
-                <div class="time-estimate">${rec.minutes_to_complete} min</div>
-            `;
-            
-            planList.appendChild(listItem);
-            totalMinutes += rec.minutes_to_complete;
-        }
+    // Add other selected recommendations
+    Object.entries(categorizedRecommendations).forEach(([category, items]) => {
+        items.forEach((rec, index) => {
+            if (selectedRecommendations.has(`${category}-${index}`)) {
+                const planItem = document.createElement('div');
+                planItem.className = 'plan-item';
+                planItem.innerHTML = `
+                    <div class="plan-item-content">
+                        <div class="plan-item-header">
+                            <span class="action-verb">Read</span>
+                            <h3>${rec.title}</h3>
+                        </div>
+                        <div class="time-estimate">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            ${rec.minutes_to_complete} min
+                        </div>
+                    </div>
+                `;
+                planList.appendChild(planItem);
+            }
+        });
     });
-
-    // Animate the total minutes change
-    const currentTotal = parseInt(planTotalMinutes.textContent, 10) || 0;
-    animateNumber(currentTotal, totalMinutes, planTotalMinutes);
 }
 
 function showNotification(message, duration = 3000) {
@@ -597,158 +619,114 @@ function showOutcomeScreen() {
     const recommendations = generateRecommendations();
     topRecommendation = recommendations.topRecommendation;
     categorizedRecommendations = recommendations.categorizedRecommendations;
-    const settlementMethod = answers[1];
-    const timeline = answers[0];
-    const supportNeeds = answers[7] || [];
     
-    // Reset selected recommendations
+    // Reset selected recommendations and automatically select top recommendation
     selectedRecommendations.clear();
+    selectedRecommendations.add('top-0');
     
-    // Calculate initial total minutes (just top recommendation)
-    let totalMinutes = topRecommendation.minutes_to_complete;
+    // Calculate dates
+    const startDate = new Date();
+    const endDate = new Date();
+    endDate.setDate(startDate.getDate() + 90);
 
-    // Format the context message based on user's answers
-    let contextMessage = '';
-    if (settlementMethod && timeline) {
-        const methodText = {
-            'refinancing': 'through refinancing',
-            'cash-savings': 'using cash savings',
-            'loan-heloc': 'with a loan or HELOC',
-            'home-sale': 'through a home sale',
-            'not-sure': ''
-        }[settlementMethod];
+    // Format dates
+    const formatDate = (date) => {
+        return date.toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    };
 
-        const timelineText = {
-            'within_year': 'within the next year',
-            'within_three_years': 'within the next three years',
-            'more_than_three_years': 'in more than three years',
-            'not_sure': ''
-        }[timeline];
-
-        // Format support needs text
-        let supportText = '';
-        if (supportNeeds.length > 0) {
-            const supportLabels = supportNeeds
-                .filter(need => need !== 'other')
-                .map(need => {
-                    const option = surveyData.questions[7].options.find(opt => opt.value === need);
-                    return option ? option.text.toLowerCase() : '';
-                })
-                .filter(text => text);
-
-            if (supportLabels.length > 0) {
-                if (supportLabels.length === 1) {
-                    supportText = ` and are looking for help with ${supportLabels[0]}`;
-                } else if (supportLabels.length === 2) {
-                    supportText = ` and are looking for help with ${supportLabels[0]} and ${supportLabels[1]}`;
-                } else {
-                    const lastLabel = supportLabels.pop();
-                    supportText = ` and are looking for help with ${supportLabels.join(', ')}, and ${lastLabel}`;
-                }
-            }
-        }
-
-        if (settlementMethod === 'not-sure') {
-            contextMessage = "Because you're still exploring your settlement options" + supportText + ", we've prepared some resources to help you make an informed decision.";
-        } else if (timeline === 'not_sure') {
-            contextMessage = `Because you're planning to settle your HEI ${methodText}${supportText}, we've prepared some resources to help you create a timeline that works for you.`;
-        } else {
-            contextMessage = `Because you plan to settle your HEI ${methodText} ${timelineText}${supportText}, we've prepared some resources to help you make progress. Click the checkbox to add items to your personal homeownership plan and we'll email this to you when you're done. We can check back in another 3 months to see what progress you've made and what else we can help you with.`;
-        }
-    } else {
-        contextMessage = "We've prepared some resources to help you explore your settlement options.";
-    }
-    
     mainContent.innerHTML = `
         <div class="outcome-screen">
-            <h1 class="outcome-title">Recommendations based on your answers</h1>
-            
-            <div class="outcome-section">
-                <p class="outcome-context">${contextMessage}</p>
+            <div class="outcome-main">
+                <h1 class="outcome-title">Recommendations based on your answers</h1>
+                <p class="outcome-context">Because you plan to settle your HEI through a home sale within the next three years. We're here to help when you're ready to start making progress.</p>
                 
                 <!-- Top Recommendation -->
-                <div class="top-recommendation">
-                    <span class="section-label">TOP RECOMMENDATION</span>
-                    <div class="recommendation-card featured">
-                        <div class="card-content">
-                            <h3>${topRecommendation.title}</h3>
-                            <p>${topRecommendation.description}</p>
-                            <span class="time-to-complete">${topRecommendation.minutes_to_complete} min</span>
-                        </div>
-                        <a href="${topRecommendation.actionUrl || topRecommendation.url}" class="recommendation-link">
-                            <span>${topRecommendation.action || 'Read'}</span>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.16666 10H15.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M10.8333 5L15.8333 10L10.8333 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <div class="recommendation-category">
+                    <h2 class="category-header">Top recommendation</h2>
+                    <div class="recommendation-card">
+                        <h3>${topRecommendation.title}</h3>
+                        <p>${topRecommendation.description}</p>
+                        <div class="time-estimate">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                        </a>
+                            ${topRecommendation.minutes_to_complete} min
+                        </div>
+                        <button class="add-to-plan added" onclick="toggleRecommendation('top', 0, this)">
+                            <svg class="plus-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: none;">
+                                <path d="M8 3.33333V12.6667M12.6667 8H3.33334" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: block;">
+                                <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Categorized Recommendations -->
-                <div class="recommendations-grid">
-                    ${Object.entries(categorizedRecommendations)
-                        .filter(([category, items]) => items.length > 0)
-                        .map(([category, items]) => `
-                            <div class="recommendation-category">
-                                <span class="section-label">${category.toUpperCase()}</span>
-                                <div class="recommendation-list">
-                                    ${items.map((rec, index) => `
-                                        <div class="recommendation-card">
-                                            <div class="card-content">
-                                                <h3>${rec.title}</h3>
-                                                <p>${rec.description}</p>
-                                                <a href="${rec.url}" class="recommendation-link" target="_blank">
-                                                    ${rec.category === 'Contact' ? 'Schedule a call' : 'Learn more'}
-                                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M4.16667 10H15.8333M15.8333 10L10 4.16667M15.8333 10L10 15.8333" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                            <label class="recommendation-checkbox">
-                                                <input type="checkbox" onchange="toggleRecommendation('${category}', ${index}, this)">
-                                                <span class="recommendation-checkmark"></span>
-                                            </label>
-                                        </div>
-                                    `).join('')}
+                <!-- Other Recommendations -->
+                ${Object.entries(categorizedRecommendations)
+                    .filter(([category, items]) => items.length > 0)
+                    .map(([category, items]) => `
+                        <div class="recommendation-category">
+                            <h2 class="category-header">${category}</h2>
+                            ${items.map((rec, index) => `
+                                <div class="recommendation-card">
+                                    <h3>${rec.title}</h3>
+                                    <p>${rec.description}</p>
+                                    <div class="time-estimate">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        ${rec.minutes_to_complete} min
+                                    </div>
+                                    <button class="add-to-plan" onclick="toggleRecommendation('${category}', ${index}, this)">
+                                        <svg class="plus-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <path d="M8 3.33333V12.6667M12.6667 8H3.33334" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        <svg class="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: none;">
+                                            <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
                                 </div>
-                            </div>
-                        `).join('')}
-                </div>
+                            `).join('')}
+                        </div>
+                    `).join('')}
             </div>
-        </div>
-        
-        <div class="sticky-footer">
-            <div class="plan-section">
-                <div class="plan-header">
-                    <h2>Your Plan</h2>
-                    <div class="time-estimate">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 6V10L13 13M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <span>Estimated time to complete: <span id="planTotalMinutes">${totalMinutes}</span> minutes</span>
+
+            <div class="outcome-sidebar">
+                <!-- Personality Type Placeholder -->
+                <div class="personality-type">
+                    <p>[personality_type]</p>
+                    <p>To progress you should do xyz...</p>
+                </div>
+
+                <!-- Plan Section -->
+                <div class="plan-section">
+                    <div class="plan-header">
+                        <div class="plan-header-content">
+                            <h2>My plan</h2>
+                            <p class="next-checkin">Your next quarterly check-in is on ${formatDate(endDate)}</p>
+                        </div>
+                        <div class="plan-total">
+                            <span class="plan-total-label">Total time:</span>
+                            <span id="planTotalMinutes" class="plan-total-minutes">0</span>
+                        </div>
                     </div>
-                    <button class="collapse-button" onclick="this.closest('.plan-section').classList.toggle('collapsed')">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15 13L10 8L5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
+                    <div id="planList" class="plan-list">
+                        <!-- Plan items will be inserted here -->
+                    </div>
                 </div>
-                <div id="planList" class="plan-list">
-                    <!-- Plan items will be inserted here -->
-                </div>
-            </div>
-            <div class="footer-buttons">
-                <button class="secondary-button" onclick="showNotification('Progress saved for later')">Save for later</button>
-                <button class="primary-button" onclick="showModal('⭐ All done ⭐')">Email me my plan</button>
             </div>
         </div>
     `;
 
     // Initialize the plan section with the top recommendation
     updatePlanSection();
-    
-    document.querySelector('.navigation').style.display = 'none';
+    updatePlanTotalMinutes();
 }
 
 function showModal(message) {
@@ -1132,6 +1110,10 @@ function handleContinue() {
 
 // Show loading screen with animated steps
 function showLoadingScreen() {
+    // Clear the main content first
+    mainContent.innerHTML = '';
+
+    // Create and append loading screen
     const loadingScreen = document.createElement('div');
     loadingScreen.className = 'loading-screen';
     loadingScreen.innerHTML = `
@@ -1147,7 +1129,7 @@ function showLoadingScreen() {
                             </svg>
                         </div>
                     </div>
-                    <span>Lorem ipsum</span>
+                    <span>Analyzing your answers</span>
                 </div>
                 <div class="loading-step">
                     <div class="step-icon">
@@ -1158,7 +1140,7 @@ function showLoadingScreen() {
                             </svg>
                         </div>
                     </div>
-                    <span>Exploring opportunities</span>
+                    <span>Generating recommendations</span>
                 </div>
                 <div class="loading-step">
                     <div class="step-icon">
@@ -1169,12 +1151,18 @@ function showLoadingScreen() {
                             </svg>
                         </div>
                     </div>
-                    <span>Crunching the numbers</span>
+                    <span>Preparing your plan</span>
                 </div>
             </div>
         </div>
     `;
     document.body.appendChild(loadingScreen);
+
+    // Hide the navigation
+    const navigation = document.querySelector('.navigation');
+    if (navigation) {
+        navigation.style.display = 'none';
+    }
 
     // Animate checkmarks sequentially
     const steps = loadingScreen.querySelectorAll('.loading-step');
@@ -1191,6 +1179,9 @@ function showLoadingScreen() {
         loadingScreen.classList.add('fade-out');
         setTimeout(() => {
             loadingScreen.remove();
+            // Force a progress update to show all sections as complete
+            updateProgress(3);
+            // Show the outcome screen
             showOutcomeScreen();
         }, 500);
     }, 4000);
@@ -1243,10 +1234,11 @@ function generateRecommendations() {
     
     // Start with an empty set of categorized recommendations
     const categorizedRecommendations = {
-        Read: [],
-        Try: [],
-        Watch: [],
-        Contact: []
+        'Stay on track': [],
+        'Plan for the future': [],
+        'Guides & More': [],
+        'Video': [],
+        'Contact': []
     };
 
     // Add settlement method recommendation

@@ -514,15 +514,17 @@ input[type="radio"]:checked + .option .option-title {
     font-weight: 600;
 }
 
-/* Outcome Screen */
+/* Outcome Screen Layout */
 .outcome-screen {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
 }
 
 .outcome-title {
-    color: var(--header-color);
     font-family: "Tiempos Headline", serif;
     font-size: 38px;
     font-weight: 600;
@@ -531,145 +533,260 @@ input[type="radio"]:checked + .option .option-title {
 }
 
 .outcome-context {
-    color: var(--text-color);
     font-size: 18px;
     line-height: 28px;
     margin-bottom: 3rem;
 }
 
-.section-label {
-    display: block;
+.outcome-main {
+    padding-right: 2rem;
+}
+
+.outcome-sidebar {
+    position: fixed;
+    right: calc((100% - 1400px) / 2 + 2rem);
+    top: 10rem;
+    width: 400px;
+}
+
+/* Personality Type Placeholder */
+.personality-type {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #F8FAFF;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--neutral-30);
+}
+
+.personality-type p {
     color: var(--neutral-300);
     font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    letter-spacing: 0.05em;
+    margin: 0;
 }
 
-/* Top Recommendation */
-.top-recommendation {
-    margin-bottom: 4rem;
+/* Plan Section Styles */
+.plan-section {
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.recommendation-card.featured {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 2rem;
-    border-radius: var(--border-radius);
+.plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    width: 100%;
 }
 
-.recommendation-card.featured h3 {
-    color: white;
-    font-size: 24px;
-    margin-bottom: 1rem;
-}
-
-.recommendation-card.featured p {
-    color: white;
-    opacity: 0.9;
-    margin-bottom: 1.5rem;
-}
-
-.recommendation-card.featured .recommendation-link {
-    color: white;
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-.recommendation-card.featured .recommendation-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-/* Recommendations Grid */
-.recommendations-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.recommendation-category {
-    margin-bottom: 2rem;
-}
-
-.recommendation-list {
+.plan-header-content {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 4px;
 }
 
+.plan-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin: 0;
+}
+
+.next-checkin {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 0;
+}
+
+.plan-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.plan-item {
+    background: white;
+    border-radius: 6px;
+    padding: 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.plan-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+}
+
+.plan-item-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.plan-item-header h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1A1A1A;
+    margin: 0;
+    white-space: normal;
+    line-height: 1.4;
+    flex: 1;
+    min-width: 0;
+}
+
+.action-verb {
+    color: #366CED;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.plan-total {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.plan-total-label {
+    font-size: 14px;
+    color: #6B7280;
+}
+
+.plan-total-minutes {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1A1A1A;
+}
+
+.plan-total-minutes::after {
+    content: ' min';
+    font-weight: 400;
+    color: #6B7280;
+}
+
+.time-estimate {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #6B7280;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.time-estimate svg {
+    color: #366CED;
+    flex-shrink: 0;
+}
+
+/* Recommendation Card Styles */
 .recommendation-card {
     background: white;
     border: 1px solid var(--neutral-30);
     border-radius: var(--border-radius);
     padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.card-content {
-    flex: 1;
+    margin-bottom: 1rem;
+    position: relative;
 }
 
 .recommendation-card h3 {
-    color: var(--header-color);
     font-size: 18px;
     margin-bottom: 0.5rem;
+    color: var(--header-color);
 }
 
 .recommendation-card p {
-    color: var(--text-color);
     font-size: 16px;
-    line-height: 24px;
-    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
 }
 
-.recommendation-link {
+.add-to-plan {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    text-decoration: none;
-    color: var(--primary-color);
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-to-plan:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.add-to-plan.added {
+    background: var(--primary-color);
+    color: white;
+}
+
+.add-to-plan svg {
+    width: 16px;
+    height: 16px;
+    transition: all 0.2s ease;
+}
+
+/* Category Headers */
+.recommendation-category {
+    margin-bottom: 2rem;
+}
+
+.category-header {
+    font-size: 22px;
     font-weight: 600;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--neutral-30);
-    border-radius: var(--border-radius);
-    transition: all var(--transition-speed) ease-in-out;
+    color: var(--header-color);
+    margin-bottom: 1rem;
 }
 
-.recommendation-link:hover {
-    border-color: var(--primary-color);
-    background-color: rgba(54, 108, 237, 0.05);
-}
-
-/* Mobile Responsive Styles for Recommendations */
-@media screen and (max-width: 768px) {
-    .outcome-title {
-        font-size: 32px;
-        line-height: 42px;
+/* Responsive Styles */
+@media screen and (max-width: 1400px) {
+    .outcome-sidebar {
+        right: 2rem;
     }
+}
 
-    .recommendations-grid {
+@media screen and (max-width: 1024px) {
+    .outcome-screen {
         grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
-    .recommendation-card.featured {
-        padding: 1.5rem;
+    .outcome-sidebar {
+        position: static;
+        width: 100%;
+    }
+
+    .outcome-main {
+        padding-right: 0;
     }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 768px) {
     .outcome-screen {
         padding: 1rem;
     }
 
-    .outcome-title {
-        font-size: 28px;
-        line-height: 38px;
-    }
-
-    .recommendation-card {
-        padding: 1rem;
+    .plan-stats {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 }
 
@@ -1094,7 +1211,7 @@ input[type="radio"]:checked + .option .option-title {
     right: 1.25rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 200px;
+    width: 500px;
     padding: 0.75rem 1rem;
     border: 1px solid var(--neutral-30);
     border-radius: var(--border-radius);
@@ -1210,7 +1327,6 @@ input[type="radio"]:checked + .option .option-title {
 
 /* Plan Section */
 .plan-section {
-    background: #f8f9fa;
     border-radius: 8px;
     padding: 20px;
     margin: 20px 0;
@@ -1388,7 +1504,6 @@ input[type="radio"]:checked + .option .option-title {
 
 /* Plan Section in Footer */
 .sticky-footer .plan-section {
-    background: #f8f9fa;
     border-radius: 8px;
     padding: 16px;
     margin: 0 auto; /* Center the plan section */
