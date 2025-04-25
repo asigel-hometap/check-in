@@ -1753,9 +1753,13 @@ function handleGetStarted() {
     const landingContainer = document.querySelector('.landing-container');
     const appContainer = document.querySelector('.app-container');
     const topNav = document.querySelector('.top-nav');
+    const stickyFooter = document.querySelector('.sticky-footer');
 
-    // Hide landing page
+    // Hide landing page and its footer
     landingContainer.style.display = 'none';
+    if (stickyFooter) {
+        stickyFooter.style.display = 'none';
+    }
 
     // Show app container and navigation
     appContainer.style.display = 'block';
@@ -1773,12 +1777,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const landingContainer = document.querySelector('.landing-container');
     const appContainer = document.querySelector('.app-container');
     const topNav = document.querySelector('.top-nav');
-    const getStartedButton = document.querySelector('#get-started-button');
 
-    if (!landingContainer || !appContainer || !topNav || !getStartedButton) {
+    if (!landingContainer || !appContainer || !topNav) {
         console.error('Required elements not found');
         return;
     }
+
+    // Create and append the landing page content
+    landingContainer.innerHTML = `
+        <div class="landing-content">
+            <div class="landing-text">
+                <h1 class="landing-title">Home equity coach</h1>
+                <p class="landing-description">Get a personalized plan to tackle homeownership and your financial goals</p>
+            </div>
+            <div class="landing-illustration">
+                <img src="assets/couch-dog.png" alt="Illustration of a dog on a couch">
+            </div>
+        </div>
+    `;
+
+    // Create and append the sticky footer for the landing page
+    const stickyFooter = document.createElement('div');
+    stickyFooter.className = 'sticky-footer landing-footer';
+    stickyFooter.innerHTML = `
+        <div class="footer-buttons">
+            <button id="get-started-button" class="primary-button">Get started</button>
+        </div>
+    `;
+    document.body.appendChild(stickyFooter);
 
     // Show landing, hide app content initially
     landingContainer.style.display = 'block';
@@ -1786,7 +1812,10 @@ document.addEventListener('DOMContentLoaded', function() {
     topNav.style.display = 'none';
 
     // Add click handler for Get Started button
-    getStartedButton.addEventListener('click', handleGetStarted);
+    const getStartedButton = document.querySelector('#get-started-button');
+    if (getStartedButton) {
+        getStartedButton.addEventListener('click', handleGetStarted);
+    }
 
     // Initialize other event listeners and setup
     initializeEventListeners();

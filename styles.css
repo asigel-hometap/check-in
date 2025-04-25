@@ -223,17 +223,20 @@ body {
 
 /* Main Content */
 .main-content {
-    flex: 1;
-    padding: 8rem 2rem 12rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    overflow-y: auto;
-    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 24px;
 }
 
 .question-container {
-    max-width: 720px;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 40px;
+    padding: 0 24px;
 }
 
 .question-title {
@@ -1235,7 +1238,7 @@ input[type="radio"]:checked + .option .option-title {
 /* Mobile Responsive Adjustments */
 @media screen and (max-width: 768px) {
     .main-content {
-        padding: 10rem 1rem 10rem 1rem;
+        padding: 32px 16px;
     }
 
     .navigation {
@@ -1952,117 +1955,58 @@ body.modal-open {
 
 /* Landing Page Styles */
 .landing-container {
-    min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background: white;
-    padding: 2rem;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 64px 24px 120px; /* Added bottom padding to account for sticky footer */
+    background: #fff;
 }
 
 .landing-content {
-    max-width: 1200px;
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 4rem;
+    gap: 64px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
 }
 
+/* Remove the button styles from landing-text since it's now in the footer */
 .landing-text {
     flex: 1;
     max-width: 600px;
 }
 
-.landing-title {
-    color: var(--header-color);
-    font-family: "Tiempos Headline", serif;
-    font-size: 48px;
-    font-weight: 600;
-    line-height: 1.2;
-    margin: 16px 0;
+.landing-footer.sticky-footer {
+    background: #fff;
+    border-top: 1px solid var(--neutral-100);
 }
 
-.landing-description {
-    color: var(--text-color);
-    font-size: 20px;
-    line-height: 1.5;
-    margin-bottom: 32px;
-}
-
-.landing-illustration {
-    flex: 1;
-    max-width: 600px;
-}
-
-.landing-illustration img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Responsive styles for landing page */
+/* Responsive adjustments */
 @media screen and (max-width: 1024px) {
-    .landing-content {
-        gap: 2rem;
-        padding: 0 2rem;
-    }
-
-    .landing-title {
-        font-size: 36px;
-    }
-
-    .landing-description {
-        font-size: 18px;
+    .landing-container {
+        padding: 48px 24px 120px;
     }
 }
 
 @media screen and (max-width: 768px) {
+    .landing-container {
+        padding: 32px 24px 120px;
+    }
+    
     .landing-content {
         flex-direction: column;
         text-align: center;
-        padding: 2rem;
-    }
-
-    .landing-text {
-        max-width: 100%;
-    }
-
-    .landing-illustration {
-        max-width: 100%;
-        order: -1;
-    }
-
-    .landing-illustration img {
-        max-width: 400px;
-        margin: 0 auto;
-    }
-
-    .time-badge {
-        margin: 0 auto;
-        width: fit-content;
+        gap: 48px;
     }
 }
 
 @media screen and (max-width: 480px) {
     .landing-container {
-        padding: 1rem;
-    }
-
-    .landing-content {
-        padding: 1rem;
-    }
-
-    .landing-title {
-        font-size: 32px;
-    }
-
-    .landing-description {
-        font-size: 16px;
-    }
-
-    .primary-button {
-        width: 100%;
+        padding: 24px 16px 120px;
     }
 }
 
@@ -2193,5 +2137,67 @@ body.modal-open {
 @media (max-width: 480px) {
     .persona-screen {
         padding: 0 16px;
+    }
+}
+
+.landing-title {
+    color: var(--header-color);
+    font-family: "Tiempos Headline", serif;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 16px 0;
+}
+
+.landing-description {
+    color: var(--text-color);
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 32px;
+}
+
+.landing-illustration {
+    flex: 1;
+    max-width: 600px;
+}
+
+.landing-illustration img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media screen and (max-width: 1024px) {
+    .landing-title {
+        font-size: 36px;
+    }
+
+    .landing-description {
+        font-size: 18px;
+    }
+
+    .landing-illustration {
+        max-width: 500px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .landing-illustration {
+        max-width: 400px;
+        order: -1;
+    }
+
+    .landing-illustration img {
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .landing-title {
+        font-size: 32px;
+    }
+
+    .landing-description {
+        font-size: 16px;
     }
 } 
