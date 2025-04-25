@@ -1708,11 +1708,49 @@ function handleRecommendationAccept(settlementMethod) {
     renderQuestion(currentQuestionIndex);
 }
 
-// Initialize the survey
-document.addEventListener('DOMContentLoaded', () => {
+// Function to handle Get Started button click
+function handleGetStarted() {
+    const landingContainer = document.querySelector('.landing-container');
+    const appContainer = document.querySelector('.app-container');
+    const topNav = document.querySelector('.top-nav');
+
+    // Hide landing page
+    landingContainer.style.display = 'none';
+
+    // Show app container and navigation
+    appContainer.style.display = 'block';
+    topNav.style.display = 'flex';
+
+    // Start with first question
+    currentQuestionIndex = 0;
+    renderQuestion(currentQuestionIndex);
+    updateProgressSteps();
+}
+
+// Add event listener when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize landing page state
+    const landingContainer = document.querySelector('.landing-container');
+    const appContainer = document.querySelector('.app-container');
+    const topNav = document.querySelector('.top-nav');
+    const getStartedButton = document.querySelector('#get-started-button');
+
+    if (!landingContainer || !appContainer || !topNav || !getStartedButton) {
+        console.error('Required elements not found');
+        return;
+    }
+
+    // Show landing, hide app content initially
+    landingContainer.style.display = 'block';
+    appContainer.style.display = 'none';
+    topNav.style.display = 'none';
+
+    // Add click handler for Get Started button
+    getStartedButton.addEventListener('click', handleGetStarted);
+
+    // Initialize other event listeners and setup
     initializeEventListeners();
     updateProgressSteps();
-    renderQuestion(currentQuestionIndex);
 });
 
 function updateProgress(currentStep) {

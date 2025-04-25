@@ -8,17 +8,57 @@
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="landing-container">
+    <!-- Landing Page -->
+    <div class="landing-container" id="landingPage">
         <div class="landing-content">
             <div class="landing-text">
-                <span class="landing-label">HOMEOWNER CHECK-IN</span>
-                <h1 class="landing-title">Take the 2 min check in and get personalized recommendations</h1>
-                <a href="check-in.html" class="landing-cta">Start homeowner check-in</a>
+                <div class="time-badge">5 MINUTES</div>
+                <h1 class="landing-title">Home equity coach</h1>
+                <p class="landing-description">Get a personalized plan to tackle homeownership and your financial goals</p>
+                <button class="primary-button" id="get-started-button">Get started</button>
             </div>
             <div class="landing-illustration">
-                <!-- Placeholder for illustration -->
+                <img src="assets/couch-dog.png" alt="Person working on laptop with dog on couch">
             </div>
         </div>
     </div>
+
+    <!-- Main App (initially hidden) -->
+    <div class="app-container" id="appContainer" style="display: none;">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="brand">Home equity coach</div>
+            <div class="progress-steps">
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Settlement</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">Financial wellbeing</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Recommendations</div>
+                </div>
+            </div>
+            <button class="save-exit-btn">Save & exit</button>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="question-container">
+                <!-- Questions will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Navigation Footer -->
+        <div class="navigation">
+            <button class="nav-btn back-btn" disabled>Back</button>
+            <button class="nav-btn continue-btn" disabled>Continue</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html> 

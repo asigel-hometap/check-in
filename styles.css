@@ -1885,7 +1885,7 @@ body.modal-open {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #F5F7FF 0%, #EEF1FF 100%);
+    background: white;
     padding: 2rem;
 }
 
@@ -1903,60 +1903,46 @@ body.modal-open {
     max-width: 600px;
 }
 
-.landing-label {
-    display: block;
-    color: var(--neutral-300);
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    letter-spacing: 0.05em;
-}
-
 .landing-title {
     color: var(--header-color);
     font-family: "Tiempos Headline", serif;
     font-size: 48px;
     font-weight: 600;
     line-height: 1.2;
-    margin-bottom: 2rem;
+    margin: 16px 0;
 }
 
-.landing-cta {
-    display: inline-block;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 16px;
-    transition: background-color var(--transition-speed) ease-in-out;
-}
-
-.landing-cta:hover {
-    background-color: #2B56D4;
+.landing-description {
+    color: var(--text-color);
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 32px;
 }
 
 .landing-illustration {
     flex: 1;
-    max-width: 500px;
-    aspect-ratio: 4/3;
-    background-color: rgba(54, 108, 237, 0.1);
-    border-radius: var(--border-radius);
+    max-width: 600px;
+}
+
+.landing-illustration img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 /* Responsive styles for landing page */
 @media screen and (max-width: 1024px) {
     .landing-content {
         gap: 2rem;
+        padding: 0 2rem;
     }
 
     .landing-title {
         font-size: 36px;
     }
 
-    .landing-illustration {
-        max-width: 400px;
+    .landing-description {
+        font-size: 18px;
     }
 }
 
@@ -1964,7 +1950,7 @@ body.modal-open {
     .landing-content {
         flex-direction: column;
         text-align: center;
-        gap: 3rem;
+        padding: 2rem;
     }
 
     .landing-text {
@@ -1972,9 +1958,18 @@ body.modal-open {
     }
 
     .landing-illustration {
-        width: 100%;
         max-width: 100%;
-        aspect-ratio: 16/9;
+        order: -1;
+    }
+
+    .landing-illustration img {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .time-badge {
+        margin: 0 auto;
+        width: fit-content;
     }
 }
 
@@ -1983,12 +1978,19 @@ body.modal-open {
         padding: 1rem;
     }
 
-    .landing-title {
-        font-size: 28px;
+    .landing-content {
+        padding: 1rem;
     }
 
-    .landing-cta {
+    .landing-title {
+        font-size: 32px;
+    }
+
+    .landing-description {
+        font-size: 16px;
+    }
+
+    .primary-button {
         width: 100%;
-        text-align: center;
     }
 } 
