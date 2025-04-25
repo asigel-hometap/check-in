@@ -557,16 +557,13 @@ function updatePlanSection() {
         const planItem = document.createElement('div');
         planItem.className = 'plan-item';
         planItem.innerHTML = `
-            <div class="plan-item-content">
-                <div class="plan-item-header">
-                    <span class="action-verb">Read</span>
-                    <h3>${topRecommendation.title}</h3>
-                </div>
-                <div class="time-estimate">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    ${topRecommendation.minutes_to_complete} min
+            <div class="time-estimate">${topRecommendation.minutes_to_complete} MIN</div>
+            <div class="plan-item-text">
+                <h3>${topRecommendation.title}</h3>
+                <p>${topRecommendation.description}</p>
+                <div class="recommendation-type">
+                    <div class="recommendation-type-icon ${(topRecommendation.type || 'Article').toLowerCase()}"></div>
+                    ${topRecommendation.type || 'Article'}
                 </div>
             </div>
         `;
@@ -580,16 +577,13 @@ function updatePlanSection() {
                 const planItem = document.createElement('div');
                 planItem.className = 'plan-item';
                 planItem.innerHTML = `
-                    <div class="plan-item-content">
-                        <div class="plan-item-header">
-                            <span class="action-verb">Read</span>
-                            <h3>${rec.title}</h3>
-                        </div>
-                        <div class="time-estimate">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            ${rec.minutes_to_complete} min
+                    <div class="time-estimate">${rec.minutes_to_complete} MIN</div>
+                    <div class="plan-item-text">
+                        <h3>${rec.title}</h3>
+                        <p>${rec.description}</p>
+                        <div class="recommendation-type">
+                            <div class="recommendation-type-icon ${(rec.type || 'Article').toLowerCase()}"></div>
+                            ${rec.type || 'Article'}
                         </div>
                     </div>
                 `;
@@ -669,10 +663,7 @@ function showOutcomeScreen() {
         <h2 class="category-header">Top recommendation</h2>
         <div class="recommendation-card">
             <div class="time-badge">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                ${topRecommendation.minutes_to_complete} MIN
+                <div class="time-estimate">${topRecommendation.minutes_to_complete} MIN</div>
             </div>
             <h3>${topRecommendation.title}</h3>
             <p>${topRecommendation.description}</p>
@@ -705,10 +696,7 @@ function showOutcomeScreen() {
                     return `
                         <div class="recommendation-card">
                             <div class="time-badge">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M8 4.66667V8L10.6667 9.33333M15.3333 8C15.3333 12.0501 12.0501 15.3333 8 15.3333C3.94991 15.3333 0.666672 12.0501 0.666672 8C0.666672 3.94991 3.94991 0.666672 8 0.666672C12.0501 0.666672 15.3333 3.94991 15.3333 8Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                ${rec.minutes_to_complete} MIN
+                                <div class="time-estimate">${rec.minutes_to_complete} MIN</div>
                             </div>
                             <h3>${rec.title}</h3>
                             <p>${rec.description}</p>

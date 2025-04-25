@@ -601,7 +601,7 @@ input[type="radio"]:checked + .option .option-title {
     position: fixed;
     right: calc((100% - 1400px) / 2 + 2rem);
     top: 10rem;
-    width: 400px;
+    width: 440px;
 }
 
 /* Personality Type Placeholder */
@@ -663,85 +663,71 @@ input[type="radio"]:checked + .option .option-title {
 }
 
 .plan-item {
-    background: white;
-    border-radius: 6px;
-    padding: 12px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.plan-item-content {
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--neutral-10);
+    margin-bottom: 8px;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    width: 100%;
-}
-
-.plan-item-header {
-    display: flex;
-    align-items: flex-start;
+    flex-direction: column;
     gap: 8px;
-    flex: 1;
-    min-width: 0;
 }
 
-.plan-item-header h3 {
-    font-size: 14px;
-    font-weight: 500;
-    color: #1A1A1A;
+.plan-item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.plan-item-text h3 {
+    font-family: "Tiempos Headline", serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--neutral-900);
     margin: 0;
-    white-space: normal;
-    line-height: 1.4;
-    flex: 1;
-    min-width: 0;
-}
-
-.action-verb {
-    color: #366CED;
     font-weight: 600;
+}
+
+.plan-item-text p {
+    font-family: "Mulish", sans-serif;
     font-size: 14px;
-    flex-shrink: 0;
-    margin-top: 2px;
-}
-
-.plan-total {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.plan-total-label {
-    font-size: 14px;
-    color: #6B7280;
-}
-
-.plan-total-minutes {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1A1A1A;
-}
-
-.plan-total-minutes::after {
-    content: ' min';
+    line-height: 20px;
+    color: var(--neutral-600);
+    margin: 0;
     font-weight: 400;
-    color: #6B7280;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-.time-estimate {
+.plan-item .time-estimate {
+    font-size: 12px;
+    line-height: 16px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: var(--neutral-30);
+    color: var(--neutral-300);
+    font-weight: 600;
+    white-space: nowrap;
+    width: fit-content;
+    align-self: flex-start;
+}
+
+.plan-item .recommendation-type {
     display: flex;
     align-items: center;
     gap: 4px;
-    color: #6B7280;
-    font-size: 14px;
-    flex-shrink: 0;
-    margin-top: 2px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--neutral-600);
 }
 
-.time-estimate svg {
-    color: #366CED;
-    flex-shrink: 0;
+.plan-item .recommendation-type-icon {
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 /* Recommendation Card Styles */
@@ -768,7 +754,7 @@ input[type="radio"]:checked + .option .option-title {
 
 .add-to-plan {
     position: absolute;
-    top: 1rem;
+    top: 1.5rem;
     right: 1rem;
     width: 32px;
     height: 32px;
@@ -1412,16 +1398,23 @@ input[type="radio"]:checked + .option .option-title {
 }
 
 .plan-header .time-estimate {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: #666;
-    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: var(--neutral-30);
+    color: var(--neutral-300);
+    font-family: 'Mulish', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     margin-left: auto;
 }
 
 .plan-header .time-estimate svg {
-    color: #366ced;
+    display: none;
 }
 
 .plan-header .time-estimate span:last-child {
@@ -1610,26 +1603,71 @@ input[type="radio"]:checked + .option .option-title {
 }
 
 .sticky-footer .plan-item {
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--neutral-10);
+    margin-bottom: 8px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    background: white;
-    border-radius: 6px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    flex-direction: column;
+    gap: 8px;
 }
 
-.sticky-footer .plan-item h3 {
+.sticky-footer .plan-item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sticky-footer .plan-item-text h3 {
+    font-family: "Tiempos Headline", serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--neutral-900);
     margin: 0;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-color);
+    font-weight: 600;
 }
 
-.action-verb {
-    color: #366ced;
+.sticky-footer .plan-item-text p {
+    font-family: "Mulish", sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--neutral-600);
+    margin: 0;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.sticky-footer .plan-item .time-estimate {
+    font-size: 12px;
+    line-height: 16px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: var(--neutral-30);
+    color: var(--neutral-300);
     font-weight: 600;
-    margin-right: 4px;
+    white-space: nowrap;
+    width: fit-content;
+    align-self: flex-start;
+}
+
+.sticky-footer .plan-item .recommendation-type {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--neutral-600);
+}
+
+.sticky-footer .plan-item .recommendation-type-icon {
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 /* Adjust main content padding for sticky footer */
