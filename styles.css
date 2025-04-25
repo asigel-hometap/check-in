@@ -952,7 +952,7 @@ input[type="radio"]:checked + .option .option-title {
     right: 1.25rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 200px;
+    width: 500px;
     padding: 0.75rem 1rem;
     border: 1px solid var(--neutral-30);
     border-radius: var(--border-radius);
@@ -1634,4 +1634,118 @@ input[type="radio"]:checked + .option .option-title {
 
 .secondary-button:hover {
     background: #f0f7ff;
+}
+
+/* Landing Page Styles */
+.landing-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #F5F7FF 0%, #EEF1FF 100%);
+    padding: 2rem;
+}
+
+.landing-content {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+}
+
+.landing-text {
+    flex: 1;
+    max-width: 600px;
+}
+
+.landing-label {
+    display: block;
+    color: var(--neutral-300);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.landing-title {
+    color: var(--header-color);
+    font-family: "Tiempos Headline", serif;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+.landing-cta {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background-color var(--transition-speed) ease-in-out;
+}
+
+.landing-cta:hover {
+    background-color: #2B56D4;
+}
+
+.landing-illustration {
+    flex: 1;
+    max-width: 500px;
+    aspect-ratio: 4/3;
+    background-color: rgba(54, 108, 237, 0.1);
+    border-radius: var(--border-radius);
+}
+
+/* Responsive styles for landing page */
+@media screen and (max-width: 1024px) {
+    .landing-content {
+        gap: 2rem;
+    }
+
+    .landing-title {
+        font-size: 36px;
+    }
+
+    .landing-illustration {
+        max-width: 400px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .landing-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 3rem;
+    }
+
+    .landing-text {
+        max-width: 100%;
+    }
+
+    .landing-illustration {
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 16/9;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .landing-container {
+        padding: 1rem;
+    }
+
+    .landing-title {
+        font-size: 28px;
+    }
+
+    .landing-cta {
+        width: 100%;
+        text-align: center;
+    }
 } 

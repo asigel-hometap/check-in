@@ -3,89 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check-in Survey</title>
+    <title>Check-in</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <div class="top-nav">
-            <div class="nav-left">
-                <span class="brand">Check-In</span>
+    <div class="landing-container">
+        <div class="landing-content">
+            <div class="landing-text">
+                <span class="landing-label">HOMEOWNER CHECK-IN</span>
+                <h1 class="landing-title">Take the 2 min check in and get personalized recommendations</h1>
+                <a href="check-in.html" class="landing-cta">Start homeowner check-in</a>
             </div>
-            <div class="progress-steps">
-                <div class="step active">
-                    <span class="step-number">1</span>
-                    <span class="step-text">Settlement</span>
-                </div>
-                <div class="step">
-                    <span class="step-number">2</span>
-                    <span class="step-text">Financial wellbeing</span>
-                </div>
-                <div class="step">
-                    <span class="step-number">3</span>
-                    <span class="step-text">Recommendations</span>
-                </div>
-            </div>
-            <div class="nav-right">
-                <button class="save-exit-btn">Save & Exit</button>
+            <div class="landing-illustration">
+                <!-- Placeholder for illustration -->
             </div>
         </div>
-
-        <main class="main-content">
-            <div class="question-container">
-                <span class="question-label">YOUR SETTLEMENT PLAN</span>
-                <h1 class="question-title">When do you plan to settle your Home Equity Investment?</h1>
-                <p class="question-reminder">As a reminder, your settlement must be settled on or before <strong>January 01, 2032</strong></p>
-                
-                <div class="options">
-                    <label class="option-wrapper">
-                        <input type="radio" name="settlement" value="within-year">
-                        <div class="option">
-                            <div class="option-text">
-                                <span class="option-title">Within the next year</span>
-                                <span class="option-helper">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-                            </div>
-                        </div>
-                    </label>
-
-                    <label class="option-wrapper">
-                        <input type="radio" name="settlement" value="within-three-years">
-                        <div class="option">
-                            <div class="option-text">
-                                <span class="option-title">Within the next 3 years</span>
-                                <span class="option-helper">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-                            </div>
-                        </div>
-                    </label>
-
-                    <label class="option-wrapper">
-                        <input type="radio" name="settlement" value="more-than-three">
-                        <div class="option">
-                            <div class="option-text">
-                                <span class="option-title">More than 3 years from now</span>
-                                <span class="option-helper">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-                            </div>
-                        </div>
-                    </label>
-
-                    <label class="option-wrapper">
-                        <input type="radio" name="settlement" value="not-sure">
-                        <div class="option">
-                            <div class="option-text">
-                                <span class="option-title">I'm not sure</span>
-                            </div>
-                        </div>
-                    </label>
-                </div>
-            </div>
-        </main>
-
-        <footer class="navigation">
-            <button class="nav-btn back-btn">Back</button>
-            <button class="nav-btn continue-btn" disabled>Continue</button>
-        </footer>
     </div>
-    <script src="script.js"></script>
 </body>
 </html> 
