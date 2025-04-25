@@ -214,7 +214,7 @@ const surveyData = {
                     value: "home-repair"
                 },
                 {
-                    text: "Bought or sold another property",
+                    text: "Buy or sell another property",
                     value: "property-transaction"
                 },
                 {
@@ -1147,7 +1147,8 @@ function handleContinue() {
     
     // Update button text for last question
     if (currentQuestionIndex === surveyData.questions.length - 1) {
-        continueBtn.textContent = 'Build my plan';
+        showPersonaScreen();
+        return;
     }
     
     // Check if we're on the last question first
@@ -1308,7 +1309,7 @@ function generateRecommendations() {
     const settlementMethod = answers[1]; // Question 2 is "How do you plan to settle?"
     const timeline = answers[0]; // Question 1 is timeline
     const lifeEvents = answers[4] || []; // Question 5 is life events (multi-select)
-    const supportNeeds = answers[7] || []; // Question 7 is financial wellbeing support
+    const supportNeeds = answers[6] || []; // Question 7 is financial wellbeing support
     
     console.log('Generating recommendations with:', { settlementMethod, timeline, lifeEvents, supportNeeds });
     
@@ -1823,4 +1824,142 @@ function updateProgress(currentStep) {
 // Add handler for save plan button
 function handleSavePlan() {
     showNotification('Plan saved successfully');
+}
+
+// Add this function to show the persona screen
+function showPersonaScreen() {
+    // Update progress to show step 3
+    currentQuestionIndex = surveyData.questions.length;
+    updateProgressSteps();
+
+    // Clear main content
+    const mainContent = document.querySelector('.main-content');
+    mainContent.innerHTML = '';
+
+    // Format timeline and method from answers
+    const timeline = answers[0];
+    const method = answers[1];
+    const timelineText = {
+        'within_year': 'the next 12 months',
+        'within_three_years': '1 to 3 years',
+        'more_than_three_years': 'more than 3 years',
+        'not_sure': 'a timeline to be determined'
+    }[timeline] || timeline;
+    
+    const methodText = {
+        'refinancing': 'refinancing',
+        'cash-savings': 'savings',
+        'loan-heloc': 'a home equity loan',
+        'home-sale': 'home sale',
+        'not-sure': 'a method to be determined'
+    }[method] || method;
+
+    // Create persona screen container
+    const personaScreen = document.createElement('div');
+    personaScreen.className = 'persona-screen';
+    
+    // Create persona header
+    const personaHeader = document.createElement('div');
+    personaHeader.className = 'persona-header';
+    personaHeader.innerHTML = `
+        <div class="persona-content">
+            <div class="persona-text">
+                <h1>You're a <span class="persona-type">Debt Crusher!</span></h1>
+                <p>You've tackled your expenses head on, and you're ready to prepare for what's coming next</p>
+            </div>
+            <img src="assets/persona-icon.png" alt="Persona icon" class="persona-icon">
+        </div>
+    `;
+
+    // Create focus areas section
+    const focusAreas = document.createElement('div');
+    focusAreas.className = 'persona-graph';
+    focusAreas.innerHTML = `
+        <h2>YOUR FOCUS AREAS</h2>
+        <div class="graph-placeholder"></div>
+    `;
+
+    // Create goals section
+    const goalsSection = document.createElement('div');
+    goalsSection.className = 'persona-goals';
+    
+    // Build goals list
+    let goalsList = `<h2>YOUR GOALS</h2><ul>`;
+    
+    // Add settlement goal first
+    goalsList += `<li>Settling your investment in ${timelineText} via ${methodText}</li>`;
+    
+    // Create a Set to track unique events and their sources
+    const uniqueEvents = new Map();
+
+    // Add financial wellbeing goals from Q7 first
+    const q7Goals = answers[6] || []; // Changed from [7] to [6]
+    q7Goals.forEach(goal => {
+        if (goal === 'other' && q7Goals.otherValue) {
+            // Handle "other" option with free text
+            uniqueEvents.set('other', `Focusing on: ${q7Goals.otherValue}`);
+        } else if (goal !== 'other') {
+            const goalText = surveyData.questions[6].options.find(opt => opt.value === goal)?.text;
+            if (goalText) {
+                uniqueEvents.set(goalText, `Focusing on: ${goalText}`);
+            }
+        }
+    });
+
+    // Add future events from Q6
+    const futureEvents = answers[5] || [];
+    futureEvents.forEach(event => {
+        if (event !== 'none') {
+            const eventText = surveyData.questions[5].options.find(opt => opt.value === event)?.text;
+            if (eventText && !uniqueEvents.has(eventText)) {
+                uniqueEvents.set(eventText, `Preparing for: ${eventText}`);
+            }
+        }
+    });
+
+    // Add past events from Q5
+    const pastEvents = answers[4] || [];
+    pastEvents.forEach(event => {
+        if (event !== 'none') {
+            const eventText = surveyData.questions[4].options.find(opt => opt.value === event)?.text;
+            if (eventText && !uniqueEvents.has(eventText)) {
+                uniqueEvents.set(eventText, `Reacting to: ${eventText}`);
+            }
+        }
+    });
+
+    // Add all unique events to the goals list
+    uniqueEvents.forEach(formattedText => {
+        goalsList += `<li>${formattedText}</li>`;
+    });
+
+    goalsList += '</ul>';
+    goalsSection.innerHTML = goalsList;
+
+    // Append all sections
+    personaScreen.appendChild(personaHeader);
+    personaScreen.appendChild(focusAreas);
+    personaScreen.appendChild(goalsSection);
+    mainContent.appendChild(personaScreen);
+
+    // Update navigation buttons
+    const navigation = document.querySelector('.navigation');
+    if (navigation) {
+        const continueBtn = navigation.querySelector('.continue-btn');
+        if (continueBtn) {
+            continueBtn.textContent = 'Build plan';
+            continueBtn.onclick = () => {
+                showLoadingScreen();
+            };
+        }
+        
+        const backBtn = navigation.querySelector('.back-btn');
+        if (backBtn) {
+            backBtn.disabled = false;
+            backBtn.onclick = () => {
+                currentQuestionIndex = surveyData.questions.length - 1;
+                renderQuestion(currentQuestionIndex);
+            };
+        }
+    }
 } 

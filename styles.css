@@ -2064,4 +2064,134 @@ body.modal-open {
     .primary-button {
         width: 100%;
     }
+}
+
+.persona-screen {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.persona-header {
+    background: linear-gradient(90deg, #F0F4FF 0%, #E5EDFF 100%);
+    border-radius: 12px;
+}
+
+.persona-content {
+    display: flex;
+    padding: 24px;
+    align-items: center;
+    gap: 40px;
+    align-self: stretch;
+}
+
+.persona-text {
+    flex: 1;
+}
+
+.persona-text h1 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--neutral-900);
+}
+
+.persona-text p {
+    font-size: 16px;
+    color: var(--neutral-700);
+    line-height: 1.5;
+}
+
+.persona-type {
+    color: var(--primary-600);
+}
+
+.persona-icon {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.persona-graph {
+    padding: 24px;
+}
+
+.persona-graph h2 {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--neutral-500);
+    margin-bottom: 16px;
+    letter-spacing: 0.1em;
+}
+
+.graph-placeholder {
+    height: 200px;
+    background: var(--neutral-50);
+    border-radius: 8px;
+}
+
+.persona-goals {
+    padding: 24px;
+}
+
+.persona-goals h2 {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--neutral-500);
+    margin-bottom: 16px;
+    letter-spacing: 0.1em;
+}
+
+.persona-goals ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.persona-goals li {
+    font-size: 16px;
+    color: var(--neutral-700);
+    line-height: 1.5;
+    padding-left: 24px;
+    position: relative;
+}
+
+.persona-goals li::before {
+    content: "•";
+    position: absolute;
+    left: 8px;
+    color: var(--primary-600);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .persona-content {
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: 24px;
+    }
+
+    .persona-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .persona-text h1 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .persona-screen {
+        padding: 0 16px;
+    }
 } 
