@@ -727,8 +727,11 @@ function showOutcomeScreen() {
     outcomeSidebar.className = 'outcome-sidebar';
     outcomeSidebar.innerHTML = `
         <div class="personality-type">
-            <p>[personality_type]</p>
-            <p>To progress you should do xyz...</p>
+            <div class="personality-type-content">
+                <img src="assets/persona-icon.png" alt="Persona icon" class="persona-icon">
+                <h1>You're a Debt Crusher!</h1>
+                <p>You've tackled your expenses head on, and you're ready to prepare for what's coming next</p>
+            </div>
         </div>
         <div class="plan-section">
             <div class="plan-header">
