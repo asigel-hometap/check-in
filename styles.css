@@ -1167,11 +1167,35 @@ body.modal-open {
     margin: 0;
 }
 
-.time-badge {
+/* Time badges and estimates - base styles */
+.time-badge,
+.time-estimate,
+.plan-item .time-estimate,
+.recommendation-card .time-estimate,
+.sticky-footer .plan-item .time-estimate {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    background-color: var(--neutral-30);
+    border-radius: 4px;
+    color: var(--neutral-300);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    white-space: nowrap;
+    width: fit-content;
+    align-self: flex-start;
+}
+
+/* Summary time badge - used in plan header */
+.time-badge-summary {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 4px 8px;
+    padding: 8px 12px;
     background: var(--primary-50);
     border-radius: 8px;
     color: var(--primary-700);
@@ -1180,24 +1204,21 @@ body.modal-open {
     line-height: 20px;
 }
 
-.time-badge svg {
+.time-badge-summary svg {
     color: var(--primary-700);
 }
 
-.plan-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-}
-
+/* Plan item styles */
 .plan-item {
     padding: 16px;
     border-radius: 8px;
-    background: var(--neutral-10);
+    background: white;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    border: 1px solid var(--neutral-30);
+    box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+    margin-bottom: 10px;
 }
 
 .plan-item-text {
@@ -1225,19 +1246,9 @@ body.modal-open {
     overflow: hidden;
 }
 
-.personality-type {
-    margin-bottom: 32px;
-    padding: 16px;
-    background: var(--neutral-10);
-    border-radius: 8px;
-    border: 1px solid var(--neutral-30);
-}
-
-.personality-type p {
-    color: var(--neutral-700);
-    font-size: 14px;
-    margin: 0;
-    line-height: 20px;
+/* Remove any old conflicting styles */
+.recommendation-modal .time-estimate {
+    margin-bottom: 16px;
 }
 
 /* Sticky Footer */
@@ -1855,18 +1866,23 @@ body.modal-open {
 .time-badge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background: var(--primary-50);
-    border-radius: 8px;
-    color: var(--primary-700);
+    padding: 4px 8px;
+    background-color: var(--neutral-30);
+    border-radius: 4px;
+    color: var(--neutral-300);
     font-size: 12px;
-    font-weight: 500;
-    line-height: 20px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    white-space: nowrap;
+    width: fit-content;
+    align-self: flex-start;
 }
 
 .time-badge svg {
-    color: var(--primary-700);
+    color: var(--neutral-300);
 }
 
 /* Type Indicator Styles */
