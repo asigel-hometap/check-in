@@ -1877,9 +1877,35 @@ function updateProgress(currentStep) {
     });
 }
 
-// Add handler for save plan button
+// Function to show success screen
+function showSuccessScreen() {
+    const mainContent = document.querySelector('.main-content');
+    mainContent.innerHTML = '';
+    
+    const successScreen = document.createElement('div');
+    successScreen.className = 'success-screen';
+    successScreen.innerHTML = `
+        <div class="success-content">
+            <h1>Thank you!</h1>
+            <p>Your plan has been emailed to you and you can view it on your overview page.</p>
+        </div>
+        <div class="success-illustration">
+            <img src="assets/neighborhood.png" alt="Neighborhood illustration">
+        </div>
+    `;
+    
+    mainContent.appendChild(successScreen);
+    
+    // Remove any existing sticky footer
+    const existingFooter = document.querySelector('.sticky-footer');
+    if (existingFooter) {
+        existingFooter.remove();
+    }
+}
+
+// Update the save plan handler
 function handleSavePlan() {
-    showNotification('Plan saved successfully');
+    showSuccessScreen();
 }
 
 // Define personas and their attributes
