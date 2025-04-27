@@ -34,25 +34,29 @@ const surveyData = {
                 {
                     value: 'within_year',
                     text: 'In the next 12 months',
-                    insight: 'Okay, great! We will make sure to review all the steps for a smooth settlement process together.'
+                    insight: 'Okay, great! We will make sure to review all the steps for a smooth settlement process together.',
+                    personaPoints: 5
                 },
                 {
                     value: 'within_three_years',
                     text: 'In 1 to 3 years',
                     insight: 'Planning ahead is smart. We can help you understand your options and prepare for settlement.',
-                    checkDeadline: true
+                    checkDeadline: true,
+                    personaPoints: 4
                 },
                 {
                     value: 'more_than_three_years',
                     text: 'In more than 3 years',
                     insight: "It's important to note that your settlement deadline may be approaching. Let's discuss your options to ensure a timely settlement.",
-                    checkDeadline: true
+                    checkDeadline: true,
+                    personaPoints: 2
                 },
                 {
                     value: 'not_sure',
                     text: "Not sure",
                     insight: "That's okay! We're here to help you understand your options and create a settlement plan that works for you.",
-                    checkDeadline: true
+                    checkDeadline: true,
+                    personaPoints: 1
                 }
             ]
         },
@@ -65,25 +69,29 @@ const surveyData = {
                     text: "Refinancing mortgage and other debts",
                     value: "refinancing",
                     // helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    insight: "Terrific. That's a popular option with our homeowners, and we have some excellent partners to help you through this process when you're ready."
+                    insight: "Terrific. That's a popular option with our homeowners, and we have some excellent partners to help you through this process when you're ready.",
+                    personaPoints: 3
                 },
                 {
                     text: "Savings",
                     value: "cash-savings",
                     // helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     insight: "Okay! Whether you have the money on hand right now or plan to, we'll help you review the best ways to make the most of your savings.",
+                    personaPoints: 3
                 },
                 {
                     text: "Home Equity Loan or Home Equity Line of Credit (HELOC)",
                     value: "loan-heloc",
                     // helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     insight: "Is this a sign that your credit score is in good shape? Good for you!",
+                    personaPoints: 3
                 },
                 {
                     text: "Proceeds from a home sale",
                     value: "home-sale",
                     // helper: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     insight: "I might have guessed! This is the most common option for homeowners, and we have some great resources to help you through the process.",
+                    personaPoints: 3,
                     infoCard: {
                         title: "Settling Your Home Equity Investment with a Home Sale",
                         steps: [
@@ -106,6 +114,8 @@ const surveyData = {
                     text: "I'm not sure",
                     value: "not-sure",
                     insight: "That's okay! We'll help you explore your options and create a settlement plan that works for you.",
+                    checkDeadline: true,
+                    personaPoints: 1
                 }
             ]
         },
@@ -117,17 +127,20 @@ const surveyData = {
                 {
                     text: "I'm still deciding if my settlement plan is right plan for me",
                     value: "still-deciding",
-                    insight: "Taking time to evaluate your options is an important part of the process. We're here to help you make an informed decision."
+                    insight: "Taking time to evaluate your options is an important part of the process. We're here to help you make an informed decision.",
+                    personaPoints: 1
                 },
                 {
                     text: "I'm committed, but haven't started making progress",
                     value: "committed-not-started",
-                    insight: "Having a clear direction is the first step. We can help you start taking action towards your goal."
+                    insight: "Having a clear direction is the first step. We can help you start taking action towards your goal.",
+                    personaPoints: 3
                 },
                 {
                     text: "I've taken steps towards my settlement plan",
                     value: "committed-active",
-                    insight: "You're making great progress! We'll provide resources to help you maintain momentum and achieve your goals."
+                    insight: "You're making great progress! We'll provide resources to help you maintain momentum and achieve your goals.",
+                    personaPoints: 5
                 }
             ]
         },
@@ -1146,35 +1159,27 @@ function handleContinue() {
     console.log('Continue button clicked');
     const currentQuestion = surveyData.questions[currentQuestionIndex];
     console.log('Current question:', currentQuestion);
-    console.log('Current answers:', answers);
     
-    // Update button text for last question
+    // Calculate and log persona score after each question
+    const currentScore = calculatePersonaScore();
+    console.log('Current persona score:', currentScore);
+    
+    // Check if we're on the last question
     if (currentQuestionIndex === surveyData.questions.length - 1) {
         showPersonaScreen();
         return;
     }
     
-    // Check if we're on the last question first
-    if (currentQuestionIndex === surveyData.questions.length - 1) {
-        console.log('On last question, showing loading screen');
-        showLoadingScreen();
-        return;
-    }
-    
     // Check if this is the settlement plan question
     if (currentQuestion.id === 2) {
-        console.log('Found settlement plan question');
         const selectedValue = answers[currentQuestionIndex];
-        console.log('Selected value:', selectedValue);
         if (selectedValue && selectedValue !== 'not-sure') {
-            console.log('Showing recommendation modal for:', selectedValue);
             showRecommendationModal(selectedValue);
-            return; // Don't advance to next question yet
+            return;
         }
     }
     
-    // Normal continue behavior for other questions
-    console.log('Advancing to next question');
+    // Normal continue behavior
     currentQuestionIndex++;
     updateProgressSteps();
     renderQuestion(currentQuestionIndex);
@@ -1440,13 +1445,26 @@ function generateRecommendations() {
 
 // Handle text input
 function handleTextInput(event) {
-    const value = event.target.value.trim();
-    const previousAnswer = answers[currentQuestionIndex];
-    answers[currentQuestionIndex] = value;
+    const input = event.target;
+    const questionId = input.getAttribute('data-question-id');
+    const value = input.value.trim();
+    
+    // Update answers array
+    const existingAnswerIndex = Object.keys(answers).findIndex(key => key === questionId);
+    if (existingAnswerIndex !== -1) {
+        answers[questionId] = value;
+    } else {
+        answers[questionId] = value;
+    }
+    
+    // Calculate and log persona score
+    const currentScore = calculatePersonaScore();
+    console.log('Current persona score after text input:', currentScore);
     
     // Enable/disable continue button based on whether there's text
+    const continueBtn = document.querySelector('#continue-button');
     if (continueBtn) {
-        continueBtn.disabled = !value;
+        continueBtn.disabled = !value.trim();
     }
 }
 
@@ -1858,122 +1876,177 @@ function handleSavePlan() {
     showNotification('Plan saved successfully');
 }
 
-// Add this function to show the persona screen
-function showPersonaScreen() {
-    // Update progress to show step 3
-    currentQuestionIndex = surveyData.questions.length;
-    updateProgressSteps();
+// Define personas and their attributes
+const PERSONAS = {
+    surveyor: {
+        icon: "persona-icon.png",
+        backgroundColor: "#F0F4FF",
+        header: "You're a Surveyor!",
+        description: "You're gathering information and getting the lay of the land to plot your course."
+    },
+    explorer: {
+        icon: "persona-icon.png",
+        backgroundColor: "#E1F4F3",
+        header: "You're an Explorer!",
+        description: "You've started mapping out your journey and are ready to explore your options."
+    },
+    settler: {
+        icon: "persona-icon.png",
+        backgroundColor: "#AF94FF",
+        header: "You're a Settler!",
+        description: "You've found your path and are ready to take decisive action on your journey."
+    }
+};
 
-    // Clear main content
-    const mainContent = document.querySelector('.main-content');
-    mainContent.innerHTML = '';
+function getPersonaByScore(score) {
+    console.log('Determining persona for score:', score);
+    if (score <= 7) {
+        console.log('Score <= 7: Surveyor');
+        return 'surveyor';
+    } else if (score >= 12) {
+        console.log('Score >= 12: Settler');
+        return 'settler';
+    } else {
+        console.log('Score 8-11: Explorer');
+        return 'explorer';
+    }
+}
 
-    // Format timeline and method from answers
-    const timeline = answers[0];
-    const method = answers[1];
-    const timelineText = {
-        'within_year': 'the next 12 months',
-        'within_three_years': '1 to 3 years',
-        'more_than_three_years': 'more than 3 years',
-        'not_sure': 'a timeline to be determined'
-    }[timeline] || timeline;
+function getGoalsList() {
+    // Format timeline and method for the settlement goal
+    const timelineAnswer = answers[0]; // Question 1 is settlement timeline
+    const timeline = formatTimeline(timelineAnswer);
+    const methodAnswer = answers[1]; // Question 2 is settlement method
+    const method = formatMethod(methodAnswer);
     
-    const methodText = {
-        'refinancing': 'refinancing',
-        'cash-savings': 'savings',
-        'loan-heloc': 'a home equity loan',
-        'home-sale': 'home sale',
-        'not-sure': 'a method to be determined'
-    }[method] || method;
-
-    // Create persona screen container
-    const personaScreen = document.createElement('div');
-    personaScreen.className = 'persona-screen';
+    let goalsList = '';
     
-    // Create persona header
-    const personaHeader = document.createElement('div');
-    personaHeader.className = 'persona-header';
-    personaHeader.innerHTML = `
-        <div class="persona-content">
-            <div class="persona-text">
-                <h1>You're a <span class="persona-type">Debt Crusher!</span></h1>
-                <p>You've tackled your expenses head on, and you're ready to prepare for what's coming next</p>
-            </div>
-            <img src="assets/persona-icon.png" alt="Persona icon" class="persona-icon">
-        </div>
-    `;
-
-    // Create focus areas section
-    const focusAreas = document.createElement('div');
-    focusAreas.className = 'persona-graph';
-    focusAreas.innerHTML = `
-        <h2>YOUR FOCUS AREAS</h2>
-        <div class="graph-placeholder"></div>
-    `;
-
-    // Create goals section
-    const goalsSection = document.createElement('div');
-    goalsSection.className = 'persona-goals';
-    
-    // Build goals list
-    let goalsList = `<h2>YOUR GOALS</h2><ul>`;
-    
-    // Add settlement goal first
-    goalsList += `<li>Settling your investment in ${timelineText} via ${methodText}</li>`;
+    // Add settlement goal first if we have both timeline and method
+    if (timeline && method) {
+        goalsList += `<li>Settling your investment in ${timeline} via ${method}</li>`;
+    }
     
     // Create a Set to track unique events and their sources
     const uniqueEvents = new Map();
 
-    // Add financial wellbeing goals from Q7 first
-    const q7Goals = answers[6] || []; // Changed from [7] to [6]
-    q7Goals.forEach(goal => {
-        if (goal === 'other' && q7Goals.otherValue) {
-            // Handle "other" option with free text
-            uniqueEvents.set('other', `Focusing on: ${q7Goals.otherValue}`);
-        } else if (goal !== 'other') {
-            const goalText = surveyData.questions[6].options.find(opt => opt.value === goal)?.text;
-            if (goalText) {
-                uniqueEvents.set(goalText, `Focusing on: ${goalText}`);
+    // Add financial wellbeing goals from Q7
+    const q7Answer = answers[6]; // Question 7 is financial wellbeing
+    if (q7Answer && Array.isArray(q7Answer)) {
+        q7Answer.forEach(goal => {
+            if (goal === 'other' && q7Answer.otherValue) {
+                uniqueEvents.set('other', `Focusing on: ${q7Answer.otherValue}`);
+            } else if (goal !== 'other') {
+                const goalText = surveyData.questions[6].options.find(opt => opt.value === goal)?.text;
+                if (goalText) {
+                    uniqueEvents.set(goal, `Focusing on: ${goalText.toLowerCase()}`);
+                }
             }
-        }
-    });
+        });
+    }
 
     // Add future events from Q6
-    const futureEvents = answers[5] || [];
-    futureEvents.forEach(event => {
-        if (event !== 'none') {
+    const q6Answer = answers[5]; // Question 6 is future events
+    if (q6Answer && Array.isArray(q6Answer) && !q6Answer.includes('none')) {
+        q6Answer.forEach(event => {
             const eventText = surveyData.questions[5].options.find(opt => opt.value === event)?.text;
-            if (eventText && !uniqueEvents.has(eventText)) {
-                uniqueEvents.set(eventText, `Preparing for: ${eventText}`);
+            if (eventText && !uniqueEvents.has(event)) {
+                uniqueEvents.set(event, `Preparing for: ${eventText.toLowerCase()}`);
             }
-        }
-    });
+        });
+    }
 
     // Add past events from Q5
-    const pastEvents = answers[4] || [];
-    pastEvents.forEach(event => {
-        if (event !== 'none') {
+    const q5Answer = answers[4]; // Question 5 is past events
+    if (q5Answer && Array.isArray(q5Answer) && !q5Answer.includes('none')) {
+        q5Answer.forEach(event => {
             const eventText = surveyData.questions[4].options.find(opt => opt.value === event)?.text;
-            if (eventText && !uniqueEvents.has(eventText)) {
-                uniqueEvents.set(eventText, `Reacting to: ${eventText}`);
+            if (eventText && !uniqueEvents.has(event)) {
+                uniqueEvents.set(event, `Managing: ${eventText.toLowerCase()}`);
             }
-        }
-    });
+        });
+    }
 
     // Add all unique events to the goals list
     uniqueEvents.forEach(formattedText => {
         goalsList += `<li>${formattedText}</li>`;
     });
 
-    goalsList += '</ul>';
-    goalsSection.innerHTML = goalsList;
+    return goalsList;
+}
 
-    // Append all sections
+// Helper functions for formatting timeline and method
+function formatTimeline(timelineValue) {
+    const timelineMap = {
+        'within_year': 'the next 12 months',
+        'within_three_years': '1 to 3 years',
+        'more_than_three_years': 'more than 3 years',
+        'not_sure': 'a timeline to be determined'
+    };
+    return timelineMap[timelineValue] || '';
+}
+
+function formatMethod(methodValue) {
+    const methodMap = {
+        'refinancing': 'refinancing',
+        'cash-savings': 'cash savings',
+        'loan-heloc': 'a home equity loan or line of credit',
+        'home-sale': 'home sale proceeds',
+        'not-sure': 'a method to be determined'
+    };
+    return methodMap[methodValue] || '';
+}
+
+function showPersonaScreen() {
+    currentStep = 3;
+    updateProgress();
+    
+    const mainContent = document.querySelector('.main-content');
+    mainContent.innerHTML = '';
+    
+    // Calculate persona based on answers
+    const personaScore = calculatePersonaScore();
+    const personaType = getPersonaByScore(personaScore);
+    console.log('Determined persona type:', personaType, 'with score:', personaScore);
+    const persona = PERSONAS[personaType];
+    
+    const personaScreen = document.createElement('div');
+    personaScreen.className = 'persona-screen';
+    
+    const personaHeader = document.createElement('div');
+    personaHeader.className = 'persona-header';
+    personaHeader.style.backgroundColor = persona.backgroundColor;
+    personaHeader.innerHTML = `
+        <div class="persona-content">
+            <div class="persona-text">
+                <h1>${persona.header}</h1>
+                <p>${persona.description}</p>
+            </div>
+            <img src="assets/${persona.icon}" alt="Persona icon" class="persona-icon">
+        </div>
+    `;
+    
+    const personaGraph = document.createElement('div');
+    personaGraph.className = 'persona-graph';
+    personaGraph.innerHTML = `
+        <h2>Focus Areas</h2>
+        <div class="graph-placeholder"></div>
+    `;
+    
+    const personaGoals = document.createElement('div');
+    personaGoals.className = 'persona-goals';
+    personaGoals.innerHTML = `
+        <h2>Your Goals</h2>
+        <ul>
+            ${getGoalsList()}
+        </ul>
+    `;
+    
     personaScreen.appendChild(personaHeader);
-    personaScreen.appendChild(focusAreas);
-    personaScreen.appendChild(goalsSection);
+    personaScreen.appendChild(personaGraph);
+    personaScreen.appendChild(personaGoals);
+    
     mainContent.appendChild(personaScreen);
-
+    
     // Update navigation buttons
     const navigation = document.querySelector('.navigation');
     if (navigation) {
@@ -1994,4 +2067,33 @@ function showPersonaScreen() {
             };
         }
     }
+}
+
+// Add this function to calculate persona score
+function calculatePersonaScore() {
+    let totalScore = 0;
+    
+    // Questions 1-3: Get points from the selected options
+    for (let i = 0; i <= 2; i++) {
+        const question = surveyData.questions[i];
+        const answer = answers[i];
+        
+        if (answer) {
+            const selectedOption = question.options.find(opt => opt.value === answer);
+            const points = selectedOption?.personaPoints || 0;
+            console.log(`Q${i + 1} (${question.id}): Answer=${answer}, Points=${points}`);
+            totalScore += points;
+        } else {
+            console.log(`Q${i + 1} (${question.id}): No answer yet`);
+        }
+    }
+    
+    // Question 4: Text input scoring
+    const textAnswer = answers[3];
+    const textPoints = textAnswer && textAnswer.trim().length > 0 ? 3 : 1;
+    console.log(`Q4: Text="${textAnswer}", Points=${textPoints}`);
+    totalScore += textPoints;
+    
+    console.log('Total persona score:', totalScore);
+    return totalScore;
 } 
