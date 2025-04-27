@@ -645,6 +645,12 @@ function showOutcomeScreen() {
     topRecommendation = recommendations.topRecommendation;
     categorizedRecommendations = recommendations.categorizedRecommendations;
 
+    // Calculate persona
+    const personaScore = calculatePersonaScore();
+    const personaType = getPersonaByScore(personaScore);
+    const persona = PERSONAS[personaType];
+    console.log('Using persona:', personaType, 'with score:', personaScore);
+
     // Ensure type exists for top recommendation
     const topRecType = (topRecommendation.type || 'Article').toLowerCase();
     console.log('Top recommendation type:', topRecType);
@@ -739,11 +745,11 @@ function showOutcomeScreen() {
     const outcomeSidebar = document.createElement('div');
     outcomeSidebar.className = 'outcome-sidebar';
     outcomeSidebar.innerHTML = `
-        <div class="personality-type">
+        <div class="personality-type" style="background-color: ${persona.backgroundColor}">
             <div class="personality-type-content">
-                <img src="assets/persona-icon.png" alt="Persona icon" class="persona-icon">
-                <h1>You're a Debt Crusher!</h1>
-                <p>You've tackled your expenses head on, and you're ready to prepare for what's coming next</p>
+                <img src="assets/${persona.icon}" alt="Persona icon" class="persona-icon">
+                <h1>${persona.header}</h1>
+                <p>${persona.description}</p>
             </div>
         </div>
         <div class="plan-section">
@@ -1879,19 +1885,19 @@ function handleSavePlan() {
 // Define personas and their attributes
 const PERSONAS = {
     surveyor: {
-        icon: "persona-icon.png",
+        icon: "surveyor.png",
         backgroundColor: "#F0F4FF",
         header: "You're a Surveyor!",
         description: "You're gathering information and getting the lay of the land to plot your course."
     },
     explorer: {
-        icon: "persona-icon.png",
+        icon: "explorer.png",
         backgroundColor: "#E1F4F3",
         header: "You're an Explorer!",
         description: "You've started mapping out your journey and are ready to explore your options."
     },
     settler: {
-        icon: "persona-icon.png",
+        icon: "settler.png",
         backgroundColor: "#AF94FF",
         header: "You're a Settler!",
         description: "You've found your path and are ready to take decisive action on your journey."
