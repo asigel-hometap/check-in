@@ -23,7 +23,7 @@
   - Handle edge cases (no goals selected, only "none" selected)
   - Consider grouping similar goals
 
-- [ ] Update success UI
+- [X] Update success UI
   - Design and implement success state after saving plan
   - Add animations for better feedback
   - Consider what happens after success (redirect? show new content?)

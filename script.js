@@ -568,7 +568,7 @@ function updatePlanSection() {
     // Clear the current plan list
     planList.innerHTML = '';
 
-    // Add top recommendation if selected
+    // Add top recommendation if selected (not removable)
     if (selectedRecommendations.has('top-0')) {
         const planItem = document.createElement('div');
         planItem.className = 'plan-item';
@@ -586,13 +586,20 @@ function updatePlanSection() {
         planList.appendChild(planItem);
     }
 
-    // Add other selected recommendations
+    // Add other selected recommendations (removable)
     Object.entries(categorizedRecommendations).forEach(([category, items]) => {
         items.forEach((rec, index) => {
-            if (selectedRecommendations.has(`${category}-${index}`)) {
+            const recId = `${category}-${index}`;
+            if (selectedRecommendations.has(recId)) {
                 const planItem = document.createElement('div');
                 planItem.className = 'plan-item';
                 planItem.innerHTML = `
+                    <button class="remove-plan-item" title="Remove from plan" data-rec-id="${recId}" style="position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;padding:4px;">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="10" cy="10" r="10" fill="#F0F4FF"/>
+                            <path d="M13 7L7 13M7 7l6 6" stroke="#687183" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </button>
                     <div class="time-estimate">${rec.minutes_to_complete} MIN</div>
                     <div class="plan-item-text">
                         <h3>${rec.title}</h3>
@@ -603,6 +610,22 @@ function updatePlanSection() {
                         </div>
                     </div>
                 `;
+                // Attach remove handler
+                planItem.querySelector('.remove-plan-item').onclick = function() {
+                    selectedRecommendations.delete(recId);
+                    updatePlanSection();
+                    updatePlanTotalMinutes();
+                    // Also update the corresponding recommendation card icon
+                    const recCards = document.querySelectorAll('.recommendation-card');
+                    recCards.forEach(card => {
+                        const addBtn = card.querySelector('.add-to-plan');
+                        if (addBtn && addBtn.getAttribute('onclick') && addBtn.getAttribute('onclick').includes(`'${category}', ${index}`)) {
+                            addBtn.classList.remove('added');
+                            addBtn.querySelector('.plus-icon').style.display = 'block';
+                            addBtn.querySelector('.check-icon').style.display = 'none';
+                        }
+                    });
+                };
                 planList.appendChild(planItem);
             }
         });
@@ -693,7 +716,7 @@ function showOutcomeScreen() {
                 <div class="recommendation-type-icon ${topRecType}"></div>
                 ${topRecommendation.type || 'Article'}
             </div>
-            <button class="add-to-plan added" onclick="toggleRecommendation('top', 0, this)">
+            <button class="add-to-plan added" disabled style="pointer-events: none; opacity: 0.6;" onclick="toggleRecommendation('top', 0, this)">
                 <svg class="plus-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: none;">
                     <path d="M8 3.33333V12.6667M12.6667 8H3.33334" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>

@@ -502,6 +502,12 @@ input[type="radio"]:checked + .option .option-title {
     height: 16px;
 }
 
+.add-to-plan[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 /* Personality type header */
 .personality-type {
     background: linear-gradient(90deg, #F0F4FF 0%, #E5EDFF 100%);
@@ -1219,6 +1225,7 @@ body.modal-open {
     border: 1px solid var(--neutral-30);
     box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
     margin-bottom: 10px;
+    position: relative;
 }
 
 .plan-item-text {
@@ -1883,6 +1890,7 @@ body.modal-open {
 
 .time-badge svg {
     color: var(--neutral-300);
+    margin-right: 6px;
 }
 
 /* Type Indicator Styles */
@@ -2039,4 +2047,25 @@ body.modal-open {
     .success-illustration {
         max-width: 100%;
     }
+}
+
+.remove-plan-item {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 2;
+    border-radius: 50%;
+    transition: background 0.15s;
+}
+
+.remove-plan-item:hover {
+    background: #E1E9FC;
+}
+
+.remove-plan-item svg {
+    display: block;
 } 
