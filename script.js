@@ -1359,28 +1359,18 @@ function generateRecommendations() {
         'Contact': []
     };
 
-    // Add settlement method recommendation
-    if (settlementMethod && allRecommendations.settlement[settlementMethod]) {
-        const rec = allRecommendations.settlement[settlementMethod];
-        categorizedRecommendations[rec.category].push({
-            title: rec.title,
-            description: rec.description,
-            actionUrl: rec.url,
-            minutes_to_complete: rec.minutes_to_complete,
-            type: rec.type || 'Article' // Ensure type is set
-        });
-    }
+    // Set to track unique recommendation IDs
+    const addedIds = new Set();
 
-    // Add timeline-based recommendation
-    if (timeline && allRecommendations.timeline[timeline]) {
-        const rec = allRecommendations.timeline[timeline];
-        categorizedRecommendations[rec.category].push({
-            title: rec.title,
-            description: rec.description,
-            actionUrl: rec.actionUrl || rec.url,
-            minutes_to_complete: rec.minutes_to_complete,
-            type: rec.type || 'Article' // Ensure type is set
-        });
+    // Helper to add a recommendation if not already present
+    function addRec(category, rec, recId) {
+        if (!addedIds.has(recId)) {
+            categorizedRecommendations[category].push({
+                ...rec,
+                recId // Attach recId for plan management
+            });
+            addedIds.add(recId);
+        }
     }
 
     // Map Question 5 values to recommendation keys
@@ -1396,57 +1386,27 @@ function generateRecommendations() {
         'other-expense': 'business'
     };
 
-    // Add life event recommendations
-    if (lifeEvents && lifeEvents.length > 0) {
-        lifeEvents.forEach(event => {
-            if (event !== 'none') {
-                const recommendationKey = lifeEventMap[event];
-                if (recommendationKey && allRecommendations.lifeEvents[recommendationKey]) {
-                    const rec = allRecommendations.lifeEvents[recommendationKey];
-                    categorizedRecommendations[rec.category].push({
-                        title: rec.title,
-                        description: rec.description,
-                        actionUrl: rec.url,
-                        minutes_to_complete: rec.minutes_to_complete,
-                        type: rec.type || 'Article' // Ensure type is set
-                    });
-                }
-            }
-        });
-    }
-
-    // Add support recommendations
-    if (supportNeeds && supportNeeds.length > 0) {
-        supportNeeds.forEach(need => {
-            if (need !== 'other' && allRecommendations.support[need]) {
-                const rec = allRecommendations.support[need];
-                categorizedRecommendations[rec.category].push({
-                    title: rec.title,
-                    description: rec.description,
-                    actionUrl: rec.url,
-                    minutes_to_complete: rec.minutes_to_complete,
-                    type: rec.type || 'Article' // Ensure type is set
-                });
-            }
-        });
-    }
-
     // Determine top recommendation based on user's responses
     let topRecommendation;
-    
+    let topRecId = null;
+
     if (timeline === 'within_year' || timeline === 'within_three_years') {
         // If they're planning to settle soon, prioritize their settlement method guide
         topRecommendation = settlementMethod && allRecommendations.settlement[settlementMethod];
+        topRecId = settlementMethod ? `settlement-${settlementMethod}` : null;
     } else if (lifeEvents && lifeEvents.length === 1 && lifeEvents[0] !== 'none') {
         // If they selected exactly one life event, prioritize that recommendation
         const recommendationKey = lifeEventMap[lifeEvents[0]];
         topRecommendation = recommendationKey && allRecommendations.lifeEvents[recommendationKey];
+        topRecId = recommendationKey ? `lifeEvents-${recommendationKey}` : null;
     } else if (supportNeeds && supportNeeds.length === 1 && supportNeeds[0] !== 'other') {
         // If they selected exactly one support need, prioritize that recommendation
         topRecommendation = allRecommendations.support[supportNeeds[0]];
+        topRecId = supportNeeds[0] ? `support-${supportNeeds[0]}` : null;
     } else {
         // Otherwise, prioritize their timeline-based recommendation
         topRecommendation = timeline && allRecommendations.timeline[timeline];
+        topRecId = timeline ? `timeline-${timeline}` : null;
     }
 
     // If no specific top recommendation can be determined, use a default
@@ -1466,6 +1426,74 @@ function generateRecommendations() {
             type: topRecommendation.type || 'Article',
             minutes_to_complete: topRecommendation.minutes_to_complete || 5
         };
+    }
+
+    // Add the top recommendation's recId to the set to prevent duplicates
+    if (topRecId) {
+        addedIds.add(topRecId);
+    }
+
+    // Add settlement method recommendation
+    if (settlementMethod && allRecommendations.settlement[settlementMethod]) {
+        const rec = allRecommendations.settlement[settlementMethod];
+        const recId = `settlement-${settlementMethod}`;
+        addRec(rec.category, {
+            title: rec.title,
+            description: rec.description,
+            actionUrl: rec.url,
+            minutes_to_complete: rec.minutes_to_complete,
+            type: rec.type || 'Article'
+        }, recId);
+    }
+
+    // Add timeline-based recommendation
+    if (timeline && allRecommendations.timeline[timeline]) {
+        const rec = allRecommendations.timeline[timeline];
+        const recId = `timeline-${timeline}`;
+        addRec(rec.category, {
+            title: rec.title,
+            description: rec.description,
+            actionUrl: rec.actionUrl || rec.url,
+            minutes_to_complete: rec.minutes_to_complete,
+            type: rec.type || 'Article'
+        }, recId);
+    }
+
+    // Add life event recommendations
+    if (lifeEvents && lifeEvents.length > 0) {
+        lifeEvents.forEach(event => {
+            if (event !== 'none') {
+                const recommendationKey = lifeEventMap[event];
+                if (recommendationKey && allRecommendations.lifeEvents[recommendationKey]) {
+                    const rec = allRecommendations.lifeEvents[recommendationKey];
+                    const recId = `lifeEvents-${recommendationKey}`;
+                    addRec(rec.category, {
+                        title: rec.title,
+                        description: rec.description,
+                        actionUrl: rec.url,
+                        minutes_to_complete: rec.minutes_to_complete,
+                        type: rec.type || 'Article'
+                    }, recId);
+                }
+            }
+        });
+    }
+
+    // Add support recommendations
+    if (supportNeeds && supportNeeds.length > 0) {
+        supportNeeds.forEach(need => {
+            if (need !== 'other' && allRecommendations.support[need]) {
+                const rec = allRecommendations.support[need];
+                const recId = `support-${need}`;
+                addRec(rec.category, {
+                    title: rec.title,
+                    description: rec.description,
+                    actionUrl: rec.url,
+                    minutes_to_complete: rec.minutes_to_complete,
+                    type: rec.type || 'Article'
+                }, recId);
+            }
+        });
     }
 
     console.log('Generated recommendations:', { topRecommendation, categorizedRecommendations });

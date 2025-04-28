@@ -1,7 +1,7 @@
 # Check-in App TO-DO List
 
 ## High Priority
-- [ ] De-dupe recommendations
+- [X] De-dupe recommendations
   - Currently recommendations can appear multiple times if triggered by different answers
   - Need to implement a unique ID system for recommendations
   - Ensure recommendations only appear once in the list
