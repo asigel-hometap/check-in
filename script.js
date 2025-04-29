@@ -335,7 +335,7 @@ const allRecommendations = {
     timeline: {
         'within_year': {
             title: 'Contact Investment Support',
-            description: 'Ready to start your settlement? Our Investment Support team is here to help.',
+            description: 'Ready to start your settlement? Our Investment Support team is here to help',
             action: 'Email',
             actionUrl: 'mailto:homeowners@hometap.com',
             category: 'Plan for the future',
@@ -343,16 +343,16 @@ const allRecommendations = {
             minutes_to_complete: 15
         },
         'within_three_years': {
-            title: 'Settlement Calculator',
-            description: 'Use our calculator to estimate your settlement amount and explore your options.',
+            title: 'Try the Settlement Calculator',
+            description: 'Estimate your settlement amount at different home values and dates',
             url: '#',
             category: 'Stay on track',
             type: 'Guides & More',
             minutes_to_complete: 5
         },
         'more_than_three_years': {
-            title: 'Quarterly Account Statement',
-            description: 'Review your latest statement to stay informed about your investment.',
+            title: 'Review Your Quarterly Account Statement',
+            description: 'Stay informed about your home value, equity, and Investment details',
             url: '#',
             category: 'Stay on track',
             type: 'Guides & More',
@@ -360,7 +360,7 @@ const allRecommendations = {
         },
         'not_sure': {
             title: 'Understanding Your Settlement Options',
-            description: 'Explore different ways to settle your Home Equity Investment.',
+            description: 'Explore different ways to settle your Home Equity Investment',
             url: '#',
             category: 'Plan for the future',
             type: 'Video',
@@ -378,7 +378,7 @@ const allRecommendations = {
         },
         'retirement': {
             title: 'Planning for Retirement',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Strategies for managing your HEI during retirement.',
+            description: 'Learn how to manage your Investment during major life events',
             url: '#',
             category: 'Plan for the future',
             type: 'Article',
@@ -386,7 +386,7 @@ const allRecommendations = {
         },
         'marriage': {
             title: 'Marriage and Your Home Investment',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. What newlyweds should know about HEIs.',
+            description: 'Learn how to manage your Investment during major life events',
             url: '#',
             category: 'Stay on track',
             type: 'Article',
@@ -394,7 +394,7 @@ const allRecommendations = {
         },
         'divorce': {
             title: 'Managing Your HEI During Divorce',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Important considerations for your investment.',
+            description: 'Learn how to manage your Investment during major life events',
             url: '#',
             category: 'Stay on track',
             type: 'Article',
@@ -402,7 +402,7 @@ const allRecommendations = {
         },
         'birth': {
             title: 'Growing Family Guide',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Financial planning for new parents.',
+            description: 'Learn how to manage your Investment during major life events',
             url: '#',
             category: 'Plan for the future',
             type: 'Video',
@@ -410,7 +410,7 @@ const allRecommendations = {
         },
         'medical': {
             title: 'Health & Financial Wellness',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Resources for managing medical expenses.',
+            description: 'Learn how to manage your Investment during major life events',
             url: '#',
             category: 'Stay on track',
             type: 'Guides & More',
@@ -418,7 +418,7 @@ const allRecommendations = {
         },
         'education': {
             title: 'Education Funding Options',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Exploring ways to finance education.',
+            description: 'Learn how to manage your Investment during major life events',
             url: '#',
             category: 'Plan for the future',
             type: 'Article',
@@ -426,7 +426,7 @@ const allRecommendations = {
         },
         'business': {
             title: 'Business Owner Resources',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Managing your HEI while running a business.',
+            description: 'Learn how to manage your Investment during major life events',
             url: '#',
             category: 'Plan for the future',
             type: 'Video',
@@ -434,7 +434,7 @@ const allRecommendations = {
         },
         'relocation': {
             title: 'Relocation and Your HEI',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. What to know about moving with an HEI.',
+            description: 'Learn how to manage your Investment during major life events',
             url: '#',
             category: 'Plan for the future',
             type: 'Article',
