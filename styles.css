@@ -1173,6 +1173,11 @@ body.modal-open {
     margin: 0;
 }
 
+.plan-text {
+    font-size: 12px;
+    line-height: 20px;
+}
+
 /* Time badges and estimates - base styles */
 .time-badge,
 .time-estimate,
@@ -1840,7 +1845,7 @@ body.modal-open {
 
 /* Plan header structure */
 .plan-header {
-    padding: 24px;
+    padding: 24px 6px;
     border-bottom: 1px solid var(--neutral-100);
 }
 
@@ -1882,7 +1887,7 @@ body.modal-open {
     line-height: 16px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    margin-bottom: 16px;
+    /* margin-bottom: 16px; */
     white-space: nowrap;
     width: fit-content;
     align-self: flex-start;

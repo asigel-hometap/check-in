@@ -817,10 +817,11 @@ function showOutcomeScreen() {
                                 <path d="M8 14.6667C11.6819 14.6667 14.6667 11.6819 14.6667 8C14.6667 4.3181 11.6819 1.33333 8 1.33333C4.3181 1.33333 1.33333 4.3181 1.33333 8C1.33333 11.6819 4.3181 14.6667 8 14.6667Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M8 4V8L10.6667 9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <span class="time-text">EST.</span> <span class="time-number" id="planTotalMinutes">0</span><span class="time-text">&nbsp;MIN</span>
+                            <span class="time-text">EST.</span>&nbsp;<span class="time-number" id="planTotalMinutes">0</span>&nbsp;<span class="time-text">MIN</span>
                         </div>
                     </div>
                     <p class="plan-dates">${getTodayFormatted()} – ${formatDate(endDate)}</p>
+                    <p class="plan-text">We'll review your progress and goals in another few weeks and keep you on the path to happy, healthy homeownership.</p>
                 </div>
             </div>
             <div id="planList" class="plan-list">
@@ -1955,7 +1956,7 @@ function showSuccessScreen() {
     successScreen.innerHTML = `
         <div class="success-content">
             <h1>Thank you!</h1>
-            <p>Your plan has been emailed to you and you can view it on your overview page.</p>
+            <p>Your plan will be emailed to you and you can view it on your Overview page.</p>
         </div>
         <div class="success-illustration">
             <img src="assets/neighborhood.png" alt="Neighborhood illustration">
