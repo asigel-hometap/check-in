@@ -160,15 +160,15 @@ const surveyData = {
             options: [
                 {
                     text: "Marital status change",
-                    value: "marital-change"
+                    value: "marriage"
                 },
                 {
                     text: "Growing family",
-                    value: "growing-family"
+                    value: "birth"
                 },
                 {
                     text: "Employment change",
-                    value: "employment-change"
+                    value: "job_change"
                 },
                 {
                     text: "Major bonus, inheritance, or other financial windfall",
@@ -176,7 +176,7 @@ const surveyData = {
                 },
                 {
                     text: "Major medical expense",
-                    value: "medical-expense"
+                    value: "medical"
                 },
                 {
                     text: "Major home repair or renovation",
@@ -188,11 +188,11 @@ const surveyData = {
                 },
                 {
                     text: "Fire, flood, or natural disaster",
-                    value: "natural-disaster"
+                    value: "disaster"
                 },
                 {
                     text: "Other significant expense",
-                    value: "other-expense"
+                    value: "business"
                 }
             ]
         },
@@ -204,15 +204,15 @@ const surveyData = {
             options: [
                 {
                     text: "Marital status change",
-                    value: "marital-change"
+                    value: "marriage"
                 },
                 {
                     text: "Growing family",
-                    value: "growing-family"
+                    value: "birth"
                 },
                 {
                     text: "Employment change",
-                    value: "employment-change"
+                    value: "job_change"
                 },
                 {
                     text: "Major bonus, inheritance, or other financial windfall",
@@ -220,7 +220,7 @@ const surveyData = {
                 },
                 {
                     text: "Major medical expense",
-                    value: "medical-expense"
+                    value: "medical"
                 },
                 {
                     text: "Major home repair or renovation",
@@ -232,11 +232,11 @@ const surveyData = {
                 },
                 {
                     text: "Fire, flood, or natural disaster",
-                    value: "natural-disaster"
+                    value: "business"
                 },
                 {
                     text: "Other significant expense",
-                    value: "other-expense"
+                    value: "business"
                 }
             ]
         },
@@ -432,6 +432,14 @@ const allRecommendations = {
             type: 'Video',
             minutes_to_complete: 12
         },
+        'disaster': {
+            title: 'Disaster Recovery',
+            description: 'Learn how to manage your Investment during major life events',
+            url: '#',
+            category: 'Stay on track',
+            type: 'Video',
+            minutes_to_complete: 6
+        },
         'relocation': {
             title: 'Relocation and Your HEI',
             description: 'Learn how to manage your Investment during major life events',
@@ -439,6 +447,30 @@ const allRecommendations = {
             category: 'Plan for the future',
             type: 'Article',
             minutes_to_complete: 3
+        },
+        'home-repair': {
+            title: 'Plan a Home Renovation',
+            description: 'Try our Renovation Calculator to see how much equity you can add with an upgrade',
+            url: '#',
+            category: 'Plan for the future',
+            type: 'Guides & More',
+            minutes_to_complete: 5
+        },
+        'financial-windfall': {
+            title: 'Making the Most of a Financial Windfall',
+            description: 'Learn how to manage your Investment during major life events',
+            url: '#',
+            category: 'Plan for the future',
+            type: 'Article',
+            minutes_to_complete: 3
+        },
+        'property-transaction': {
+            title: 'Read Our Guide to Buying & Selling',
+            description: 'Learn how your HEI factors into your property transaction',
+            url: '#',
+            category: 'Plan for the future',
+            type: 'Article',
+            minutes_to_complete: 10
         }
     },
     support: {
@@ -467,11 +499,11 @@ const allRecommendations = {
             minutes_to_complete: 30
         },
         'home_renovation': {
-            title: 'Renovation Calculator',
+            title: 'Planning a Home Renovation',
             description: 'Get guidance on planning and financing your home renovation projects.',
-            url: 'https://www.hometap.com/blog/how-to-evaluate-your-home-renovation-estimate',
+            url: '#',
             category: 'Plan for the future',
-            type: 'Guides & More',
+            type: 'Articles',
             minutes_to_complete: 10
         },
         'lower_payments': {
@@ -1373,19 +1405,6 @@ function generateRecommendations() {
         }
     }
 
-    // Map Question 5 values to recommendation keys
-    const lifeEventMap = {
-        'marital-change': 'marriage',
-        'growing-family': 'birth',
-        'employment-change': 'job_change',
-        'medical-expense': 'medical',
-        'property-transaction': 'relocation',
-        'financial-windfall': 'business',
-        'home-repair': 'business',
-        'natural-disaster': 'business',
-        'other-expense': 'business'
-    };
-
     // Determine top recommendation based on user's responses
     let topRecommendation;
     let topRecId = null;
@@ -1396,9 +1415,8 @@ function generateRecommendations() {
         topRecId = settlementMethod ? `settlement-${settlementMethod}` : null;
     } else if (lifeEvents && lifeEvents.length === 1 && lifeEvents[0] !== 'none') {
         // If they selected exactly one life event, prioritize that recommendation
-        const recommendationKey = lifeEventMap[lifeEvents[0]];
-        topRecommendation = recommendationKey && allRecommendations.lifeEvents[recommendationKey];
-        topRecId = recommendationKey ? `lifeEvents-${recommendationKey}` : null;
+        topRecommendation = allRecommendations.lifeEvents[lifeEvents[0]];
+        topRecId = lifeEvents[0] ? `lifeEvents-${lifeEvents[0]}` : null;
     } else if (supportNeeds && supportNeeds.length === 1 && supportNeeds[0] !== 'other') {
         // If they selected exactly one support need, prioritize that recommendation
         topRecommendation = allRecommendations.support[supportNeeds[0]];
@@ -1463,10 +1481,9 @@ function generateRecommendations() {
     if (lifeEvents && lifeEvents.length > 0) {
         lifeEvents.forEach(event => {
             if (event !== 'none') {
-                const recommendationKey = lifeEventMap[event];
-                if (recommendationKey && allRecommendations.lifeEvents[recommendationKey]) {
-                    const rec = allRecommendations.lifeEvents[recommendationKey];
-                    const recId = `lifeEvents-${recommendationKey}`;
+                const rec = allRecommendations.lifeEvents[event];
+                if (rec) {
+                    const recId = `lifeEvents-${event}`;
                     addRec(rec.category, {
                         title: rec.title,
                         description: rec.description,
