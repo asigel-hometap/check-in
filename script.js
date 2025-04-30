@@ -1411,19 +1411,19 @@ function generateRecommendations() {
     let topRecId = null;
 
     if (timeline === 'within_year' || timeline === 'within_three_years') {
-        // If they're planning to settle soon, prioritize their settlement method guide
+        // Priority 1: Settlement Method Guide for near-term settlers
         topRecommendation = settlementMethod && allRecommendations.settlement[settlementMethod];
         topRecId = settlementMethod ? `settlement-${settlementMethod}` : null;
-    } else if (lifeEvents && lifeEvents.length === 1 && lifeEvents[0] !== 'none') {
-        // If they selected exactly one life event, prioritize that recommendation
-        topRecommendation = allRecommendations.lifeEvents[lifeEvents[0]];
-        topRecId = lifeEvents[0] ? `lifeEvents-${lifeEvents[0]}` : null;
     } else if (supportNeeds && supportNeeds.length === 1 && supportNeeds[0] !== 'other') {
-        // If they selected exactly one support need, prioritize that recommendation
+        // Priority 2: Single Support Need recommendation
         topRecommendation = allRecommendations.support[supportNeeds[0]];
         topRecId = supportNeeds[0] ? `support-${supportNeeds[0]}` : null;
+    } else if (lifeEvents && lifeEvents.length === 1 && lifeEvents[0] !== 'none') {
+        // Priority 3: Single Life Event recommendation
+        topRecommendation = allRecommendations.lifeEvents[lifeEvents[0]];
+        topRecId = lifeEvents[0] ? `lifeEvents-${lifeEvents[0]}` : null;
     } else {
-        // Otherwise, prioritize their timeline-based recommendation
+        // Priority 4 (fallback): Timeline-based recommendation
         topRecommendation = timeline && allRecommendations.timeline[timeline];
         topRecId = timeline ? `timeline-${timeline}` : null;
     }

@@ -6,7 +6,7 @@
   - Need to implement a unique ID system for recommendations
   - Ensure recommendations only appear once in the list
 
-- [ ] Add more recommendations
+- [X] Add more recommendations
   - Need more variety in recommendation types (Article, Video, Contact, etc.)
   - Add recommendations for different life events
   - Add recommendations for different financial goals
