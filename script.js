@@ -249,7 +249,7 @@ const surveyData = {
             options: [
                 {
                     value: 'financial_education',
-                    text: 'Financial education',
+                    text: 'Building financial literacy and education',
                     insight: 'We offer resources and guidance to help you make informed financial decisions.'
                 },
                 {
@@ -1981,19 +1981,22 @@ function handleSavePlan() {
 const PERSONAS = {
     surveyor: {
         icon: "surveyor.png",
-        backgroundColor: "#F0F4FF",
+        gradientStart: "#F0F4FF",
+        gradientEnd: "#E5EDFF",
         header: "You're a Surveyor!",
         description: "You're gathering information and getting the lay of the land to plot your course."
     },
     explorer: {
         icon: "explorer.png",
-        backgroundColor: "#E1F4F3",
+        gradientStart: "#E1F4F3",
+        gradientEnd: "#D0EFED",
         header: "You're an Explorer!",
         description: "You've started mapping out your journey and are ready to explore your options."
     },
     settler: {
         icon: "settler.png",
-        backgroundColor: "#AF94FF",
+        gradientStart: "#AF94FF",
+        gradientEnd: "#9F80FF",
         header: "You're a Settler!",
         description: "You've found your path and are ready to take decisive action on your journey."
     }
@@ -2022,8 +2025,10 @@ function getGoalsList() {
     
     let goalsList = '';
     
-    // Add settlement goal first if we have both timeline and method
-    if (timeline && method) {
+    // Add settlement goal first
+    if (timelineAnswer === 'not_sure' || methodAnswer === 'not-sure') {
+        goalsList += '<li>Reviewing settlement options to help you make a plan that is right for you</li>';
+    } else if (timeline && method) {
         goalsList += `<li>Settling your investment in ${timeline} via ${method}</li>`;
     }
     
@@ -2039,7 +2044,9 @@ function getGoalsList() {
             } else if (goal !== 'other') {
                 const goalText = surveyData.questions[6].options.find(opt => opt.value === goal)?.text;
                 if (goalText) {
-                    uniqueEvents.set(goal, `Focusing on: ${goalText.toLowerCase()}`);
+                    // Special handling for HEI text
+                    const formattedText = goalText.toLowerCase().replace('hei', 'HEI');
+                    uniqueEvents.set(goal, `Focusing on: ${formattedText}`);
                 }
             }
         });
@@ -2115,7 +2122,7 @@ function showPersonaScreen() {
     
     const personaHeader = document.createElement('div');
     personaHeader.className = 'persona-header';
-    personaHeader.style.backgroundColor = persona.backgroundColor;
+    personaHeader.style.background = `linear-gradient(90deg, ${persona.gradientStart} 0%, ${persona.gradientEnd} 100%)`;
     personaHeader.innerHTML = `
         <div class="persona-content">
             <div class="persona-text">
@@ -2128,10 +2135,10 @@ function showPersonaScreen() {
     
     const personaGraph = document.createElement('div');
     personaGraph.className = 'persona-graph';
-    personaGraph.innerHTML = `
-        <h2>Focus Areas</h2>
-        <div class="graph-placeholder"></div>
-    `;
+    // personaGraph.innerHTML = `
+    //     <h2>Focus Areas</h2>
+    //     <div class="graph-placeholder"></div>
+    // `;
     
     const personaGoals = document.createElement('div');
     personaGoals.className = 'persona-goals';
