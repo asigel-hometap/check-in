@@ -1979,21 +1979,21 @@ function handleSavePlan() {
 // Define personas and their attributes
 const PERSONAS = {
     surveyor: {
-        icon: "surveyor.png",
+        icon: "persona-surveyor.png",
         gradientStart: "#F0F4FF",
         gradientEnd: "#E5EDFF",
         header: "You're a Surveyor!",
         description: "You're gathering information and getting the lay of the land to plot your course."
     },
     explorer: {
-        icon: "explorer.png",
+        icon: "persona-explorer.png",
         gradientStart: "#E1F4F3",
         gradientEnd: "#D0EFED",
         header: "You're an Explorer!",
         description: "You've started mapping out your journey and are ready to explore your options."
     },
     settler: {
-        icon: "settler.png",
+        icon: "persona-settler.png",
         gradientStart: "#AF94FF",
         gradientEnd: "#9F80FF",
         header: "You're a Settler!",
