@@ -1987,15 +1987,17 @@ const PERSONAS = {
     },
     explorer: {
         icon: "persona-explorer.png",
-        gradientStart: "#E1F4F3",
-        gradientEnd: "#D0EFED",
+        // gradientStart: "#E1F4F3",
+        // gradientEnd: "#D0EFED",
+        gradientStart: "#EEEBF5",
+        gradientEnd: "#EDE8FC",
         header: "You're an Explorer!",
         description: "You've started mapping out your journey and are ready to explore your options."
     },
     settler: {
         icon: "persona-settler.png",
-        gradientStart: "#AF94FF",
-        gradientEnd: "#9F80FF",
+        gradientStart: "#F0E8FF",
+        gradientEnd: "#F5F2FC",
         header: "You're a Settler!",
         description: "You've found your path and are ready to take decisive action on your journey."
     }
