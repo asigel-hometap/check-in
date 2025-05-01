@@ -303,7 +303,7 @@ const allRecommendations = {
             title: 'Settling Your Home Equity Investment with a Refinance',
             description: 'Learn about the refinancing process, what to consider, and how to prepare for settlement.',
             url: 'https://www.hometap.com/blog/settling-home-equity-investment-refinance',
-            category: 'Plan for the future',
+            category: 'Learn the landscape',
             type: 'Article',
             minutes_to_complete: 3
         },
@@ -311,7 +311,7 @@ const allRecommendations = {
             title: 'Settling Your Home Equity Investment with a Home Sale',
             description: 'A comprehensive guide to settling your investment through a home sale.',
             url: 'https://www.hometap.com/blog/settling-home-equity-investment-home-sale',
-            category: 'Plan for the future',
+            category: 'Learn the landscape',
             type: 'Article',
             minutes_to_complete: 3
         },
@@ -319,7 +319,7 @@ const allRecommendations = {
             title: 'Using Cash Savings to Settle Your HEI',
             description: 'Learn how to settle your Investment with cash savings.',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Learn the landscape',
             type: 'Article',
             minutes_to_complete: 3
         },
@@ -327,7 +327,7 @@ const allRecommendations = {
             title: 'Settling with a Home Equity Line of Credit',
             description: 'Learn how to settle your Investment with a Home Equity Line of Credit.',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Learn the landscape',
             type: 'Article',
             minutes_to_complete: 3
         }
@@ -338,7 +338,7 @@ const allRecommendations = {
             description: 'Ready to start your settlement? Our Investment Support team is here to help',
             action: 'Email',
             actionUrl: 'mailto:homeowners@hometap.com',
-            category: 'Plan for the future',
+            category: 'Next moves',
             type: 'Contact',
             minutes_to_complete: 15
         },
@@ -346,7 +346,7 @@ const allRecommendations = {
             title: 'Try the Settlement Calculator',
             description: 'Estimate your settlement amount at different home values and dates',
             url: '#',
-            category: 'Stay on track',
+            category: 'Next moves',
             type: 'Guides & More',
             minutes_to_complete: 5
         },
@@ -362,7 +362,7 @@ const allRecommendations = {
             title: 'Understanding Your Settlement Options',
             description: 'Explore different ways to settle your Home Equity Investment',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Learn the landscape',
             type: 'Video',
             minutes_to_complete: 2
         }
@@ -372,7 +372,7 @@ const allRecommendations = {
             title: 'Career Transitions and Your HEI',
             description: 'Learn how to manage your Investment during major life events.',
             url: 'https://go.hometap.com/dashboard/resources/your-home-equity-investment-through-life-events',
-            category: 'Stay on track',
+            category: 'Chart your course',
             type: 'Article',
             minutes_to_complete: 3
         },
@@ -380,7 +380,7 @@ const allRecommendations = {
             title: 'Planning for Retirement',
             description: 'Learn how to manage your Investment during major life events',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Chart your course',
             type: 'Article',
             minutes_to_complete: 2
         },
@@ -388,7 +388,7 @@ const allRecommendations = {
             title: 'Marriage and Your Home Investment',
             description: 'Learn how to manage your Investment during major life events',
             url: '#',
-            category: 'Stay on track',
+            category: 'Chart your course',
             type: 'Article',
             minutes_to_complete: 7
         },
@@ -396,7 +396,7 @@ const allRecommendations = {
             title: 'Managing Your HEI During Divorce',
             description: 'Learn how to manage your Investment during major life events',
             url: '#',
-            category: 'Stay on track',
+            category: 'Chart your course',
             type: 'Article',
             minutes_to_complete: 15
         },
@@ -404,7 +404,7 @@ const allRecommendations = {
             title: 'Growing Family Guide',
             description: 'Learn how to manage your Investment during major life events',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Chart your course',
             type: 'Video',
             minutes_to_complete: 7
         },
@@ -412,7 +412,7 @@ const allRecommendations = {
             title: 'Health & Financial Wellness',
             description: 'Learn how to manage your Investment during major life events',
             url: '#',
-            category: 'Stay on track',
+            category: 'Chart your course',
             type: 'Guides & More',
             minutes_to_complete: 10
         },
@@ -420,7 +420,7 @@ const allRecommendations = {
             title: 'Education Funding Options',
             description: 'Learn how to manage your Investment during major life events',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Chart your course',
             type: 'Article',
             minutes_to_complete: 11
         },
@@ -428,7 +428,7 @@ const allRecommendations = {
             title: 'Business Owner Resources',
             description: 'Learn how to manage your Investment during major life events',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Chart your course',
             type: 'Video',
             minutes_to_complete: 12
         },
@@ -436,7 +436,7 @@ const allRecommendations = {
             title: 'Disaster Recovery',
             description: 'Learn how to manage your Investment during major life events',
             url: '#',
-            category: 'Stay on track',
+            category: 'Chart your course',
             type: 'Video',
             minutes_to_complete: 6
         },
@@ -444,7 +444,7 @@ const allRecommendations = {
             title: 'Relocation and Your HEI',
             description: 'Learn how to manage your Investment during major life events',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Next moves',
             type: 'Article',
             minutes_to_complete: 3
         },
@@ -452,7 +452,7 @@ const allRecommendations = {
             title: 'Plan a Home Renovation',
             description: 'Try our Renovation Calculator to see how much equity you can add with an upgrade',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Next moves',
             type: 'Guides & More',
             minutes_to_complete: 5
         },
@@ -460,7 +460,7 @@ const allRecommendations = {
             title: 'Making the Most of a Financial Windfall',
             description: 'Learn how to manage your Investment during major life events',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Chart your course',
             type: 'Article',
             minutes_to_complete: 3
         },
@@ -468,7 +468,7 @@ const allRecommendations = {
             title: 'Read Our Guide to Buying & Selling',
             description: 'Learn how your HEI factors into your property transaction',
             url: '#',
-            category: 'Plan for the future',
+            category: 'Next moves',
             type: 'Article',
             minutes_to_complete: 10
         }
@@ -478,7 +478,7 @@ const allRecommendations = {
             title: 'Financial Education Resources',
             description: 'Access our library of educational content to help you make informed financial decisions.',
             url: '#',
-            category: 'Stay on track',
+            category: 'Learn the landscape',
             type: 'Guides & More',
             minutes_to_complete: 20
         },
@@ -486,7 +486,7 @@ const allRecommendations = {
             title: 'Home Equity Access Guide',
             description: 'Learn about different ways to tap into your home equity and which option might be right for you.',
             url: 'https://www.hometap.com/homeowner-resources/options-for-tapping-into-your-homes-equity',
-            category: 'Stay on track',
+            category: 'Learn the landscape',
             type: 'Guides & More',
             minutes_to_complete: 24
         },
@@ -494,7 +494,7 @@ const allRecommendations = {
             title: 'Schedule a HEI Review',
             description: 'Book a session with our team to review your Home Equity Investment and get answers to your questions.',
             url: 'mailto:homeowners@hometap.com',
-            category: 'Stay on track',
+            category: 'Next moves',
             type: 'Contact',
             minutes_to_complete: 30
         },
@@ -502,15 +502,15 @@ const allRecommendations = {
             title: 'Planning a Home Renovation',
             description: 'Get guidance on planning and financing your home renovation projects.',
             url: '#',
-            category: 'Plan for the future',
-            type: 'Articles',
+            category: 'Next moves',
+            type: 'Article',
             minutes_to_complete: 10
         },
         'lower_payments': {
             title: 'Financial Obligation Management',
             description: 'Explore strategies and options for managing your monthly payments and financial commitments.',
             url: '#',
-            category: 'Stay on track',
+            category: 'Learn the landscape',
             type: 'Guides & More',
             minutes_to_complete: 10
         }
@@ -1385,11 +1385,9 @@ function generateRecommendations() {
     
     // Start with an empty set of categorized recommendations
     const categorizedRecommendations = {
-        'Stay on track': [],
-        'Plan for the future': [],
-        'Guides & More': [],
-        'Video': [],
-        'Contact': []
+        'Learn the landscape': [],
+        'Next moves': [],
+        'Chart your course': []
     };
 
     // Set to track unique recommendation IDs
@@ -1397,7 +1395,7 @@ function generateRecommendations() {
 
     // Helper to add a recommendation if not already present
     function addRec(category, rec, recId) {
-        if (!addedIds.has(recId)) {
+        if (!addedIds.has(recId) && categorizedRecommendations[category]) {
             categorizedRecommendations[category].push({
                 ...rec,
                 recId // Attach recId for plan management
@@ -1436,7 +1434,8 @@ function generateRecommendations() {
             action: 'Try',
             actionUrl: '#',
             minutes_to_complete: 5,
-            type: 'Article'
+            type: 'Article',
+            category: 'Learn the landscape'
         };
     } else {
         // Ensure all properties are copied over
@@ -2135,22 +2134,106 @@ function showPersonaScreen() {
     
     const personaGraph = document.createElement('div');
     personaGraph.className = 'persona-graph';
-    // personaGraph.innerHTML = `
-    //     <h2>Focus Areas</h2>
-    //     <div class="graph-placeholder"></div>
-    // `;
     
-    const personaGoals = document.createElement('div');
+    // Generate recommendations to count categories
+    const recommendations = generateRecommendations();
+    const categoryColors = {
+        'Learn the landscape': '#89D4B3',
+        'Next moves': '#8CD5FF',
+        'Chart your course': '#B79CFF'
+    };
+    
+    // Count recommendations by category
+    const categoryCounts = {
+        'Learn the landscape': 0,
+        'Next moves': 0,
+        'Chart your course': 0
+    };
+
+    // Count recommendations directly from the categorizedRecommendations arrays
+    Object.entries(recommendations.categorizedRecommendations).forEach(([category, recs]) => {
+        if (categoryCounts.hasOwnProperty(category)) {
+            categoryCounts[category] = recs.length;
+        }
+    });
+
+    // Calculate total for percentages
+    const totalRecs = Object.values(categoryCounts).reduce((sum, count) => sum + count, 0);
+
+    console.log('Generating focus areas bar with:', {
+        categoryCounts,
+        totalRecs,
+        categoryColors,
+        rawRecommendations: recommendations.categorizedRecommendations
+    });
+
+    // Log each category's data
+    Object.entries(categoryCounts).forEach(([category, count]) => {
+        console.log(`Category "${category}":`, {
+            count,
+            percentage: (count / totalRecs) * 100,
+            color: categoryColors[category],
+            hasRecs: count > 0,
+            actualRecs: recommendations.categorizedRecommendations[category]?.length || 0
+        });
+    });
+
+    // Create bar segments HTML only for categories with recommendations
+    const barSegments = Object.entries(categoryCounts)
+        .filter(([_, count]) => count > 0)
+        .map(([category, count]) => {
+            const percentage = (count / totalRecs) * 100;
+            console.log(`Creating segment for ${category}:`, {
+                count,
+                percentage,
+                color: categoryColors[category],
+                flexValue: count
+            });
+            return `
+                <div class="focus-area-segment" style="flex: ${count}; background-color: ${categoryColors[category]}">
+                    <div class="focus-area-label">${category}</div>
+                </div>
+            `;
+        })
+        .join('');
+    
+    personaGraph.innerHTML = `
+        <h2>Your Focus Areas</h2>
+        <div class="focus-areas-bar">
+            ${barSegments}
+        </div>
+        <div class="focus-areas-legend">
+            ${Object.entries(categoryCounts)
+                .filter(([_, count]) => count > 0)
+                .map(([category, _]) => `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: ${categoryColors[category]}"></div>
+                        <div class="legend-label">${category}</div>
+                    </div>
+                `).join('')}
+        </div>
+    `;
+    
+    // Log the final rendered structure
+    console.log('Focus areas structure:', {
+        graphElement: personaGraph,
+        barElement: personaGraph.querySelector('.focus-areas-bar'),
+        segments: personaGraph.querySelectorAll('.focus-area-segment')
+    });
+    
+    personaScreen.appendChild(personaHeader);
+    personaScreen.appendChild(personaGraph);
+    
+    personaGoals = document.createElement('div');
     personaGoals.className = 'persona-goals';
     personaGoals.innerHTML = `
         <h2>Your Goals</h2>
         <ul>
             ${getGoalsList()}
         </ul>
+        <p class="goals-support-message">Don't worry, we'll be there to help you with all of this, every step of the way.</p>
     `;
     
-    personaScreen.appendChild(personaHeader);
-    personaScreen.appendChild(personaGraph);
     personaScreen.appendChild(personaGoals);
     
     mainContent.appendChild(personaScreen);

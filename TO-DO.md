@@ -28,11 +28,9 @@
   - Add animations for better feedback
   - Consider what happens after success (redirect? show new content?)
 
-- [ ] Solve for "Focus Areas"
+- [X] Solve for "Focus Areas"
   - Currently showing placeholder content
-  - Need to determine what data to show
-  - Design and implement visualization
-  - Consider how focus areas relate to persona type
+  - Have this be dynamic based on the count of recommendations by category (but we only have two right now)
 
 ## Future Improvements
 - [ ] Add loading states for recommendations
