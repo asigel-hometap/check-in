@@ -1980,24 +1980,16 @@ function handleSavePlan() {
 const PERSONAS = {
     surveyor: {
         icon: "persona-surveyor.png",
-        gradientStart: "#F0F4FF",
-        gradientEnd: "#E5EDFF",
         header: "You're a Surveyor!",
         description: "You're gathering information and getting the lay of the land to plot your course."
     },
     explorer: {
         icon: "persona-explorer.png",
-        // gradientStart: "#E1F4F3",
-        // gradientEnd: "#D0EFED",
-        gradientStart: "#EEEBF5",
-        gradientEnd: "#EDE8FC",
         header: "You're an Explorer!",
         description: "You've started mapping out your journey and are ready to explore your options."
     },
     settler: {
         icon: "persona-settler.png",
-        gradientStart: "#F0E8FF",
-        gradientEnd: "#F5F2FC",
         header: "You're a Settler!",
         description: "You've found your path and are ready to take decisive action on your journey."
     }
@@ -2123,7 +2115,6 @@ function showPersonaScreen() {
     
     const personaHeader = document.createElement('div');
     personaHeader.className = 'persona-header';
-    personaHeader.style.background = `linear-gradient(90deg, ${persona.gradientStart} 0%, ${persona.gradientEnd} 100%)`;
     personaHeader.innerHTML = `
         <div class="persona-content">
             <div class="persona-text">
