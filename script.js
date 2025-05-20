@@ -28,8 +28,8 @@ const surveyData = {
             id: 'settlement_timeline',
             section: 'Settlement',
             type: 'radio',
-            title: 'When do you plan to settle your Home Equity Investment?',
-            reminder: `As a reminder, your settlement must be settled on or before <span style='font-weight: bold'>${formatDate(settlementDeadline)}</span>.`,
+            title: 'How ready are you to settle your investment?',
+            reminder: `As a reminder, your settlement must be settled on or before <span style='font-weight: bold'>${formatDate(settlementDeadline)}</span> but you can settle before then if you're ready. Let us know your plans and we'll share tips to put you in the best position possible. Your answer will not effect your investment in any way.`,
             options: [
                 {
                     value: 'within_year',
@@ -62,8 +62,8 @@ const surveyData = {
         },
         {
             id: 2,
-            text: "How do you plan to fund settlement?",
-            // reminder: "You have several options, and we'll help you explore them all.",
+            text: "How do you plan to fund your settlement?",
+            reminder: "Let us know your plans and we'll help you be prepared. If you aren't sure yet, that's okay too. We'll help you explore your options. Your answer will not effect your investment in any way.",
             options: [
                 {
                     text: "Refinancing mortgage and other debts",
@@ -229,10 +229,6 @@ const surveyData = {
                 {
                     text: "Buy or sell another property",
                     value: "property-transaction"
-                },
-                {
-                    text: "Fire, flood, or natural disaster",
-                    value: "business"
                 },
                 {
                     text: "Other significant expense",
@@ -700,11 +696,10 @@ function showOutcomeScreen() {
     topRecommendation = recommendations.topRecommendation;
     categorizedRecommendations = recommendations.categorizedRecommendations;
 
-    // Calculate persona
-    const personaScore = calculatePersonaScore();
-    const personaType = getPersonaByScore(personaScore);
+    // Use default persona type
+    const personaType = 'explorer';
     const persona = PERSONAS[personaType];
-    console.log('Using persona:', personaType, 'with score:', personaScore);
+    console.log('Using persona:', personaType);
 
     // Ensure type exists for top recommendation
     const topRecType = (topRecommendation.type || 'Article').toLowerCase();
@@ -914,6 +909,9 @@ function initializeRadioListeners() {
 
 // Render current question
 function renderQuestion(index) {
+    const questionContainer = document.querySelector('.question-container');
+    console.log('renderQuestion called with index:', index);
+    console.log('surveyData.questions:', surveyData.questions);
     const question = surveyData.questions[index];
     let container;
 
@@ -935,11 +933,23 @@ function renderQuestion(index) {
     questionContainer.innerHTML = '';
     questionContainer.appendChild(container);
 
+    // Re-select the navigation buttons after DOM update
+    const continueBtn = document.querySelector('.continue-btn');
+    const backBtn = document.querySelector('.back-btn');
+
     // Update continue button text for last question
     if (continueBtn && index === surveyData.questions.length - 1) {
         continueBtn.textContent = 'Build my plan';
     } else if (continueBtn) {
         continueBtn.textContent = 'Continue';
+    }
+
+    // Always enable the continue button
+    if (continueBtn) {
+        continueBtn.disabled = false;
+        continueBtn.onclick = function() {
+            handleContinue();
+        };
     }
 
     // Remove any existing insight
@@ -956,18 +966,7 @@ function renderQuestion(index) {
         initializeCheckboxListeners();
     } else if (!question.type || question.type === 'radio') {
         initializeRadioListeners();
-
-        // If there's a previously selected answer for this question, select it and show insight
-        if (answers[index]) {
-            const radioToCheck = container.querySelector(`input[type="radio"][value="${answers[index]}"]`);
-            if (radioToCheck) {
-                radioToCheck.checked = true;
-                const selectedOption = question.options.find(opt => opt.value === answers[index]);
-                if (selectedOption && selectedOption.insight) {
-                    showInsight(selectedOption.insight);
-                }
-            }
-        }
+        // Do NOT show insight for previously selected answers
     }
 }
 
@@ -1131,36 +1130,8 @@ function handleOptionSelect(e) {
         option.classList.remove('expanded');
     });
     
-    // Show insight for selected option
-    const selectedOption = currentQuestion.options.find(opt => opt.value === selectedValue);
-    if (selectedOption) {
-        let insightText = selectedOption.insight;
-        
-        // Special handling for settlement timeline question
-        if (currentQuestion.id === 'settlement_timeline' && selectedOption.checkDeadline) {
-            const daysUntilDeadline = Math.ceil((settlementDeadline - new Date()) / (1000 * 60 * 60 * 24));
-            
-            if (selectedValue === 'within_three_years' && daysUntilDeadline < 1000) {
-                insightText = `Great! Planning ahead is smart since your settlement deadline is coming up in less than 3 years. We'll work together to create a settlement plan that meets this timeline.`;
-            } else if (selectedValue === 'more_than_three_years') {
-                insightText = `Okay, we'll revisit this after you complete the check-in. Please note that your investment must be settled by ${formatDate(settlementDeadline)}. We're here to help keep that as stress-free as possible.`;
-            } else if (selectedValue === 'not_sure') {
-                insightText = `No problem. We'll be sure to review your HEI pricing and settlement options to help you make an informed decision well before your settlement deadline of ${formatDate(settlementDeadline)}.`;
-            }
-        }
-        
-        // Find and show the insight for the selected option
-        const selectedOptionElement = e.target.closest('.option-wrapper').querySelector('.option');
-        const insightWrapperElement = selectedOptionElement.querySelector('.option-insight-wrapper');
-        const insightElement = selectedOptionElement.querySelector('.option-insight');
-        if (insightElement) {
-            insightElement.innerHTML = `<p>${insightText}</p>`;
-            insightWrapperElement.style.display = 'block';
-            selectedOptionElement.classList.add('expanded');
-        }
-    }
-
-    // Update answers and continue button
+    // Do NOT show insight for selected option
+    // Just update answers and continue button
     answers[currentQuestionIndex] = selectedValue;
     console.log('Updated answers:', answers);
     if (continueBtn) {
@@ -1221,6 +1192,8 @@ function handleContinue() {
     console.log('Continue button clicked');
     const currentQuestion = surveyData.questions[currentQuestionIndex];
     console.log('Current question:', currentQuestion);
+    console.log('Current question index:', currentQuestionIndex);
+    console.log('Current question id:', currentQuestion.id);
     
     // Calculate and log persona score after each question
     const currentScore = calculatePersonaScore();
@@ -1232,8 +1205,8 @@ function handleContinue() {
         return;
     }
     
-    // Check if this is the settlement plan question
-    if (currentQuestion.id === 2) {
+    // Check if this is the settlement method question (id: 'settlement_method')
+    if (currentQuestion.id === 'settlement_method') {
         const selectedValue = answers[currentQuestionIndex];
         if (selectedValue && selectedValue !== 'not-sure') {
             showRecommendationModal(selectedValue);
@@ -1530,10 +1503,6 @@ function handleTextInput(event) {
     } else {
         answers[questionId] = value;
     }
-    
-    // Calculate and log persona score
-    const currentScore = calculatePersonaScore();
-    console.log('Current persona score after text input:', currentScore);
     
     // Enable/disable continue button based on whether there's text
     const continueBtn = document.querySelector('#continue-button');
@@ -1860,10 +1829,8 @@ function handleGetStarted() {
     appContainer.style.display = 'block';
     topNav.style.display = 'flex';
 
-    // Start with first question
-    currentQuestionIndex = 0;
-    renderQuestion(currentQuestionIndex);
-    updateProgressSteps();
+    // Show goals intro screen
+    showGoalsIntroScreen();
 }
 
 // Add event listener when DOM is loaded
@@ -1995,20 +1962,6 @@ const PERSONAS = {
     }
 };
 
-function getPersonaByScore(score) {
-    console.log('Determining persona for score:', score);
-    if (score <= 7) {
-        console.log('Score <= 7: Surveyor');
-        return 'surveyor';
-    } else if (score >= 12) {
-        console.log('Score >= 12: Settler');
-        return 'settler';
-    } else {
-        console.log('Score 8-11: Explorer');
-        return 'explorer';
-    }
-}
-
 function getGoalsList() {
     // Format timeline and method for the settlement goal
     const timelineAnswer = answers[0]; // Question 1 is settlement timeline
@@ -2104,26 +2057,122 @@ function showPersonaScreen() {
     const mainContent = document.querySelector('.main-content');
     mainContent.innerHTML = '';
     
-    // Calculate persona based on answers
-    const personaScore = calculatePersonaScore();
-    const personaType = getPersonaByScore(personaScore);
-    console.log('Determined persona type:', personaType, 'with score:', personaScore);
+    // --- SETTLEMENT TIMELINE ELEMENT ---
+    // Hardcoded values
+    const effectiveDate = new Date('2021-05-01');
+    const deadlineDate = new Date('2031-05-01');
+    const today = new Date();
+    const address = '2 Second Rd., Cleveland, OH 44113';
+
+    // Get user answers
+    const timelineAnswer = answers[0]; // settlement_timeline
+    const methodAnswer = answers[1]; // settlement method
+    
+    // Determine settlement window (in years from today)
+    let windowStart, windowEnd, windowLabel;
+    if (timelineAnswer === 'within_year') {
+        windowStart = new Date(today);
+        windowEnd = new Date(today);
+        windowEnd.setFullYear(windowEnd.getFullYear() + 1);
+        windowLabel = 'within the next year';
+    } else if (timelineAnswer === 'within_three_years') {
+        windowStart = new Date(today);
+        windowEnd = new Date(today);
+        windowEnd.setFullYear(windowEnd.getFullYear() + 3);
+        windowLabel = 'within the next 1-3 years';
+    } else if (timelineAnswer === 'more_than_three_years') {
+        windowStart = new Date(today);
+        windowStart.setFullYear(windowStart.getFullYear() + 3);
+        windowEnd = new Date(today);
+        windowEnd.setFullYear(windowEnd.getFullYear() + 5);
+        windowLabel = 'within the next 3-5 years';
+    } else {
+        // not_sure or fallback
+        windowStart = new Date(today);
+        windowEnd = new Date(deadlineDate);
+        windowLabel = 'at a future date to be determined';
+    }
+    // Truncate windowEnd if it exceeds deadline
+    if (windowEnd > deadlineDate) windowEnd = new Date(deadlineDate);
+    if (windowStart > deadlineDate) windowStart = new Date(deadlineDate);
+
+    // Dynamic copy
+    let methodText = '';
+    if (methodAnswer && methodAnswer !== 'not-sure') {
+        const methodMap = {
+            'refinancing': 'a refinance',
+            'cash-savings': 'cash savings',
+            'loan-heloc': 'a home equity loan or line of credit',
+            'home-sale': 'a home sale',
+        };
+        methodText = methodMap[methodAnswer] || 'your chosen method';
+    } else {
+        methodText = 'a method to be determined';
+    }
+    const timelineCopy = `You plan to settle your HEI through ${methodText} ${windowLabel}.`;
+
+    // Timeline years and tickmarks
+    const startYear = effectiveDate.getFullYear();
+    const endYear = deadlineDate.getFullYear();
+    const years = [];
+    for (let y = startYear; y <= endYear; y++) years.push(y);
+    // Calculate tick positions as %
+    const tickPercents = years.map(y => ((new Date(y, 0, 1) - effectiveDate) / (deadlineDate - effectiveDate)) * 100);
+
+    // Calculate bar segment widths (as % of total duration)
+    const totalMs = deadlineDate - effectiveDate;
+    const blueMs = today - effectiveDate;
+    const purpleMs = Math.max(0, windowEnd - windowStart);
+    const grayMs = Math.max(0, deadlineDate - Math.max(today, windowEnd));
+    const bluePct = Math.max(0, Math.min(100, (blueMs / totalMs) * 100));
+    const purplePct = Math.max(0, Math.min(100, (purpleMs / totalMs) * 100));
+    const grayPct = Math.max(0, 100 - bluePct - purplePct);
+
+    // Timeline HTML
+    const settlementTimeline = document.createElement('div');
+    settlementTimeline.className = 'settlement-timeline';
+    settlementTimeline.innerHTML = `
+        <div class="settlement-timeline-header">SETTLEMENT TIMELINE</div>
+        <div class="settlement-timeline-desc">${timelineCopy} Norem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+        <hr class="settlement-timeline-divider" />
+        <div class="settlement-timeline-bar-container">
+            <div style="position: relative; height: 36px; margin-bottom: 0;">
+                <div style="position: absolute; left: ${bluePct}%; transform: translateX(-50%); top: 0;">
+                    <div class="settlement-timeline-callout">Today</div>
+                </div>
+                <div style="position: absolute; left: ${bluePct + (purplePct / 2)}%; transform: translateX(-50%); top: 0;">
+                    <div class="settlement-timeline-callout settlement">Possible settlement</div>
+                </div>
+            </div>
+            <div class="settlement-timeline-bar" style="position: relative; display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: #e9ecf5;">
+                <div style="background: #1a3365; width: ${bluePct}%;"></div>
+                <div style="background: #b79cff; width: ${purplePct}%;"></div>
+                <div style="background: #e9ecf5; width: ${grayPct}%;"></div>
+                ${tickPercents.map((pct, i) => `
+                    <div class=\"settlement-timeline-tick\" style=\"position: absolute; left: ${pct}%; top: 0; height: 20px; width: 0; border-left: 2px solid #d1d5db; z-index: 2;\"></div>
+                `).join('')}
+            </div>
+            <div class="settlement-timeline-years" style="position: relative; display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+                ${years.map((y, i) => `
+                    <span class="settlement-timeline-year" style="position: absolute; left: ${tickPercents[i]}%; transform: translateX(-50%); font-size: 11px; color: #919aac; font-weight: 500; top: 0;">${y}</span>
+                `).join('')}
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-top: 16px; color: #1a3365; font-size: 16px; font-weight: 500;">
+            <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.333 8.333V15a1.667 1.667 0 0 0 1.667 1.667h10a1.667 1.667 0 0 0 1.667-1.667V8.333" stroke="#1a3365" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 13.333a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" stroke="#1a3365" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.667 8.333 10 2.5l8.333 5.833" stroke="#1a3365" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>${address}</span>
+        </div>
+    `;
+    mainContent.appendChild(settlementTimeline);
+    // --- END SETTLEMENT TIMELINE ---
+
+    // Use default persona type
+    const personaType = 'explorer';
+    console.log('Using persona type:', personaType);
     const persona = PERSONAS[personaType];
     
     const personaScreen = document.createElement('div');
     personaScreen.className = 'persona-screen';
-    
-    const personaHeader = document.createElement('div');
-    personaHeader.className = 'persona-header';
-    personaHeader.innerHTML = `
-        <div class="persona-content">
-            <div class="persona-text">
-                <h1>${persona.header}</h1>
-                <p>${persona.description}</p>
-            </div>
-            <img src="assets/${persona.icon}" alt="Persona icon" class="persona-icon">
-        </div>
-    `;
     
     const personaGraph = document.createElement('div');
     personaGraph.className = 'persona-graph';
@@ -2214,7 +2263,6 @@ function showPersonaScreen() {
         segments: personaGraph.querySelectorAll('.focus-area-segment')
     });
     
-    personaScreen.appendChild(personaHeader);
     personaScreen.appendChild(personaGraph);
     
     personaGoals = document.createElement('div');
@@ -2280,4 +2328,102 @@ function calculatePersonaScore() {
     
     console.log('Total persona score:', totalScore);
     return totalScore;
-} 
+}
+
+function showGoalsIntroScreen() {
+    currentStep = 1;
+    updateProgress();
+    
+    const mainContent = document.querySelector('.main-content');
+    mainContent.innerHTML = '';
+    
+    // Calculate timeline percentages
+    const effectiveDate = new Date('2021-05-01');
+    const deadlineDate = new Date('2031-05-01');
+    const today = new Date();
+    const address = '2 Second Rd., Cleveland, OH 44113';
+
+    // Calculate elapsed time percentage
+    const totalMs = deadlineDate - effectiveDate;
+    const elapsedMs = today - effectiveDate;
+    const elapsedPct = Math.max(0, Math.min(100, (elapsedMs / totalMs) * 100));
+    const remainingPct = Math.max(0, 100 - elapsedPct);
+
+    // Get years for timeline
+    const startYear = effectiveDate.getFullYear();
+    const endYear = deadlineDate.getFullYear();
+    const years = [];
+    for (let y = startYear; y <= endYear; y++) years.push(y);
+    
+    // Calculate tick positions as percentages
+    const tickPercents = years.map(y => ((new Date(y, 0, 1) - effectiveDate) / (deadlineDate - effectiveDate)) * 100);
+
+    const goalsIntro = document.createElement('div');
+    goalsIntro.className = 'question-container';
+    goalsIntro.innerHTML = `
+        <span class="question-label">GOALS</span>
+        <h1 class="question-title">Jane, you've had your Home Equity Investment for over three years</h1>
+        <p class="question-reminder">Thank you for being a valued Hometap Homeowner! Let's get caught up on how things have been going with your investment and where you're at with achieving your goals.</p>
+        
+        <div class="settlement-timeline">
+            <div class="settlement-timeline-bar-container">
+                <div style="position: relative; height: 36px; margin-bottom: 0;">
+                    <div style="position: absolute; left: ${elapsedPct}%; transform: translateX(-50%); top: 0;">
+                        <div class="settlement-timeline-callout">Today</div>
+                    </div>
+                </div>
+                <div class="settlement-timeline-bar" style="position: relative; display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: #e9ecf5;">
+                    <div style="background: #1a3365; width: ${elapsedPct}%;"></div>
+                    <div style="background: #e9ecf5; width: ${remainingPct}%;"></div>
+                    ${tickPercents.map((pct, i) => `
+                        <div class="settlement-timeline-tick" style="position: absolute; left: ${pct}%; top: 0; height: 20px; width: 0; border-left: 2px solid #d1d5db; z-index: 2;"></div>
+                    `).join('')}
+                </div>
+                <div class="settlement-timeline-years" style="position: relative; display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+                    ${years.map((y, i) => {
+                        let align = 'center';
+                        if (i === 0) align = 'left';
+                        else if (i === years.length - 1) align = 'right';
+                        return `<span class=\"settlement-timeline-year\" style=\"position: absolute; left: ${tickPercents[i]}%; transform: translateX(${align === 'center' ? '-50%' : align === 'left' ? '0' : '-100%'}); font-size: 11px; color: #919aac; font-weight: 500; top: 0; text-align: ${align};\">${y}</span>`;
+                    }).join('')}
+                </div>
+                <div class="settlement-timeline-address">
+                    <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3.333 8.333V15a1.667 1.667 0 0 0 1.667 1.667h10a1.667 1.667 0 0 0 1.667-1.667V8.333" stroke="#1a3365" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 13.333a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" stroke="#1a3365" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M1.667 8.333 10 2.5l8.333 5.833" stroke="#1a3365" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>${address}</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    mainContent.appendChild(goalsIntro);
+
+    // Remove any existing navigation footer
+    const existingNav = document.querySelector('.navigation');
+    if (existingNav) {
+        existingNav.remove();
+    }
+
+    // Add navigation footer
+    const navigation = document.createElement('div');
+    navigation.className = 'navigation';
+    navigation.innerHTML = `
+        <button class="continue-btn nav-btn" id="goals-intro-continue-btn">Continue</button>
+    `;
+    document.body.appendChild(navigation);
+
+    // Place the button on the lower right
+    navigation.style.justifyContent = 'flex-end';
+
+    // Add event listener for continue
+    document.getElementById('goals-intro-continue-btn').addEventListener('click', function() {
+        console.log('Continue button clicked');
+        currentQuestionIndex = 0;
+        console.log('About to call renderQuestion(0)');
+        renderQuestion(0);
+        console.log('Called renderQuestion(0)');
+    });
+}
