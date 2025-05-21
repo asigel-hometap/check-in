@@ -168,7 +168,16 @@ const recommendations = {
         helperText: 'Learn about the refinancing process, what to consider, and how to prepare for settlement',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/rec-refi.png',
+        img: 'assets/house-photo.png',
+        category: 'game_plan'
+      },
+      {
+        id: 'funding_refi_simplified',
+        title: 'Save on refinance closing costs with Simplist',
+        helperText: 'Eligible Hometap homeowners are eligible for $1,000 off closing costs with Simplist',
+        content_type: 'Guides & More',
+        time_estimate: 10,
+        img: 'assets/house-photo.png',
         category: 'game_plan'
       }
     ],
@@ -179,7 +188,7 @@ const recommendations = {
         helperText: 'A comprehensive guide to settling your investment with cash savings',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/rec-savings.png',
+        img: 'assets/house-photo.png',
         category: 'game_plan'
       }
     ],
@@ -190,7 +199,7 @@ const recommendations = {
         helperText: 'Learn how to settle your Investment with a Home Equity Line of Credit.',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/rec-heloc.png',
+        img: 'assets/house-photo.png',
         category: 'game_plan'
       }
     ],
@@ -201,7 +210,7 @@ const recommendations = {
         helperText: 'A comprehensive guide to settling your investment through a home sale.',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/rec-home-sale.png',
+        img: 'assets/house-photo.png',
         category: 'game_plan'
       }
     ]
@@ -214,7 +223,7 @@ const recommendations = {
         helperText: 'Learn how to manage your Investment during major life events',
         content_type: 'Article',
         time_estimate: 7,
-        img: 'assets/rec-marriage.png',
+        img: 'assets/house-photo.png',
         category: 'game_plan',
       }
     ],
@@ -225,7 +234,7 @@ const recommendations = {
         helperText: 'Financial planning for growing families.',
         content_type: 'Video',
         time_estimate: 6,
-        img: 'assets/rec-birth.png',
+        img: 'assets/house-photo.png',
         category: 'game_plan'
       }
     ],
@@ -236,7 +245,7 @@ const recommendations = {
         helperText: 'Learn how to manage your Investment during major life events',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/rec-job-change.png',
+        img: 'assets/house-photo.png',
         category: 'prep_future'
       }
     ],
@@ -247,7 +256,7 @@ const recommendations = {
         helperText: 'Learn how to factor your HEI into unexpected financial gains',
         content_type: 'Article',
         time_estimate: 4,
-        img: 'assets/rec-windfall.png',
+        img: 'assets/house-photo.png',
         category: 'game_plan'
       }
     ],
@@ -258,7 +267,7 @@ const recommendations = {
         helperText: 'Learn how to manage your investment during major life events.',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/rec-medical.png',
+        img: 'assets/house-photo.png',
         category: 'game_plan'
       }
     ],
@@ -269,8 +278,17 @@ const recommendations = {
         helperText: 'Try our renovation calculator to see how much equity you can add with an upgrade',
         content_type: 'Calculator',
         time_estimate: 5,
-        img: 'assets/rec-home-repair.png',
+        img: 'assets/house-photo.png',
         category: 'game_plan'
+      },
+      {
+        id: 'event_repair_warranty',
+        title: 'Avoid surprise costs with a home warranty',
+        helperText: 'If you\'re worried about large repair bills, a home warranty is budget friendly and offers discounts on replacement appliances and systems',
+        content_type: 'Guides & More',
+        time_estimate: 10,
+        img: 'assets/house-photo.png',
+        category: 'prep_future'
       }
     ],
     property_transaction: [
@@ -280,7 +298,7 @@ const recommendations = {
         helperText: 'Learn how your HEI factors into your property transaction',
         content_type: 'Article',
         time_estimate: 10,
-        img: 'assets/rec-property.png',
+        img: 'assets/house-photo.png',
         category: 'game_plan'
       }
     ],
@@ -291,7 +309,7 @@ const recommendations = {
         helperText: 'Contact a member of our team and we\'ll do everything we can to help you',
         content_type: 'Personal Coaching',
         time_estimate: 20,
-        img: 'assets/rec-disaster.png',
+        img: 'assets/house-photo.png',
         category: 'game_plan'
       }
     ],
@@ -302,8 +320,95 @@ const recommendations = {
         helperText: 'Learn how to make the best use of funds',
         content_type: 'Personal Coaching',
         time_estimate: 12,
-        img: 'assets/rec-business.png',
+        img: 'assets/house-photo.png',
         category: 'on_track'
+      }
+    ]
+  },
+  // --- Add financial_wellbeing recommendations ---
+  financial_wellbeing: {
+    financial_education: [
+      {
+        id: 'wellbeing_education',
+        title: 'Explore the Financial Health Hub',
+        helperText: 'Gain confidence and plan for the future with our free suite of personal finance tools, courses, and resources',
+        content_type: 'Guides & More',
+        time_estimate: 30,
+        img: 'assets/house-photo.jpg',
+        category: 'prep_future'
+      }
+    ],
+    increasing_liquidity: [
+      {
+        id: 'wellbeing_liquidity',
+        title: 'Learn about Investment Increases',
+        helperText: 'If you didn\'t take the full amount from Hometap the first time around, you may be able to access more of your own equity',
+        content_type: 'Article',
+        time_estimate: 5,
+        img: 'assets/house-photo.jpg',
+        category: 'on_track'
+      }
+    ],
+    hei_questions: [
+      {
+        id: 'wellbeing_hei_faq',
+        title: 'Answers to Common HEI Questions',
+        helperText: 'Get answers to frequently asked questions about your Home Equity Investment',
+        content_type: 'FAQ',
+        time_estimate: 2,
+        img: 'assets/house-photo.jpg',
+        category: 'game_plan'
+      },
+      {
+        id: 'wellbeing_hei_contact',
+        title: 'Contact the Hometap team',
+        helperText: 'Schedule a time with our Investment Support team to learn anything you may want to know about your investment',
+        content_type: 'Personal Coaching',
+        time_estimate: 15,
+        img: 'assets/house-photo.jpg',
+        category: 'game_plan'
+      }
+    ],
+    home_renovation: [
+      {
+        id: 'wellbeing_renovation',
+        title: 'Planning a Home Renovation',
+        helperText: 'Tips and calculators for planning your next home project.',
+        content_type: 'Calculator',
+        time_estimate: 5,
+        img: 'assets/house-photo.jpg',
+        category: 'prep_future'
+      }
+    ],
+    lower_payments: [
+      {
+        id: 'wellbeing_payments_ownwell',
+        title: 'Get help lowering your property taxes',
+        helperText: 'Eligible homeowners can save an average of $1,100 on their property taxes with Ownwell',
+        content_type: 'Guides & More',
+        time_estimate: 10,
+        img: 'assets/house-photo.jpg',
+        category: 'game_plan'
+      },
+      {
+        id: 'wellbeing_payments_enrich',
+        title: 'Explore budget solutions with the Financial Health Hub',
+        helperText: 'The Financial Health Hub offers a free suite of tools and resources to help you make the most of your money',
+        content_type: 'Guides & More',
+        time_estimate: 10,
+        img: 'assets/house-photo.jpg',
+        category: 'game_plan'
+      }
+    ],
+    other: [
+      {
+        id: 'wellbeing_other',
+        title: 'Personalized Support',
+        helperText: 'Contact our team for personalized support with your financial goals',
+        content_type: 'Personal Coaching',
+        time_estimate: 10,
+        img: 'assets/house-photo.jpg',
+        category: 'game_plan'
       }
     ]
   }
@@ -313,6 +418,10 @@ const recommendations = {
 let stepIndex = 0;
 let answers = {};
 let toastVisible = false;
+
+// --- Edit mode state ---
+let isEditMode = false;
+let playbookState = null; // { grouped, alsoLike }
 
 // --- Main Render Function ---
 function render() {
@@ -1974,8 +2083,121 @@ function renderCustomizePlan() {
           max-width: 100vw;
         }
       }
+      .edit-btn, .save-btn, .cancel-btn {
+        border-radius: 6px;
+        background: #366CED;
+        color: #FFF;
+        font-family: 'Mulish', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 24px;
+        padding: 12px 28px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 1px 2px rgba(26,51,101,0.04);
+        transition: background 0.2s;
+        margin-left: 16px;
+      }
+      .edit-btn { background: #366CED; }
+      .edit-btn:hover { background: #2852b9; }
+      .save-btn { background: #366CED; }
+      .save-btn:hover { background: #2852b9; }
+      .cancel-btn { background: #fff; color: #366CED; border: 1.5px solid #366CED; }
+      .cancel-btn:hover { background: #F5F7FA; }
+      .rec-card-remove {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-left: 12px;
+        margin-top: 2px;
+        align-self: flex-start;
+        transition: transform 0.15s, opacity 0.15s;
+        opacity: 0.7;
+      }
+      .rec-card-remove:hover { opacity: 1; transform: scale(1.15); }
+      .rec-card-add {
+        background: #366CED;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        font-size: 22px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-left: 12px;
+        margin-top: 2px;
+        transition: background 0.15s, transform 0.15s, opacity 0.15s;
+        opacity: 0.85;
+      }
+      .rec-card-add:hover { background: #2852b9; opacity: 1; transform: scale(1.15); }
+      .rec-card-fade {
+        animation: fadeMove 0.3s;
+      }
+      @keyframes fadeMove {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
     `;
     document.head.appendChild(style);
+  }
+
+  // --- Playbook state management ---
+  // Assign categories to placeholders
+  const placeholders = [
+    {
+      title: 'Understanding Home Equity',
+      helperText: 'A quick guide to the basics of home equity and how it works.',
+      content_type: 'Article',
+      time_estimate: 5,
+      img: 'assets/house-photo.jpg',
+      category: 'game_plan'
+    },
+    {
+      title: 'Tips for First-Time Sellers',
+      helperText: 'Key things to know if you are considering selling your home for the first time.',
+      content_type: 'Video',
+      time_estimate: 7,
+      img: 'assets/house-photo.jpg',
+      category: 'on_track'
+    },
+    {
+      title: 'How to Boost Your Home Value',
+      helperText: 'Simple improvements that can increase your home\'s value before settlement.',
+      content_type: 'Guides & More',
+      time_estimate: 4,
+      img: 'assets/house-photo.jpg',
+      category: 'prep_future'
+    }
+  ];
+
+  // On first render, initialize playbook state
+  if (!playbookState) {
+    const recs = getRecommendations();
+    const grouped = { game_plan: [], on_track: [], prep_future: [] };
+    recs.forEach(rec => { if (grouped[rec.category]) grouped[rec.category].push(rec); });
+    playbookState = {
+      grouped,
+      alsoLike: [...placeholders]
+    };
+  }
+
+  // If not in edit mode, use playbookState; if in edit mode, use a working copy
+  let workingState = isEditMode && playbookState._editCopy ? playbookState._editCopy : playbookState;
+  if (isEditMode && !playbookState._editCopy) {
+    // Deep copy for edit mode
+    playbookState._editCopy = {
+      grouped: {
+        game_plan: [...playbookState.grouped.game_plan],
+        on_track: [...playbookState.grouped.on_track],
+        prep_future: [...playbookState.grouped.prep_future]
+      },
+      alsoLike: [...playbookState.alsoLike]
+    };
+    workingState = playbookState._editCopy;
   }
 
   // --- Wrapper ---
@@ -2022,28 +2244,6 @@ function renderCustomizePlan() {
   sidebar.appendChild(nav);
   wrapper.appendChild(sidebar);
 
-  // Group recommendations by category
-  const recommendations = getRecommendations();
-  const grouped = { game_plan: [], on_track: [], prep_future: [] };
-  recommendations.forEach(rec => {
-    if (grouped[rec.category]) grouped[rec.category].push(rec);
-  });
-  const categoryLabels = {
-    game_plan: 'Game Plan',
-    on_track: 'On Track',
-    prep_future: 'Prep for the Future'
-  };
-
-  // Calculate total estimated time
-  const totalTime = recommendations.reduce((sum, rec) => sum + (rec.time_estimate || 0), 0);
-
-  // Date range: today - 90 days from today
-  const today = new Date();
-  const endDate = new Date(today);
-  endDate.setDate(today.getDate() + 90);
-  const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
-  const dateRange = `${today.toLocaleDateString('en-US', dateOptions)} – ${endDate.toLocaleDateString('en-US', dateOptions)}`;
-
   // Main content
   const container = document.createElement('div');
   container.className = 'customize-main-content';
@@ -2068,7 +2268,7 @@ function renderCustomizePlan() {
   // Date range
   const dates = document.createElement('div');
   dates.className = 'customize-header-dates';
-  dates.textContent = dateRange;
+  dates.textContent = 'May 1, 2021 – May 1, 2031';
   headerLeft.appendChild(dates);
   headerRow.appendChild(headerLeft);
 
@@ -2081,6 +2281,9 @@ function renderCustomizePlan() {
   clock.alt = 'Clock';
   badge.appendChild(clock);
   // Text
+  // Sum time_estimate of all recs in playbook
+  const allPlaybookRecs = Object.values(workingState.grouped).flat();
+  const totalTime = allPlaybookRecs.reduce((sum, rec) => sum + (rec.time_estimate || 0), 0);
   const badgeText = document.createElement('span');
   badgeText.textContent = `EST. ${totalTime} MIN`;
   badge.appendChild(badgeText);
@@ -2088,8 +2291,58 @@ function renderCustomizePlan() {
 
   container.appendChild(headerRow);
 
+  // --- Edit/Save/Cancel buttons ---
+  const buttonContainer = document.createElement('div');
+  buttonContainer.style.display = 'flex';
+  buttonContainer.style.alignItems = 'center';
+  buttonContainer.style.marginLeft = 'auto';
+  buttonContainer.style.marginTop = '8px';
+  if (!isEditMode) {
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.textContent = 'Edit';
+    editBtn.onclick = () => {
+      isEditMode = true;
+      renderCustomizePlan();
+    };
+    buttonContainer.appendChild(editBtn);
+  } else {
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'cancel-btn';
+    cancelBtn.textContent = 'Cancel';
+    cancelBtn.onclick = () => {
+      // Discard changes
+      if (playbookState._editCopy) delete playbookState._editCopy;
+      isEditMode = false;
+      renderCustomizePlan();
+    };
+    buttonContainer.appendChild(cancelBtn);
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'save-btn';
+    saveBtn.textContent = 'Save';
+    saveBtn.onclick = () => {
+      // Commit changes
+      if (playbookState._editCopy) {
+        playbookState.grouped = playbookState._editCopy.grouped;
+        playbookState.alsoLike = playbookState._editCopy.alsoLike;
+        delete playbookState._editCopy;
+      }
+      isEditMode = false;
+      renderCustomizePlan();
+    };
+    buttonContainer.appendChild(saveBtn);
+  }
+  headerRow.appendChild(buttonContainer);
+
+  container.appendChild(headerRow);
+
   // --- Recommendation Groups ---
-  Object.entries(grouped).forEach(([cat, recs]) => {
+  const categoryLabels = {
+    game_plan: 'Game Plan',
+    on_track: 'On Track',
+    prep_future: 'Prep for the Future'
+  };
+  Object.entries(workingState.grouped).forEach(([cat, recs]) => {
     if (recs.length === 0) return;
     const groupDiv = document.createElement('div');
     groupDiv.className = 'rec-category-group';
@@ -2097,9 +2350,9 @@ function renderCustomizePlan() {
     groupTitle.className = 'rec-category-title';
     groupTitle.textContent = categoryLabels[cat] || cat;
     groupDiv.appendChild(groupTitle);
-    recs.forEach(rec => {
+    recs.forEach((rec, idx) => {
       const card = document.createElement('div');
-      card.className = 'recommendation-card';
+      card.className = 'recommendation-card rec-card-fade';
       // Image
       const img = document.createElement('img');
       img.className = 'rec-card-img';
@@ -2138,6 +2391,23 @@ function renderCustomizePlan() {
       meta.appendChild(time);
       content.appendChild(meta);
       card.appendChild(content);
+      // Remove button in edit mode
+      if (isEditMode) {
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'rec-card-remove';
+        removeBtn.title = 'Remove from playbook';
+        removeBtn.innerHTML = `<img src='assets/remove.svg' alt='Remove' width='24' height='24'/>`;
+        removeBtn.onclick = () => {
+          // Animate out, then move to alsoLike
+          card.style.opacity = '0';
+          setTimeout(() => {
+            workingState.grouped[cat].splice(idx, 1);
+            workingState.alsoLike.push({ ...rec });
+            renderCustomizePlan();
+          }, 180);
+        };
+        card.appendChild(removeBtn);
+      }
       groupDiv.appendChild(card);
     });
     container.appendChild(groupDiv);
@@ -2152,37 +2422,14 @@ function renderCustomizePlan() {
   alsoLikeTitle.className = 'rec-category-title';
   alsoLikeTitle.textContent = 'You might also like';
   alsoLikeSection.appendChild(alsoLikeTitle);
-  // Placeholder cards
-  const placeholders = [
-    {
-      title: 'Understanding Home Equity',
-      helperText: 'A quick guide to the basics of home equity and how it works.',
-      content_type: 'Article',
-      time_estimate: 5,
-      img: 'assets/house-photo.jpg'
-    },
-    {
-      title: 'Tips for First-Time Sellers',
-      helperText: 'Key things to know if you are considering selling your home for the first time.',
-      content_type: 'Video',
-      time_estimate: 7,
-      img: 'assets/house-photo.jpg'
-    },
-    {
-      title: 'How to Boost Your Home Value',
-      helperText: 'Simple improvements that can increase your home\'s value before settlement.',
-      content_type: 'Guides & More',
-      time_estimate: 4,
-      img: 'assets/house-photo.jpg'
-    }
-  ];
-  placeholders.forEach(rec => {
+  // Cards
+  workingState.alsoLike.forEach((rec, idx) => {
     const card = document.createElement('div');
-    card.className = 'recommendation-card';
+    card.className = 'recommendation-card rec-card-fade';
     // Image
     const img = document.createElement('img');
     img.className = 'rec-card-img';
-    img.src = rec.img;
+    img.src = 'assets/house-photo.jpg';
     img.alt = 'Recommendation';
     card.appendChild(img);
     // Content
@@ -2217,6 +2464,24 @@ function renderCustomizePlan() {
     meta.appendChild(time);
     content.appendChild(meta);
     card.appendChild(content);
+    // Add button in edit mode
+    if (isEditMode) {
+      const addBtn = document.createElement('button');
+      addBtn.className = 'rec-card-add';
+      addBtn.title = 'Add to playbook';
+      addBtn.innerHTML = '+';
+      addBtn.onclick = () => {
+        // Animate out, then move to playbook
+        card.style.opacity = '0';
+        setTimeout(() => {
+          const cat = rec.category;
+          workingState.grouped[cat].push({ ...rec });
+          workingState.alsoLike.splice(idx, 1);
+          renderCustomizePlan();
+        }, 180);
+      };
+      card.appendChild(addBtn);
+    }
     alsoLikeSection.appendChild(card);
   });
   container.appendChild(alsoLikeSection);
@@ -2268,6 +2533,15 @@ function getRecommendations() {
     answers.life_events_future.forEach(event => {
       if (recommendations.life_events[event]) {
         userRecommendations.push(...recommendations.life_events[event]);
+      }
+    });
+  }
+  
+  // Add recommendations based on financial wellbeing
+  if (answers.financial_wellbeing) {
+    answers.financial_wellbeing.forEach(val => {
+      if (recommendations.financial_wellbeing[val]) {
+        userRecommendations.push(...recommendations.financial_wellbeing[val]);
       }
     });
   }
@@ -2520,50 +2794,20 @@ function renderQuestionPage() {
     };
     container.appendChild(input);
 
-    // Example buttons (hardcoded)
+    // Read-only examples below the input
     if (currentQuestion.id === 'steps_taken') {
-      const examples = [
-        'I started a settlement savings goal',
-        'I found a realtor to start the home sale process',
-        "I've contacted Hometap to start the settlement process"
-      ];
-      const examplesContainer = document.createElement('div');
-      examplesContainer.style.display = 'flex';
-      examplesContainer.style.flexDirection = 'column';
-      examplesContainer.style.gap = '20px';
-      examplesContainer.style.margin = '80px 0 0 0';
-      examplesContainer.style.width = '100%';
-      examplesContainer.style.maxWidth = '600px';
-      examplesContainer.style.alignItems = 'center';
-      examples.forEach(example => {
-        const btn = document.createElement('button');
-        btn.textContent = example;
-        btn.style.display = 'flex';
-        btn.style.padding = '20px 24px';
-        btn.style.flexDirection = 'column';
-        btn.style.alignItems = 'flex-start';
-        btn.style.gap = '2px';
-        btn.style.alignSelf = 'stretch';
-        btn.style.borderRadius = '6px';
-        btn.style.background = '#FFF';
-        btn.style.boxShadow = '0px 2px 10px 0px rgba(32, 53, 104, 0.12)';
-        btn.style.fontFamily = 'Mulish, sans-serif';
-        btn.style.fontSize = '16px';
-        btn.style.color = '#152033';
-        btn.style.border = 'none';
-        btn.style.width = '100%';
-        btn.style.maxWidth = '600px';
-        btn.style.cursor = 'pointer';
-        btn.style.transition = 'background 0.2s, box-shadow 0.2s';
-        btn.onmouseover = () => { btn.style.background = '#F5F7FA'; };
-        btn.onmouseout = () => { btn.style.background = '#fff'; };
-        btn.onclick = () => {
-          input.value = example;
-          answers[currentQuestion.id] = example;
-        };
-        examplesContainer.appendChild(btn);
-      });
-      container.appendChild(examplesContainer);
+      const examplesText = document.createElement('div');
+      examplesText.style.color = 'var(--Neutral-Dark-50---687183, var(--Neutral-300---Neutral-dark-50, #687183))';
+      examplesText.style.fontFamily = 'Mulish, sans-serif';
+      examplesText.style.fontSize = '14px';
+      examplesText.style.fontStyle = 'normal';
+      examplesText.style.fontWeight = '400';
+      examplesText.style.lineHeight = 'normal';
+      examplesText.style.margin = '24px 0 0 0';
+      examplesText.style.maxWidth = '600px';
+      examplesText.style.textAlign = 'left';
+      examplesText.innerHTML = `Examples:<br>I've started talking to a Realtor.<br>I've contacted Hometap to start the settlement process<br>I started a settlement savings goal`;
+      container.appendChild(examplesText);
     }
   } else if (currentQuestion.type === 'info') {
     const message = document.createElement('p');
