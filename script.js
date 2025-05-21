@@ -2157,7 +2157,7 @@ function showPersonaScreen() {
                     <span class="settlement-timeline-year" style="position: absolute; left: ${tickPercents[i]}%; transform: translateX(-50%); font-size: 11px; color: #919aac; font-weight: 500; top: 0;">${y}</span>
                 `).join('')}
             </div>
-        </div>
+                </div>
         <div style="display: flex; align-items: center; gap: 8px; margin-top: 16px; color: #1a3365; font-size: 16px; font-weight: 500;">
             <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.333 8.333V15a1.667 1.667 0 0 0 1.667 1.667h10a1.667 1.667 0 0 0 1.667-1.667V8.333" stroke="#1a3365" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 13.333a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" stroke="#1a3365" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.667 8.333 10 2.5l8.333 5.833" stroke="#1a3365" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span>${address}</span>
@@ -2328,7 +2328,7 @@ function calculatePersonaScore() {
     
     console.log('Total persona score:', totalScore);
     return totalScore;
-}
+} 
 
 function showGoalsIntroScreen() {
     currentStep = 1;

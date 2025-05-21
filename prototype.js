@@ -116,56 +116,195 @@ const questions = [
 const recommendations = {
   settlement_timeline: {
     within_year: [
-      { id: 'timeline_soon', title: 'Settlement Planning Guide', description: 'Get ready for your upcoming settlement' }
+      {
+        id: 'timeline_soon',
+        title: 'Contact Investment Support',
+        helperText: 'Ready to start your settlement? Our Investment Support team is here to help',
+        content_type: 'Personal Coaching',
+        time_estimate: 15,
+        img: 'assets/rec-settlement-planning.png',
+        category: 'game_plan'
+      }
     ],
     within_three_years: [
-      { id: 'timeline_medium', title: 'Long-term Planning', description: 'Plan your settlement strategy' }
+      {
+        id: 'timeline_medium',
+        title: 'Try the Settlement Calculator',
+        helperText: 'Estimate your settlement amount at different home values and dates',
+        content_type: 'Calculator',
+        time_estimate: 7,
+        img: 'assets/rec-long-term.png',
+        category: 'on_track'
+      }
     ],
     more_than_three_years: [
-      { id: 'timeline_far', title: 'Future Planning', description: 'Start thinking about your settlement' }
+      {
+        id: 'timeline_far',
+        title: 'Review your Quarterly Account Statement',
+        helperText: 'Stay informed about your home value, equity, and Investment details',
+        content_type: 'Guides & More',
+        time_estimate: 10,
+        img: 'assets/rec-future-planning.png',
+        category: 'prep_future'
+      }
+    ],
+    not_sure: [
+      {
+        id: 'timeline_not_sure',
+        title: 'Understanding Your Settlement Options',
+        helperText: 'Explore different ways to settle your Home Equity Investment',
+        content_type: 'Video',
+        time_estimate: 6,
+        img: 'assets/rec-future-planning.png',
+        category: 'game_plan'
+      }
     ]
   },
   settlement_funding: {
     refinancing: [
-      { id: 'funding_refi', title: 'Refinancing Guide', description: 'Learn about refinancing options' }
+      {
+        id: 'funding_refi',
+        title: 'Settling Your Home Equity Investment with a Refinance',
+        helperText: 'Learn about the refinancing process, what to consider, and how to prepare for settlement',
+        content_type: 'Article',
+        time_estimate: 3,
+        img: 'assets/rec-refi.png',
+        category: 'game_plan'
+      }
     ],
     cash_savings: [
-      { id: 'funding_savings', title: 'Savings Strategy', description: 'Maximize your savings' }
+      {
+        id: 'funding_savings',
+        title: 'Settling Your Home Equity Investment with Cash Savings',
+        helperText: 'A comprehensive guide to settling your investment with cash savings',
+        content_type: 'Article',
+        time_estimate: 3,
+        img: 'assets/rec-savings.png',
+        category: 'game_plan'
+      }
     ],
     loan_heloc: [
-      { id: 'funding_heloc', title: 'HELOC Information', description: 'Understanding HELOCs' }
+      {
+        id: 'funding_heloc',
+        title: 'Settling with a Home Equity Line of Credit',
+        helperText: 'Learn how to settle your Investment with a Home Equity Line of Credit.',
+        content_type: 'Article',
+        time_estimate: 3,
+        img: 'assets/rec-heloc.png',
+        category: 'game_plan'
+      }
     ],
     home_sale: [
-      { id: 'funding_sale', title: 'Home Sale Guide', description: 'Prepare for your home sale' }
+      {
+        id: 'funding_sale',
+        title: 'Settling your Home Equity Investment with a home sale',
+        helperText: 'A comprehensive guide to settling your investment through a home sale.',
+        content_type: 'Article',
+        time_estimate: 3,
+        img: 'assets/rec-home-sale.png',
+        category: 'game_plan'
+      }
     ]
   },
   life_events: {
     marriage: [
-      { id: 'event_marriage', title: 'Marriage Financial Planning', description: 'Financial planning for newlyweds' }
+      {
+        id: 'event_marriage',
+        title: 'Marriage and Your Home Investment',
+        helperText: 'Learn how to manage your Investment during major life events',
+        content_type: 'Article',
+        time_estimate: 7,
+        img: 'assets/rec-marriage.png',
+        category: 'game_plan',
+      }
     ],
     birth: [
-      { id: 'event_birth', title: 'Growing Family Guide', description: 'Financial planning for growing families' }
+      {
+        id: 'event_birth',
+        title: 'Growing Family Guide',
+        helperText: 'Financial planning for growing families.',
+        content_type: 'Video',
+        time_estimate: 6,
+        img: 'assets/rec-birth.png',
+        category: 'game_plan'
+      }
     ],
     job_change: [
-      { id: 'event_job', title: 'Career Change Guide', description: 'Financial planning for career changes' }
+      {
+        id: 'event_job',
+        title: 'Career transitions and your Home Equity Investment',
+        helperText: 'Learn how to manage your Investment during major life events',
+        content_type: 'Article',
+        time_estimate: 3,
+        img: 'assets/rec-job-change.png',
+        category: 'prep_future'
+      }
     ],
     financial_windfall: [
-      { id: 'event_windfall', title: 'Windfall Planning', description: 'Managing unexpected financial gains' }
+      {
+        id: 'event_windfall',
+        title: 'Making the most of a financial windfall',
+        helperText: 'Learn how to factor your HEI into unexpected financial gains',
+        content_type: 'Article',
+        time_estimate: 4,
+        img: 'assets/rec-windfall.png',
+        category: 'game_plan'
+      }
     ],
     medical: [
-      { id: 'event_medical', title: 'Medical Expense Planning', description: 'Managing healthcare costs' }
+      {
+        id: 'event_medical',
+        title: 'Health & Financial Wellness',
+        helperText: 'Learn how to manage your investment during major life events.',
+        content_type: 'Article',
+        time_estimate: 3,
+        img: 'assets/rec-medical.png',
+        category: 'game_plan'
+      }
     ],
     home_repair: [
-      { id: 'event_repair', title: 'Home Repair Planning', description: 'Managing home maintenance costs' }
+      {
+        id: 'event_repair',
+        title: 'Plan a home renovation',
+        helperText: 'Try our renovation calculator to see how much equity you can add with an upgrade',
+        content_type: 'Calculator',
+        time_estimate: 5,
+        img: 'assets/rec-home-repair.png',
+        category: 'game_plan'
+      }
     ],
     property_transaction: [
-      { id: 'event_property', title: 'Property Transaction Guide', description: 'Managing property sales and purchases' }
+      {
+        id: 'event_property',
+        title: 'Our guide to buying and selling',
+        helperText: 'Learn how your HEI factors into your property transaction',
+        content_type: 'Article',
+        time_estimate: 10,
+        img: 'assets/rec-property.png',
+        category: 'game_plan'
+      }
     ],
     disaster: [
-      { id: 'event_disaster', title: 'Disaster Recovery', description: 'Recovering from property damage' }
+      {
+        id: 'event_disaster',
+        title: 'Disaster Recovery',
+        helperText: 'Contact a member of our team and we\'ll do everything we can to help you',
+        content_type: 'Personal Coaching',
+        time_estimate: 20,
+        img: 'assets/rec-disaster.png',
+        category: 'game_plan'
+      }
     ],
     business: [
-      { id: 'event_business', title: 'Business Expense Planning', description: 'Managing business-related costs' }
+      {
+        id: 'event_business',
+        title: 'Business owner resources',
+        helperText: 'Learn how to make the best use of funds',
+        content_type: 'Personal Coaching',
+        time_estimate: 12,
+        img: 'assets/rec-business.png',
+        category: 'on_track'
+      }
     ]
   }
 };
@@ -219,8 +358,10 @@ function render() {
       renderLanding();
   }
 
-  // Navigation
-  renderNavButtons();
+  // Navigation (skip on customize_plan)
+  if (getCurrentStepId() !== 'customize_plan') {
+    renderNavButtons();
+  }
 
   // Render toast if visible
   if (toastVisible) {
@@ -258,7 +399,7 @@ function goToNextStep() {
     setTimeout(() => {
       stepIndex++;
       render();
-    }, 4000);
+    }, 1000); // 1 second spinner
     return;
   }
   
@@ -1489,73 +1630,599 @@ function renderResultsBreakdown() {
 }
 
 function renderLoadingScreen() {
-  const container = document.createElement('div');
-  container.style.padding = '20px';
-  container.style.textAlign = 'center';
+  // Remove any existing loading content
+  document.body.innerHTML = '';
 
+  // Add loading screen styles if not present
+  if (!document.getElementById('prototype-loading-style')) {
+    const style = document.createElement('style');
+    style.id = 'prototype-loading-style';
+    style.textContent = `
+      .loading-root {
+        min-height: 100vh;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(180deg, rgba(250, 251, 252, 0.75) 15%, rgba(225, 233, 252, 0.56) 92.87%), #FFF;
+      }
+      .loading-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px rgba(26, 51, 101, 0.08);
+        padding: 48px 56px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 340px;
+        min-height: 200px;
+      }
+      .loading-title {
+        font-family: 'Tiempos Headline', serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #152033;
+        margin-bottom: 32px;
+        text-align: center;
+        line-height: 40px;
+      }
+      .loading-spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #366CED;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Root container
+  const root = document.createElement('div');
+  root.className = 'loading-root';
+
+  // Card
+  const card = document.createElement('div');
+  card.className = 'loading-card';
+
+  // Title
+  const title = document.createElement('div');
+  title.className = 'loading-title';
+  title.textContent = 'Building your playbook';
+  card.appendChild(title);
+
+  // Spinner
   const spinner = document.createElement('div');
-  spinner.style.border = '4px solid #f3f3f3';
-  spinner.style.borderTop = '4px solid #3498db';
-  spinner.style.borderRadius = '50%';
-  spinner.style.width = '40px';
-  spinner.style.height = '40px';
-  spinner.style.animation = 'spin 2s linear infinite';
-  spinner.style.margin = '20px auto';
+  spinner.className = 'loading-spinner';
+  card.appendChild(spinner);
 
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  `;
-  document.head.appendChild(style);
-
-  container.appendChild(spinner);
-  document.body.appendChild(container);
+  root.appendChild(card);
+  document.body.appendChild(root);
 }
 
 function renderCustomizePlan() {
-  const container = document.createElement('div');
-  container.style.padding = '20px';
-  container.style.textAlign = 'center';
+  // Remove any existing wrapper/sidebar/main content
+  const oldWrapper = document.getElementById('customize-wrapper');
+  if (oldWrapper) oldWrapper.remove();
+  const oldSidebar = document.querySelector('.customize-sidebar');
+  if (oldSidebar) oldSidebar.remove();
+  const oldMain = document.querySelector('.customize-main-content');
+  if (oldMain) oldMain.remove();
 
-  const title = document.createElement('h1');
-  title.textContent = 'Customize Your Playbook';
-  container.appendChild(title);
+  // Add styles for recommendation cards, sidebar, and wrapper if not present
+  if (!document.getElementById('prototype-recommendation-card-style')) {
+    const style = document.createElement('style');
+    style.id = 'prototype-recommendation-card-style';
+    style.textContent = `
+      .customize-wrapper {
+        display: flex;
+        flex-direction: row;
+        min-height: 100vh;
+        width: 100vw;
+        background: none;
+      }
+      .customize-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-width: 300px;
+        width: 300px;
+        height: 100vh;
+        background: #fff;
+        border-right: 1px solid #F0F2F5;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(26,51,101,0.04);
+      }
+      .customize-sidebar-logo {
+        width: 48px;
+        height: 48px;
+        margin: 32px 0 24px 32px;
+      }
+      .customize-sidebar-address {
+        font-family: 'Mulish', sans-serif;
+        font-weight: 700;
+        font-size: 18px;
+        color: #152033;
+        margin-left: 32px;
+        margin-bottom: 2px;
+      }
+      .customize-sidebar-city {
+        font-family: 'Mulish', sans-serif;
+        font-size: 15px;
+        color: #687183;
+        margin-left: 32px;
+        margin-bottom: 24px;
+      }
+      .customize-sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-left: 0;
+        width: 100%;
+        margin-top: 12px;
+      }
+      .customize-sidebar-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-family: 'Mulish', sans-serif;
+        font-size: 16px;
+        color: #434C5E;
+        padding: 12px 32px;
+        border-radius: 8px 0 0 8px;
+        cursor: default;
+        margin-right: 24px;
+        transition: background 0.2s, color 0.2s;
+      }
+      .customize-sidebar-nav-item.active {
+        background: #F5F7FA;
+        color: #366CED;
+        font-weight: 700;
+      }
+      .customize-sidebar-nav-icon {
+        width: 24px;
+        height: 24px;
+        background: #E5E8EF;
+        border-radius: 6px;
+        display: inline-block;
+      }
+      .customize-main-content {
+        margin-left: 300px;
+        width: calc(100vw - 300px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 0 40px 0;
+        min-height: 100vh;
+        background: none;
+      }
+      .customize-header-row {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 900px;
+        margin-bottom: 32px;
+        margin-top: 8px;
+      }
+      .customize-header-left {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .customize-header-label {
+        color: #434C5E;
+        font-family: 'Mulish', sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 23px;
+        margin-bottom: 0;
+      }
+      .customize-header-title {
+        color: #152033;
+        font-family: 'Tiempos Headline', serif;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 40px;
+        margin-bottom: 0;
+      }
+      .customize-header-dates {
+        color: #434C5E;
+        font-family: 'Mulish', sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 23px;
+        margin-bottom: 0;
+      }
+      .customize-header-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #E7EEFF;
+        color: #366CED;
+        font-family: 'Mulish', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 8px 20px;
+        height: 40px;
+        min-width: 120px;
+        justify-content: center;
+        box-shadow: none;
+        letter-spacing: 0.5px;
+        margin-top: 8px;
+      }
+      .customize-header-badge img {
+        width: 20px;
+        height: 20px;
+        margin-right: 4px;
+        display: inline-block;
+      }
+      .rec-category-group {
+        margin-bottom: 36px;
+        width: 100%;
+        max-width: 900px;
+      }
+      .rec-category-title {
+        font-family: 'Mulish', sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #366CED;
+        margin-bottom: 18px;
+        margin-left: 8px;
+        text-align: left;
+      }
+      .recommendation-card {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 24px;
+        border-radius: 12px;
+        background: #FFF;
+        box-shadow: 0px 2px 10px 0px rgba(32, 53, 104, 0.12);
+        padding: 24px 32px;
+        margin-bottom: 24px;
+        max-width: 900px;
+        width: 100%;
+        transition: box-shadow 0.2s;
+      }
+      .recommendation-card:hover {
+        box-shadow: 0px 4px 20px 0px rgba(32, 53, 104, 0.18);
+      }
+      .rec-card-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 8px;
+        object-fit: cover;
+        flex-shrink: 0;
+        background: #F0F2F5;
+      }
+      .rec-card-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        min-width: 0;
+      }
+      .rec-card-title {
+        color: #152033;
+        font-family: 'Mulish', sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 26px;
+        margin: 0 0 2px 0;
+        text-align: left;
+        word-break: break-word;
+      }
+      .rec-card-helper {
+        color: #434C5E;
+        font-family: 'Mulish', sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 23px;
+        margin: 0 0 8px 0;
+        text-align: left;
+        word-break: break-word;
+      }
+      .rec-card-meta {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        margin-top: 8px;
+      }
+      .rec-card-meta-type {
+        color: #687183;
+        font-family: 'Mulish', sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .rec-card-meta-dot {
+        width: 4px;
+        height: 4px;
+        background: #D1D6DF;
+        display: inline-block;
+      }
+      .rec-card-meta-time {
+        color: #687183;
+        font-family: 'Mulish', sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+      }
+      @media (max-width: 1000px) {
+        .customize-header-row, .customize-main-content {
+          max-width: 100vw;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
 
-  const recommendations = getRecommendations();
-  const recommendationsGrid = document.createElement('div');
-  recommendationsGrid.style.display = 'grid';
-  recommendationsGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(250px, 1fr))';
-  recommendationsGrid.style.gap = '20px';
-  recommendationsGrid.style.marginTop = '20px';
-  
-  recommendations.forEach(rec => {
-    const card = document.createElement('div');
-    card.style.padding = '15px';
-    card.style.border = '1px solid #ccc';
-    card.style.borderRadius = '5px';
-    card.style.cursor = 'pointer';
-    
-    const cardTitle = document.createElement('h3');
-    cardTitle.textContent = rec.title;
-    card.appendChild(cardTitle);
-    
-    const cardDesc = document.createElement('p');
-    cardDesc.textContent = rec.description;
-    card.appendChild(cardDesc);
-    
-    // Add click handler to toggle selection
-    card.onclick = () => {
-      card.style.backgroundColor = card.style.backgroundColor === 'lightblue' ? '' : 'lightblue';
-    };
-    
-    recommendationsGrid.appendChild(card);
+  // --- Wrapper ---
+  const wrapper = document.createElement('div');
+  wrapper.className = 'customize-wrapper';
+  wrapper.id = 'customize-wrapper';
+
+  // Sidebar
+  const sidebar = document.createElement('div');
+  sidebar.className = 'customize-sidebar';
+  // Logo
+  const logo = document.createElement('img');
+  logo.className = 'customize-sidebar-logo';
+  logo.src = 'assets/logomark.svg';
+  logo.alt = 'Logo';
+  sidebar.appendChild(logo);
+  // Address
+  const address = document.createElement('div');
+  address.className = 'customize-sidebar-address';
+  address.textContent = '2 Second Rd., Cleveland OH 44113';
+  sidebar.appendChild(address);
+  // Nav
+  const nav = document.createElement('div');
+  nav.className = 'customize-sidebar-nav';
+  const navItems = [
+    { label: 'Overview' },
+    { label: 'Investments' },
+    { label: 'Home equity coach', active: true },
+    { label: 'Home equity forecast' },
+    { label: 'Scenario planner' },
+    { label: 'Resources' }
+  ];
+  navItems.forEach(item => {
+    const navItem = document.createElement('div');
+    navItem.className = 'customize-sidebar-nav-item' + (item.active ? ' active' : '');
+    const icon = document.createElement('span');
+    icon.className = 'customize-sidebar-nav-icon';
+    navItem.appendChild(icon);
+    const label = document.createElement('span');
+    label.textContent = item.label;
+    navItem.appendChild(label);
+    nav.appendChild(navItem);
   });
-  
-  container.appendChild(recommendationsGrid);
-  document.body.appendChild(container);
+  sidebar.appendChild(nav);
+  wrapper.appendChild(sidebar);
+
+  // Group recommendations by category
+  const recommendations = getRecommendations();
+  const grouped = { game_plan: [], on_track: [], prep_future: [] };
+  recommendations.forEach(rec => {
+    if (grouped[rec.category]) grouped[rec.category].push(rec);
+  });
+  const categoryLabels = {
+    game_plan: 'Game Plan',
+    on_track: 'On Track',
+    prep_future: 'Prep for the Future'
+  };
+
+  // Calculate total estimated time
+  const totalTime = recommendations.reduce((sum, rec) => sum + (rec.time_estimate || 0), 0);
+
+  // Date range: today - 90 days from today
+  const today = new Date();
+  const endDate = new Date(today);
+  endDate.setDate(today.getDate() + 90);
+  const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+  const dateRange = `${today.toLocaleDateString('en-US', dateOptions)} – ${endDate.toLocaleDateString('en-US', dateOptions)}`;
+
+  // Main content
+  const container = document.createElement('div');
+  container.className = 'customize-main-content';
+
+  // --- Header Row ---
+  const headerRow = document.createElement('div');
+  headerRow.className = 'customize-header-row';
+
+  // Left side
+  const headerLeft = document.createElement('div');
+  headerLeft.className = 'customize-header-left';
+  // Label
+  const label = document.createElement('div');
+  label.className = 'customize-header-label';
+  label.textContent = 'Home equity coach';
+  headerLeft.appendChild(label);
+  // Title
+  const title = document.createElement('div');
+  title.className = 'customize-header-title';
+  title.textContent = 'Your quarterly playbook';
+  headerLeft.appendChild(title);
+  // Date range
+  const dates = document.createElement('div');
+  dates.className = 'customize-header-dates';
+  dates.textContent = dateRange;
+  headerLeft.appendChild(dates);
+  headerRow.appendChild(headerLeft);
+
+  // Right side: Estimated time badge
+  const badge = document.createElement('div');
+  badge.className = 'customize-header-badge';
+  // Clock icon
+  const clock = document.createElement('img');
+  clock.src = 'assets/clock.svg';
+  clock.alt = 'Clock';
+  badge.appendChild(clock);
+  // Text
+  const badgeText = document.createElement('span');
+  badgeText.textContent = `EST. ${totalTime} MIN`;
+  badge.appendChild(badgeText);
+  headerRow.appendChild(badge);
+
+  container.appendChild(headerRow);
+
+  // --- Recommendation Groups ---
+  Object.entries(grouped).forEach(([cat, recs]) => {
+    if (recs.length === 0) return;
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'rec-category-group';
+    const groupTitle = document.createElement('div');
+    groupTitle.className = 'rec-category-title';
+    groupTitle.textContent = categoryLabels[cat] || cat;
+    groupDiv.appendChild(groupTitle);
+    recs.forEach(rec => {
+      const card = document.createElement('div');
+      card.className = 'recommendation-card';
+      // Image
+      const img = document.createElement('img');
+      img.className = 'rec-card-img';
+      img.src = 'assets/house-photo.jpg';
+      img.alt = 'Recommendation';
+      card.appendChild(img);
+      // Content
+      const content = document.createElement('div');
+      content.className = 'rec-card-content';
+      // Title
+      const title = document.createElement('div');
+      title.className = 'rec-card-title';
+      title.textContent = rec.title;
+      content.appendChild(title);
+      // Helper text
+      const helper = document.createElement('div');
+      helper.className = 'rec-card-helper';
+      helper.textContent = rec.helperText;
+      content.appendChild(helper);
+      // Meta row
+      const meta = document.createElement('div');
+      meta.className = 'rec-card-meta';
+      // Content type
+      const type = document.createElement('span');
+      type.className = 'rec-card-meta-type';
+      type.textContent = rec.content_type;
+      meta.appendChild(type);
+      // Dot
+      const dot = document.createElement('span');
+      dot.className = 'rec-card-meta-dot';
+      meta.appendChild(dot);
+      // Time estimate
+      const time = document.createElement('span');
+      time.className = 'rec-card-meta-time';
+      time.textContent = `${rec.time_estimate} min`;
+      meta.appendChild(time);
+      content.appendChild(meta);
+      card.appendChild(content);
+      groupDiv.appendChild(card);
+    });
+    container.appendChild(groupDiv);
+  });
+
+  // --- You might also like section ---
+  const alsoLikeSection = document.createElement('div');
+  alsoLikeSection.className = 'rec-category-group';
+  alsoLikeSection.style.marginTop = '24px';
+  // Section title
+  const alsoLikeTitle = document.createElement('div');
+  alsoLikeTitle.className = 'rec-category-title';
+  alsoLikeTitle.textContent = 'You might also like';
+  alsoLikeSection.appendChild(alsoLikeTitle);
+  // Placeholder cards
+  const placeholders = [
+    {
+      title: 'Understanding Home Equity',
+      helperText: 'A quick guide to the basics of home equity and how it works.',
+      content_type: 'Article',
+      time_estimate: 5,
+      img: 'assets/house-photo.jpg'
+    },
+    {
+      title: 'Tips for First-Time Sellers',
+      helperText: 'Key things to know if you are considering selling your home for the first time.',
+      content_type: 'Video',
+      time_estimate: 7,
+      img: 'assets/house-photo.jpg'
+    },
+    {
+      title: 'How to Boost Your Home Value',
+      helperText: 'Simple improvements that can increase your home\'s value before settlement.',
+      content_type: 'Guides & More',
+      time_estimate: 4,
+      img: 'assets/house-photo.jpg'
+    }
+  ];
+  placeholders.forEach(rec => {
+    const card = document.createElement('div');
+    card.className = 'recommendation-card';
+    // Image
+    const img = document.createElement('img');
+    img.className = 'rec-card-img';
+    img.src = rec.img;
+    img.alt = 'Recommendation';
+    card.appendChild(img);
+    // Content
+    const content = document.createElement('div');
+    content.className = 'rec-card-content';
+    // Title
+    const title = document.createElement('div');
+    title.className = 'rec-card-title';
+    title.textContent = rec.title;
+    content.appendChild(title);
+    // Helper text
+    const helper = document.createElement('div');
+    helper.className = 'rec-card-helper';
+    helper.textContent = rec.helperText;
+    content.appendChild(helper);
+    // Meta row
+    const meta = document.createElement('div');
+    meta.className = 'rec-card-meta';
+    // Content type
+    const type = document.createElement('span');
+    type.className = 'rec-card-meta-type';
+    type.textContent = rec.content_type;
+    meta.appendChild(type);
+    // Dot
+    const dot = document.createElement('span');
+    dot.className = 'rec-card-meta-dot';
+    meta.appendChild(dot);
+    // Time estimate
+    const time = document.createElement('span');
+    time.className = 'rec-card-meta-time';
+    time.textContent = `${rec.time_estimate} min`;
+    meta.appendChild(time);
+    content.appendChild(meta);
+    card.appendChild(content);
+    alsoLikeSection.appendChild(card);
+  });
+  container.appendChild(alsoLikeSection);
+
+  wrapper.appendChild(container);
+  document.body.appendChild(wrapper);
 }
 
 function renderClosingPage() {
