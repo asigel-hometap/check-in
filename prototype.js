@@ -26,6 +26,7 @@ const questions = [
     id: 'settlement_funding',
     type: 'radio',
     title: 'How do you plan to fund your settlement?',
+    helperText: 'Let us know your plans and we will share tips to [something]. Your answer will not effect your investment in any way.',
     options: [
       { value: 'refinancing', text: 'Refinancing mortgage and other debts' },
       { value: 'cash_savings', text: 'Savings' },
@@ -37,17 +38,20 @@ const questions = [
   {
     id: 'commitment',
     type: 'radio',
-    title: 'How much planning have you done so far?',
+    title: 'Which best describes where you are in the settlement process?',
+    helperText: 'Let us know your plans and we will share tips to [something]. Your answer will not effect your investment in any way.',
     options: [
-      { value: 'still_deciding', text: 'Still deciding' },
-      { value: 'committed_not_started', text: 'Committed, not started' },
-      { value: 'committed_active', text: 'Taken steps' }
+      { value: 'still_deciding', text: "I'm still deciding if my settlement plan is right for me" },
+      { value: 'committed_not_started', text: "I'm committed, but haven't started making progress" },
+      { value: 'committed_active', text: "I've taken steps towards my settlement plan" },
+      { value: 'working_with_hometap', text: "I'm actively working with Hometap in the settlement process" }
     ]
   },
   {
     id: 'steps_taken',
     type: 'text',
-    title: 'What steps have you taken so far?',
+    title: 'What steps towards settlement have you taken so far, if any?',
+    helperText: 'Type your response or choose from the examples below.',
     placeholder: "Tell us what you've been up to",
   },
   // Focus Areas Landing (no question)
@@ -60,15 +64,16 @@ const questions = [
   {
     id: 'life_events_past',
     type: 'checkbox',
-    title: 'Life events in the past 6 months',
+    title: `What life events have occurred in the <span style="color: #19A274; font-weight: 700;">past 6 months</span>?`,
+    helperText: 'Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
     options: [
       { value: 'marriage', text: 'Marital status change' },
       { value: 'birth', text: 'Growing family' },
       { value: 'job_change', text: 'Employment change' },
-      { value: 'financial_windfall', text: 'Major bonus, inheritance, or windfall' },
+      { value: 'financial_windfall', text: 'Major bonus, inheritance, or other financial windfall' },
       { value: 'medical', text: 'Major medical expense' },
       { value: 'home_repair', text: 'Major home repair or renovation' },
-      { value: 'property_transaction', text: 'Bought or sold another property' },
+      { value: 'property_transaction', text: 'Bought or sold a property' },
       { value: 'disaster', text: 'Fire, flood, or natural disaster' },
       { value: 'business', text: 'Other significant expense' },
       { value: 'none', text: 'None of the above' }
@@ -77,7 +82,8 @@ const questions = [
   {
     id: 'life_events_future',
     type: 'checkbox',
-    title: 'Life events in the next 6 months',
+    title: `Do you anticipate any life events to occur in the <span style="color: #19A274; font-weight: 700;">next 6 months</span>?`,
+    helperText: 'We know it\'s difficult to predict the future. If you happen to be expecting any of these events in the next 6 months, please let us know and we can help you be financially prepared.',
     options: [
       { value: 'marriage', text: 'Marital status change' },
       { value: 'birth', text: 'Growing family' },
@@ -94,6 +100,7 @@ const questions = [
     id: 'financial_wellbeing',
     type: 'checkbox',
     title: 'What is most important to your financial wellbeing?',
+    helperText: 'We know that we\'re just one piece of your larger financial picture. Let us know what\'s most important to you so we can provide the most relevant information.',  
     options: [
       { value: 'financial_education', text: 'Building financial literacy and education' },
       { value: 'increasing_liquidity', text: 'Increasing liquidity/accessing equity' },
@@ -334,7 +341,7 @@ function renderTopNav() {
   nav.style.flex = '1 1 auto';
   nav.style.gap = '0';
 
-  const sections = ['Goals', 'Focus areas', 'Plan'];
+  const sections = ['Goals', 'Focus areas', 'Playbook'];
   const currentStep = getCurrentStepId();
   let activeSectionIdx = 0;
   if ([
@@ -656,8 +663,8 @@ function renderGoalsIntro() {
         align-items: flex-start;
         padding: 40px 48px;
         gap: 32px;
-        max-width: 700px;
-        width: 700px;
+        max-width: 900px;
+        width: 750px;
       }
       .goals-intro-label {
         font-family: 'Mulish', sans-serif;
@@ -878,9 +885,7 @@ function renderGoalsIntro() {
   const timelineBar = document.createElement('div');
   timelineBar.className = 'goals-intro-timeline-bar';
 
-  // Render segments
-  let todaySegmentIdx = 0;
-  let todaySegmentPct = 0;
+  // Render segments (only blue for elapsed, grey for the rest)
   for (let i = 0; i < numSegments; i++) {
     const segStart = new Date(startYear + i, 4, 1).getTime();
     const segEnd = new Date(startYear + i + 1, 4, 1).getTime();
@@ -899,15 +904,21 @@ function renderGoalsIntro() {
       segment.style.background = `linear-gradient(to right, #0C2E7D ${segPct * 100}%, #e9ecf5 ${segPct * 100}%)`;
     }
     timelineBar.appendChild(segment);
-    // If today is in this segment, record its index and percent
-    if (today >= segStart && today <= segEnd) {
-      todaySegmentIdx = i;
-      todaySegmentPct = segPct;
-    }
   }
 
   // Add today circle and caret
   const segments = timelineBar.querySelectorAll('.goals-intro-timeline-segment');
+  let todaySegmentIdx = 0;
+  let todaySegmentPct = 0;
+  for (let i = 0; i < numSegments; i++) {
+    const segStart = new Date(startYear + i, 4, 1).getTime();
+    const segEnd = new Date(startYear + i + 1, 4, 1).getTime();
+    if (today >= segStart && today <= segEnd) {
+      todaySegmentIdx = i;
+      todaySegmentPct = (today - segStart) / (segEnd - segStart);
+      break;
+    }
+  }
   if (segments.length > 0) {
     const seg = segments[todaySegmentIdx];
     setTimeout(() => {
@@ -925,7 +936,6 @@ function renderGoalsIntro() {
       timelineBar.appendChild(todayLabel);
     }, 0);
   }
-
   timelineCard.appendChild(timelineBar);
 
   // Years (every other year)
@@ -956,278 +966,526 @@ function renderGoalsIntro() {
   document.body.appendChild(root);
 }
 
-function renderQuestionPage() {
-  const container = document.createElement('div');
-  container.style.padding = '20px';
-  container.style.textAlign = 'center';
-  container.style.display = 'flex';
-  container.style.flexDirection = 'column';
-  container.style.alignItems = 'center';
+// Update renderNavButtons to accept custom continue label
+function renderNavButtons(continueLabel) {
+  // Hide footer on landing page
+  if (getCurrentStepId() === 'landing') return;
 
-  const currentQuestion = questions[stepIndex - 2]; // Adjust for landing and goals_intro
-  if (!currentQuestion) {
-    const message = document.createElement('p');
-    message.textContent = 'No question available.';
-    container.appendChild(message);
-    document.body.appendChild(container);
-    return;
+  // Remove any existing footer
+  const oldFooter = document.getElementById('prototype-footer');
+  if (oldFooter) oldFooter.remove();
+
+  const navContainer = document.createElement('div');
+  navContainer.id = 'prototype-footer';
+  navContainer.style.position = 'fixed';
+  navContainer.style.left = '0';
+  navContainer.style.right = '0';
+  navContainer.style.bottom = '0';
+  navContainer.style.background = 'white';
+  navContainer.style.display = 'flex';
+  navContainer.style.justifyContent = 'space-between';
+  navContainer.style.alignItems = 'center';
+  navContainer.style.padding = '24px 40px 24px 40px';
+  navContainer.style.boxShadow = '0 -2px 8px rgba(26,51,101,0.04)';
+  navContainer.style.zIndex = '200';
+
+  const backButton = document.createElement('button');
+  backButton.textContent = 'Back';
+  backButton.onclick = goToPrevStep;
+  backButton.style.display = 'flex';
+  backButton.style.justifyContent = 'center';
+  backButton.style.alignItems = 'center';
+  backButton.style.gap = '10px';
+  backButton.style.height = '68px';
+  backButton.style.padding = '16px 24px';
+  backButton.style.background = 'none';
+  backButton.style.color = '#366CED';
+  backButton.style.fontFamily = 'Mulish, sans-serif';
+  backButton.style.fontWeight = '700';
+  backButton.style.fontSize = '16px';
+  backButton.style.lineHeight = '24px';
+  backButton.style.border = 'none';
+  backButton.style.borderRadius = '6px';
+  backButton.style.cursor = 'pointer';
+  backButton.style.transition = 'background 0.2s, color 0.2s';
+  backButton.style.outline = 'none';
+  if (stepIndex === 0 || getCurrentStepId() === 'customize_plan' || getCurrentStepId() === 'closing') {
+    backButton.disabled = true;
+    backButton.style.opacity = '0.5';
+    backButton.style.cursor = 'default';
   }
+  navContainer.appendChild(backButton);
 
-  // Title
-  const title = document.createElement('div');
-  title.className = 'tiempos-headline';
-  title.textContent = currentQuestion.title;
-  container.appendChild(title);
-
-  // Subheader/helper text
-  if (currentQuestion.helperText) {
-    const helper = document.createElement('div');
-    helper.className = 'helper-text';
-    helper.innerHTML = currentQuestion.helperText;
-    container.appendChild(helper);
+  const continueButton = document.createElement('button');
+  continueButton.textContent = continueLabel || 'Continue';
+  continueButton.onclick = goToNextStep;
+  continueButton.style.display = 'flex';
+  continueButton.style.justifyContent = 'center';
+  continueButton.style.alignItems = 'center';
+  continueButton.style.gap = '10px';
+  continueButton.style.height = '68px';
+  continueButton.style.padding = '16px 24px';
+  continueButton.style.borderRadius = '6px';
+  continueButton.style.background = '#366CED';
+  continueButton.style.color = '#FFF';
+  continueButton.style.textAlign = 'center';
+  continueButton.style.fontFamily = 'Mulish, sans-serif';
+  continueButton.style.fontSize = '16px';
+  continueButton.style.fontWeight = '700';
+  continueButton.style.lineHeight = '24px';
+  continueButton.style.border = 'none';
+  continueButton.style.cursor = 'pointer';
+  continueButton.style.transition = 'background 0.2s, color 0.2s';
+  continueButton.style.boxShadow = '0 1px 2px rgba(26,51,101,0.04)';
+  continueButton.style.outline = 'none';
+  if (getCurrentStepId() === 'closing') {
+    continueButton.disabled = true;
+    continueButton.style.opacity = '0.5';
+    continueButton.style.cursor = 'default';
   }
+  navContainer.appendChild(continueButton);
 
-  if (currentQuestion.type === 'radio' || currentQuestion.type === 'checkbox') {
-    currentQuestion.options.forEach(option => {
-      const button = document.createElement('button');
-      button.textContent = option.text;
-      button.className = 'question-response';
-      button.style.border = 'none';
-      button.style.width = '100%';
-      button.style.maxWidth = '600px';
-      button.style.margin = '16px auto';
-      button.style.fontWeight = '600';
-      button.style.fontSize = '16px';
-      button.style.textAlign = 'left';
-      button.style.cursor = 'pointer';
-      button.style.outline = 'none';
-      button.style.boxSizing = 'border-box';
-      button.style.transition = 'background 0.2s, box-shadow 0.2s';
-      // Set initial state based on current answer
-      let selected = false;
-      if (currentQuestion.type === 'radio' && answers[currentQuestion.id] === option.value) {
-        button.classList.add('selected');
-        selected = true;
-      } else if (currentQuestion.type === 'checkbox' && 
-                 answers[currentQuestion.id] && 
-                 answers[currentQuestion.id].includes(option.value)) {
-        button.classList.add('selected');
-        selected = true;
-      }
-      button.onclick = () => {
-        if (currentQuestion.type === 'radio') {
-          // Reset all buttons to default style
-          container.querySelectorAll('button').forEach(btn => {
-            btn.classList.remove('selected');
-          });
-          answers[currentQuestion.id] = option.value;
-          button.classList.add('selected');
-          console.log(`Question ${currentQuestion.id}: Selected ${option.value} (${option.text})`);
-          // Special handling for settlement_funding question
-          if (currentQuestion.id === 'settlement_funding' && option.value !== 'not_sure') {
-            toastVisible = true;
-            render();
-          }
-        } else {
-          if (!answers[currentQuestion.id]) {
-            answers[currentQuestion.id] = [];
-          }
-          const index = answers[currentQuestion.id].indexOf(option.value);
-          if (index === -1) {
-            answers[currentQuestion.id].push(option.value);
-            button.classList.add('selected');
-            console.log(`Question ${currentQuestion.id}: Added ${option.value} (${option.text})`);
-          } else {
-            answers[currentQuestion.id].splice(index, 1);
-            button.classList.remove('selected');
-            console.log(`Question ${currentQuestion.id}: Removed ${option.value} (${option.text})`);
-          }
-        }
-      };
-      container.appendChild(button);
-    });
-  } else if (currentQuestion.type === 'text') {
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = currentQuestion.placeholder;
-    input.style.margin = '10px auto';
-    input.style.padding = '10px';
-    input.style.width = '80%';
-    input.style.maxWidth = '400px';
-    input.style.border = '1px solid #ccc';
-    input.style.borderRadius = '5px';
-    if (answers[currentQuestion.id]) {
-      input.value = answers[currentQuestion.id];
-    }
-    input.onchange = (e) => {
-      answers[currentQuestion.id] = e.target.value;
-      console.log(`Question ${currentQuestion.id}: Entered "${e.target.value}"`);
-    };
-    container.appendChild(input);
-  } else if (currentQuestion.type === 'info') {
-    const message = document.createElement('p');
-    message.textContent = currentQuestion.text;
-    container.appendChild(message);
-  }
-
-  document.body.appendChild(container);
-}
-
-function renderToast() {
-  if (!toastVisible) return;
-
-  const toast = document.createElement('div');
-  toast.style.position = 'fixed';
-  toast.style.top = '20px';
-  toast.style.right = '20px';
-  toast.style.padding = '10px';
-  toast.style.backgroundColor = '#f0f0f0';
-  toast.style.border = '1px solid #ccc';
-  toast.style.borderRadius = '5px';
-  toast.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
-  toast.style.zIndex = '1000';
-
-  const message = document.createElement('p');
-  message.textContent = 'This is a recommendation notification.';
-  toast.appendChild(message);
-
-  const closeButton = document.createElement('button');
-  closeButton.textContent = 'X';
-  closeButton.style.marginLeft = '10px';
-  closeButton.onclick = () => {
-    toastVisible = false;
-    render();
-  };
-  toast.appendChild(closeButton);
-
-  document.body.appendChild(toast);
-}
-
-function renderFocusAreasLanding() {
-  const container = document.createElement('div');
-  container.style.padding = '20px';
-  container.style.textAlign = 'center';
-
-  const title = document.createElement('h1');
-  title.textContent = 'Focus Areas';
-  container.appendChild(title);
-
-  const message = document.createElement('p');
-  message.textContent = 'This section introduces your focus areas. Placeholder copy here.';
-  container.appendChild(message);
-
-  document.body.appendChild(container);
+  document.body.appendChild(navContainer);
 }
 
 function renderResultsBreakdown() {
-  const container = document.createElement('div');
-  container.style.padding = '20px';
-  container.style.textAlign = 'center';
+  // Remove any existing main content
+  let mainContent = document.getElementById('results-breakdown-main-content');
+  if (mainContent) mainContent.remove();
 
-  const title = document.createElement('h1');
-  title.textContent = 'Results Breakdown';
-  container.appendChild(title);
+  // Add styles for results breakdown if not present
+  if (!document.getElementById('prototype-results-breakdown-style')) {
+    const style = document.createElement('style');
+    style.id = 'prototype-results-breakdown-style';
+    style.textContent = `
+      .results-breakdown-root {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        width: 100%;
+      }
+      .results-breakdown-card {
+        margin: 64px auto 0 auto;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px rgba(26, 51, 101, 0.08);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 40px 48px;
+        gap: 32px;
+        max-width: 900px;
+        width: 750px;
+      }
+      .results-breakdown-label {
+        font-family: 'Mulish', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #919aac;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin-bottom: 12px;
+      }
+      .results-breakdown-title {
+        font-family: 'Tiempos Headline', serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: #152033;
+        margin-bottom: 12px;
+        line-height: 40px;
+        text-align: left;
+      }
+      .results-breakdown-desc {
+        font-family: 'Mulish', sans-serif;
+        font-size: 20px;
+        color: #434C5E;
+        margin-bottom: 20px;
+        line-height: 1.4;
+        text-align: left;
+      }
+      .results-breakdown-timeline-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px rgba(26, 51, 101, 0.08);
+        padding: 32px 32px 24px 32px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+      }
+      .results-breakdown-timeline-bar {
+        width: 100%;
+        height: 20px;
+        border-radius: 4px;
+        background: transparent;
+        overflow: visible;
+        margin-bottom: 32px;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      .results-breakdown-timeline-segment {
+        height: 100%;
+        border-radius: 4px;
+        margin-right: 4px;
+        background: #e9ecf5;
+        flex: 1;
+        position: relative;
+        transition: background 0.5s;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+      }
+      .results-breakdown-timeline-segment.filled {
+        background: #0C2E7D;
+      }
+      .results-breakdown-timeline-segment.purple {
+        background: #b79cff;
+      }
+      .results-breakdown-timeline-segment.partial {
+        background: linear-gradient(to right, #0C2E7D 50%, #e9ecf5 50%);
+      }
+      .results-breakdown-timeline-today-circle {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border-radius: 20px;
+        border: 4px solid #FFF;
+        background: #0C2E7D;
+        box-shadow: 0px 2px 10px 0px rgba(32, 53, 104, 0.12);
+        z-index: 11;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .results-breakdown-timeline-label {
+        position: absolute;
+        top: -44px;
+        left: 0;
+        font-family: 'Mulish', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a3365;
+        background: #fff;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(26,51,101,0.08);
+        padding: 4px 12px;
+        white-space: nowrap;
+        z-index: 12;
+        min-width: 48px;
+        text-align: center;
+        transform: translateX(-50%);
+        pointer-events: none;
+      }
+      .results-breakdown-timeline-label::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #fff;
+        filter: drop-shadow(0 2px 4px rgba(26,51,101,0.08));
+      }
+      .results-breakdown-timeline-years {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        font-family: 'Mulish', sans-serif;
+        font-size: 16px;
+        color: #919aac;
+        margin-top: 8px;
+      }
+      .results-breakdown-timeline-legend {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Mulish', sans-serif;
+        font-size: 16px;
+        color: #152033;
+        margin-top: 12px;
+        font-weight: 600;
+      }
+      .results-breakdown-timeline-legend-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        background: #0C2E7D;
+        display: inline-block;
+      }
+      .results-breakdown-timeline-legend-dot-purple {
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        background: #b79cff;
+        display: inline-block;
+      }
+      .results-breakdown-focus-areas-section {
+        margin-top: 32px;
+        width: 100%;
+      }
+      .results-breakdown-focus-areas-title {
+        font-family: 'Mulish', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #152033;
+        margin-bottom: 16px;
+      }
+      .results-breakdown-focus-area-item {
+        background: #F5F7FA;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        font-family: 'Mulish', sans-serif;
+        font-size: 16px;
+        color: #434C5E;
+        line-height: 1.5;
+        display: inline-block;
+        margin-right: 12px;
+      }
+      .results-breakdown-focus-areas-group {
+        margin-bottom: 24px;
+      }
+      .results-breakdown-focus-areas-group-title {
+        font-family: 'Mulish', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #366CED;
+        margin-bottom: 8px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
 
-  // Goals Section
-  const goalsSection = document.createElement('div');
-  goalsSection.style.marginTop = '30px';
-  goalsSection.style.textAlign = 'left';
-  goalsSection.style.maxWidth = '600px';
-  goalsSection.style.margin = '0 auto';
+  // Main root
+  const root = document.createElement('div');
+  root.className = 'results-breakdown-root';
+  root.id = 'results-breakdown-main-content';
 
-  const goalsTitle = document.createElement('h2');
-  goalsTitle.textContent = 'Your Goals';
-  goalsTitle.style.marginBottom = '15px';
-  goalsSection.appendChild(goalsTitle);
+  // Card
+  const card = document.createElement('div');
+  card.className = 'results-breakdown-card';
 
-  const goalsList = document.createElement('ul');
-  goalsList.style.listStyleType = 'none';
-  goalsList.style.padding = '0';
+  // Section label
+  const label = document.createElement('div');
+  label.className = 'results-breakdown-label';
+  label.textContent = 'YOUR RESULTS';
+  card.appendChild(label);
 
-  // Add settlement timeline goal
+  // Title
+  const title = document.createElement('div');
+  title.className = 'results-breakdown-title';
+  title.textContent = "Here's what we learned about your goals";
+  card.appendChild(title);
+
+  // --- Dynamic summary sentence ---
+  let summarySentence = '';
+  const timelineMap = {
+    within_year: 'in the next 12 months',
+    within_three_years: 'in 1 to 3 years',
+    more_than_three_years: 'in more than 3 years',
+    not_sure: 'at a future date to be determined'
+  };
+  const fundingMap = {
+    refinancing: 'a refinance',
+    cash_savings: 'cash savings',
+    loan_heloc: 'a home equity loan or HELOC',
+    home_sale: 'a home sale',
+    not_sure: 'a method to be determined'
+  };
   if (answers.settlement_timeline) {
-    const timelineGoal = document.createElement('li');
-    timelineGoal.style.marginBottom = '10px';
-    timelineGoal.style.padding = '10px';
-    timelineGoal.style.backgroundColor = '#f5f5f5';
-    timelineGoal.style.borderRadius = '5px';
-    
-    const question = questions.find(q => q.id === 'settlement_timeline');
-    const selectedOption = question.options.find(opt => opt.value === answers.settlement_timeline);
-    timelineGoal.textContent = `Settlement Timeline: ${selectedOption.text}`;
-    goalsList.appendChild(timelineGoal);
+    const timelineText = timelineMap[answers.settlement_timeline] || '';
+    const fundingText = fundingMap[answers.settlement_funding] || '';
+    const dynamicPart = `${fundingText ? 'through ' + fundingText + ' ' : ''}${timelineText}`;
+    summarySentence = `You plan to settle your HEI <b>${dynamicPart}</b>.`;
+  }
+  if (summarySentence) {
+    const desc = document.createElement('div');
+    desc.className = 'results-breakdown-desc';
+    desc.innerHTML = summarySentence;
+    card.appendChild(desc);
   }
 
-  // Add settlement funding goal
-  if (answers.settlement_funding) {
-    const fundingGoal = document.createElement('li');
-    fundingGoal.style.marginBottom = '10px';
-    fundingGoal.style.padding = '10px';
-    fundingGoal.style.backgroundColor = '#f5f5f5';
-    fundingGoal.style.borderRadius = '5px';
-    
-    const question = questions.find(q => q.id === 'settlement_funding');
-    const selectedOption = question.options.find(opt => opt.value === answers.settlement_funding);
-    fundingGoal.textContent = `Settlement Funding: ${selectedOption.text}`;
-    goalsList.appendChild(fundingGoal);
+  // --- Timeline visualization (year-based segments with white lines/gaps) ---
+  const effectiveDate = new Date('2021-05-01');
+  const deadlineDate = new Date('2031-05-01');
+  const today = new Date();
+  const startYear = effectiveDate.getFullYear();
+  const endYear = deadlineDate.getFullYear();
+  const years = [];
+  for (let y = startYear; y <= endYear; y += 1) years.push(y);
+  const numSegments = years.length - 1;
+
+  // Calculate purple segment (possible settlement window) based on answer
+  let purpleStartDate = null, purpleEndDate = null;
+  if (answers.settlement_timeline === 'within_year') {
+    purpleStartDate = today;
+    purpleEndDate = new Date(today);
+    purpleEndDate.setFullYear(today.getFullYear() + 1);
+  } else if (answers.settlement_timeline === 'within_three_years') {
+    purpleStartDate = today;
+    purpleEndDate = new Date(today);
+    purpleEndDate.setFullYear(today.getFullYear() + 3);
+  } else if (answers.settlement_timeline === 'more_than_three_years') {
+    purpleStartDate = new Date(today);
+    purpleStartDate.setFullYear(today.getFullYear() + 3);
+    purpleEndDate = new Date(today);
+    purpleEndDate.setFullYear(today.getFullYear() + 5);
+  }
+  // Clamp purpleEndDate to deadline
+  if (purpleEndDate && purpleEndDate > deadlineDate) purpleEndDate = new Date(deadlineDate);
+  if (purpleStartDate && purpleStartDate > deadlineDate) purpleStartDate = new Date(deadlineDate);
+
+  // Timeline card
+  const timelineCard = document.createElement('div');
+  timelineCard.className = 'results-breakdown-timeline-card';
+
+  // Address row (above timeline)
+  const address = '2 Second Rd., Cleveland, OH 44113';
+  const addressRow = document.createElement('div');
+  addressRow.className = 'goals-intro-address';
+  addressRow.innerHTML = `<img class="home-icon" src="assets/house.svg" alt="Home"> ${address}`;
+  timelineCard.appendChild(addressRow);
+
+  // Timeline bar with year-based segments
+  const timelineBar = document.createElement('div');
+  timelineBar.className = 'results-breakdown-timeline-bar';
+  for (let i = 0; i < numSegments; i++) {
+    const segStart = new Date(startYear + i, 4, 1).getTime();
+    const segEnd = new Date(startYear + i + 1, 4, 1).getTime();
+    let segmentClass = 'results-breakdown-timeline-segment';
+    // Determine color for this segment
+    if (today > segEnd) {
+      segmentClass += ' filled';
+    } else if (
+      purpleStartDate && purpleEndDate &&
+      segEnd > purpleStartDate.getTime() && segStart < purpleEndDate.getTime()
+    ) {
+      segmentClass += ' purple';
+    }
+    const segment = document.createElement('div');
+    segment.className = segmentClass;
+    timelineBar.appendChild(segment);
   }
 
-  goalsSection.appendChild(goalsList);
-  container.appendChild(goalsSection);
+  // Add today circle and caret
+  const segments = timelineBar.querySelectorAll('.results-breakdown-timeline-segment');
+  let todaySegmentIdx = 0;
+  let todaySegmentPct = 0;
+  for (let i = 0; i < numSegments; i++) {
+    const segStart = new Date(startYear + i, 4, 1).getTime();
+    const segEnd = new Date(startYear + i + 1, 4, 1).getTime();
+    if (today >= segStart && today <= segEnd) {
+      todaySegmentIdx = i;
+      todaySegmentPct = (today - segStart) / (segEnd - segStart);
+      break;
+    }
+  }
+  if (segments.length > 0) {
+    const seg = segments[todaySegmentIdx];
+    setTimeout(() => {
+      const left = seg.offsetLeft + seg.offsetWidth * todaySegmentPct;
+      // Today circle
+      let todayCircle = document.createElement('div');
+      todayCircle.className = 'results-breakdown-timeline-today-circle';
+      todayCircle.style.left = `${left}px`;
+      timelineBar.appendChild(todayCircle);
+      // Caret label
+      let todayLabel = document.createElement('div');
+      todayLabel.className = 'results-breakdown-timeline-label';
+      todayLabel.innerText = 'Today';
+      todayLabel.style.left = `${left}px`;
+      timelineBar.appendChild(todayLabel);
+    }, 0);
+  }
+  timelineCard.appendChild(timelineBar);
 
-  // Focus Areas Section
-  const focusSection = document.createElement('div');
-  focusSection.style.marginTop = '30px';
-  focusSection.style.textAlign = 'left';
-  focusSection.style.maxWidth = '600px';
-  focusSection.style.margin = '30px auto 0';
-
-  const focusTitle = document.createElement('h2');
-  focusTitle.textContent = 'Your Focus Areas';
-  focusTitle.style.marginBottom = '15px';
-  focusSection.appendChild(focusTitle);
-
-  const focusList = document.createElement('ul');
-  focusList.style.listStyleType = 'none';
-  focusList.style.padding = '0';
-
-  // Add life events as focus areas
-  const lifeEvents = [...(answers.life_events_past || []), ...(answers.life_events_future || [])];
-  const uniqueEvents = [...new Set(lifeEvents)]; // Remove duplicates
-
-  uniqueEvents.forEach(event => {
-    const eventItem = document.createElement('li');
-    eventItem.style.marginBottom = '10px';
-    eventItem.style.padding = '10px';
-    eventItem.style.backgroundColor = '#f5f5f5';
-    eventItem.style.borderRadius = '5px';
-    
-    const question = questions.find(q => q.id === 'life_events_past');
-    const selectedOption = question.options.find(opt => opt.value === event);
-    eventItem.textContent = selectedOption.text;
-    focusList.appendChild(eventItem);
+  // Years (every other year)
+  const yearsRow = document.createElement('div');
+  yearsRow.className = 'results-breakdown-timeline-years';
+  years.forEach((y, i) => {
+    if (i % 2 === 0) {
+      const year = document.createElement('div');
+      year.textContent = y;
+      yearsRow.appendChild(year);
+    } else {
+      const spacer = document.createElement('div');
+      spacer.textContent = '';
+      yearsRow.appendChild(spacer);
+    }
   });
+  timelineCard.appendChild(yearsRow);
 
-  // Add financial wellbeing focus areas
-  if (answers.financial_wellbeing) {
-    answers.financial_wellbeing.forEach(wellbeing => {
-      const wellbeingItem = document.createElement('li');
-      wellbeingItem.style.marginBottom = '10px';
-      wellbeingItem.style.padding = '10px';
-      wellbeingItem.style.backgroundColor = '#f5f5f5';
-      wellbeingItem.style.borderRadius = '5px';
-      
-      const question = questions.find(q => q.id === 'financial_wellbeing');
-      const selectedOption = question.options.find(opt => opt.value === wellbeing);
-      wellbeingItem.textContent = selectedOption.text;
-      focusList.appendChild(wellbeingItem);
+  // Legend
+  const legend = document.createElement('div');
+  legend.className = 'results-breakdown-timeline-legend';
+  legend.innerHTML = `<span class="results-breakdown-timeline-legend-dot"></span> HEI to date &nbsp;&nbsp; <span class="results-breakdown-timeline-legend-dot-purple"></span> Possible settlement window`;
+  timelineCard.appendChild(legend);
+
+  card.appendChild(timelineCard);
+
+  // --- Focus Areas Section: Focusing on, Preparing for, Managing ---
+  const focusGroups = [
+    {
+      key: 'financial_wellbeing',
+      label: 'Focusing on',
+      answers: answers.financial_wellbeing,
+    },
+    {
+      key: 'life_events_future',
+      label: 'Preparing for',
+      answers: answers.life_events_future,
+    },
+    {
+      key: 'life_events_past',
+      label: 'Managing',
+      answers: answers.life_events_past,
+    },
+  ];
+  const hasAnyFocus = focusGroups.some(g => Array.isArray(g.answers) && g.answers.length > 0);
+  if (hasAnyFocus) {
+    const focusSection = document.createElement('div');
+    focusSection.className = 'results-breakdown-focus-areas-section';
+    const focusTitle = document.createElement('div');
+    focusTitle.className = 'results-breakdown-focus-areas-title';
+    focusTitle.textContent = 'Your Focus Areas';
+    focusSection.appendChild(focusTitle);
+    focusGroups.forEach(group => {
+      if (Array.isArray(group.answers) && group.answers.length > 0) {
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'results-breakdown-focus-areas-group';
+        const groupTitle = document.createElement('div');
+        groupTitle.className = 'results-breakdown-focus-areas-group-title';
+        groupTitle.textContent = group.label;
+        groupDiv.appendChild(groupTitle);
+        group.answers.forEach(val => {
+          const question = questions.find(q => q.id === group.key);
+          const opt = question && question.options.find(o => o.value === val);
+          if (opt) {
+            const item = document.createElement('span');
+            item.className = 'results-breakdown-focus-area-item';
+            item.textContent = opt.text;
+            groupDiv.appendChild(item);
+          }
+        });
+        focusSection.appendChild(groupDiv);
+      }
     });
+    card.appendChild(focusSection);
   }
 
-  focusSection.appendChild(focusList);
-  container.appendChild(focusSection);
-
-  document.body.appendChild(container);
+  root.appendChild(card);
+  document.body.appendChild(root);
 }
 
 function renderLoadingScreen() {
@@ -1263,7 +1521,7 @@ function renderCustomizePlan() {
   container.style.textAlign = 'center';
 
   const title = document.createElement('h1');
-  title.textContent = 'Customize Your Plan';
+  title.textContent = 'Customize Your Playbook';
   container.appendChild(title);
 
   const recommendations = getRecommendations();
@@ -1314,87 +1572,6 @@ function renderClosingPage() {
   container.appendChild(message);
 
   document.body.appendChild(container);
-}
-
-function renderNavButtons() {
-  // Hide footer on landing page
-  if (getCurrentStepId() === 'landing') return;
-
-  // Remove any existing footer
-  const oldFooter = document.getElementById('prototype-footer');
-  if (oldFooter) oldFooter.remove();
-
-  const navContainer = document.createElement('div');
-  navContainer.id = 'prototype-footer';
-  navContainer.style.position = 'fixed';
-  navContainer.style.left = '0';
-  navContainer.style.right = '0';
-  navContainer.style.bottom = '0';
-  navContainer.style.background = 'white';
-  navContainer.style.display = 'flex';
-  navContainer.style.justifyContent = 'space-between';
-  navContainer.style.alignItems = 'center';
-  navContainer.style.padding = '24px 40px 24px 40px';
-  navContainer.style.boxShadow = '0 -2px 8px rgba(26,51,101,0.04)';
-  navContainer.style.zIndex = '200';
-
-  const backButton = document.createElement('button');
-  backButton.textContent = 'Back';
-  backButton.onclick = goToPrevStep;
-  backButton.style.display = 'flex';
-  backButton.style.justifyContent = 'center';
-  backButton.style.alignItems = 'center';
-  backButton.style.gap = '10px';
-  backButton.style.height = '68px';
-  backButton.style.padding = '16px 24px';
-  backButton.style.background = 'none';
-  backButton.style.color = '#366CED';
-  backButton.style.fontFamily = 'Mulish, sans-serif';
-  backButton.style.fontWeight = '700';
-  backButton.style.fontSize = '16px';
-  backButton.style.lineHeight = '24px';
-  backButton.style.border = 'none';
-  backButton.style.borderRadius = '6px';
-  backButton.style.cursor = 'pointer';
-  backButton.style.transition = 'background 0.2s, color 0.2s';
-  backButton.style.outline = 'none';
-  if (stepIndex === 0 || getCurrentStepId() === 'customize_plan' || getCurrentStepId() === 'closing') {
-    backButton.disabled = true;
-    backButton.style.opacity = '0.5';
-    backButton.style.cursor = 'default';
-  }
-  navContainer.appendChild(backButton);
-
-  const continueButton = document.createElement('button');
-  continueButton.textContent = 'Continue';
-  continueButton.onclick = goToNextStep;
-  continueButton.style.display = 'flex';
-  continueButton.style.justifyContent = 'center';
-  continueButton.style.alignItems = 'center';
-  continueButton.style.gap = '10px';
-  continueButton.style.height = '68px';
-  continueButton.style.padding = '16px 24px';
-  continueButton.style.borderRadius = '6px';
-  continueButton.style.background = '#366CED';
-  continueButton.style.color = '#FFF';
-  continueButton.style.textAlign = 'center';
-  continueButton.style.fontFamily = 'Mulish, sans-serif';
-  continueButton.style.fontSize = '16px';
-  continueButton.style.fontWeight = '700';
-  continueButton.style.lineHeight = '24px';
-  continueButton.style.border = 'none';
-  continueButton.style.cursor = 'pointer';
-  continueButton.style.transition = 'background 0.2s, color 0.2s';
-  continueButton.style.boxShadow = '0 1px 2px rgba(26,51,101,0.04)';
-  continueButton.style.outline = 'none';
-  if (getCurrentStepId() === 'closing') {
-    continueButton.disabled = true;
-    continueButton.style.opacity = '0.5';
-    continueButton.style.cursor = 'default';
-  }
-  navContainer.appendChild(continueButton);
-
-  document.body.appendChild(navContainer);
 }
 
 // Function to get recommendations based on answers
@@ -1451,6 +1628,7 @@ if (!document.getElementById('prototype-body-style')) {
       line-height: 40px;
       margin-top: 48px;
       margin-bottom: 8px;
+      text-align: left;
     }
     .helper-text {
       color: #434C5E;
@@ -1502,6 +1680,432 @@ if (!document.getElementById('tiempos-font-link')) {
   fontLink.rel = 'stylesheet';
   fontLink.href = 'https://fonts.googleapis.com/css2?family=Tinos:wght@700&display=swap'; // Fallback to Tinos if Tiempos not available
   document.head.appendChild(fontLink);
+}
+
+// --- Render Question Page ---
+function renderQuestionPage() {
+  const container = document.createElement('div');
+  container.style.padding = '20px';
+  container.style.textAlign = 'center';
+  container.style.display = 'flex';
+  container.style.flexDirection = 'column';
+  container.style.alignItems = 'center';
+
+  const currentQuestion = questions[stepIndex - 2]; // Adjust for landing and goals_intro
+  if (!currentQuestion) {
+    const message = document.createElement('p');
+    message.textContent = 'No question available.';
+    container.appendChild(message);
+    document.body.appendChild(container);
+    return;
+  }
+
+  // Title
+  const title = document.createElement('div');
+  title.className = 'tiempos-headline';
+  title.innerHTML = currentQuestion.title;
+  title.style.textAlign = 'left';
+  title.style.width = '100%';
+  title.style.maxWidth = '600px';
+  container.appendChild(title);
+
+  // Subheader/helper text
+  if (currentQuestion.helperText) {
+    const helper = document.createElement('div');
+    helper.className = 'helper-text';
+    helper.innerHTML = currentQuestion.helperText;
+    container.appendChild(helper);
+  }
+
+  // Small caption for life_events_past and life_events_future
+  if (currentQuestion.id === 'life_events_past' || currentQuestion.id === 'life_events_future') {
+    const small = document.createElement('div');
+    small.textContent = 'Select all that apply to you or an immediate family member.';
+    small.style.fontFamily = 'Mulish, sans-serif';
+    small.style.fontSize = '12px';
+    small.style.color = '#687183';
+    small.style.textAlign = 'left';
+    small.style.width = '100%';
+    small.style.maxWidth = '600px';
+    small.style.marginBottom = '16px';
+    container.appendChild(small);
+  }
+
+  if (currentQuestion.type === 'radio' || currentQuestion.type === 'checkbox') {
+    currentQuestion.options.forEach(option => {
+      // Custom checkbox for checkbox type
+      if (currentQuestion.type === 'checkbox') {
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.alignItems = 'center';
+        wrapper.style.width = '100%';
+        wrapper.style.maxWidth = '600px';
+        wrapper.style.margin = '12px auto';
+        wrapper.style.background = '#FFF';
+        wrapper.style.borderRadius = '6px';
+        wrapper.style.boxShadow = '0px 2px 10px 0px rgba(32, 53, 104, 0.08)';
+        wrapper.style.padding = '0';
+        wrapper.style.cursor = 'pointer';
+        wrapper.style.transition = 'background 0.2s, box-shadow 0.2s, border 0.2s';
+        wrapper.style.border = '2px solid transparent';
+        // Highlight if selected
+        if (answers[currentQuestion.id] && answers[currentQuestion.id].includes(option.value)) {
+          wrapper.style.border = '2px solid #366CED';
+          wrapper.style.boxShadow = '0px 4px 16px 0px rgba(54, 108, 237, 0.10)';
+        }
+
+        // Checkbox
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = answers[currentQuestion.id] && answers[currentQuestion.id].includes(option.value);
+        checkbox.style.margin = '0 18px 0 20px';
+        checkbox.style.width = '20px';
+        checkbox.style.height = '20px';
+        checkbox.style.accentColor = '#366CED';
+        checkbox.style.flexShrink = '0';
+        checkbox.onclick = (e) => {
+          e.stopPropagation();
+          if (!answers[currentQuestion.id]) answers[currentQuestion.id] = [];
+          const index = answers[currentQuestion.id].indexOf(option.value);
+          if (index === -1) {
+            answers[currentQuestion.id].push(option.value);
+            wrapper.style.border = '2px solid #366CED';
+            wrapper.style.boxShadow = '0px 4px 16px 0px rgba(54, 108, 237, 0.10)';
+          } else {
+            answers[currentQuestion.id].splice(index, 1);
+            wrapper.style.border = '2px solid transparent';
+            wrapper.style.boxShadow = '0px 2px 10px 0px rgba(32, 53, 104, 0.08)';
+          }
+        };
+
+        // Label
+        const label = document.createElement('span');
+        label.textContent = option.text;
+        label.style.fontFamily = 'Mulish, sans-serif';
+        label.style.fontSize = '16px';
+        label.style.color = '#152033';
+        label.style.fontWeight = '400';
+        label.style.textAlign = 'left';
+        label.style.padding = '20px 0';
+        label.style.flex = '1';
+
+        wrapper.appendChild(checkbox);
+        wrapper.appendChild(label);
+        wrapper.onclick = () => { checkbox.click(); };
+        container.appendChild(wrapper);
+      } else {
+        // Radio button
+        const button = document.createElement('button');
+        button.textContent = option.text;
+        button.className = 'question-response';
+        button.style.border = 'none';
+        button.style.width = '100%';
+        button.style.maxWidth = '600px';
+        button.style.margin = '16px auto';
+        button.style.fontWeight = '600';
+        button.style.fontSize = '16px';
+        button.style.textAlign = 'left';
+        button.style.cursor = 'pointer';
+        button.style.outline = 'none';
+        button.style.boxSizing = 'border-box';
+        button.style.transition = 'background 0.2s, box-shadow 0.2s';
+        // Set initial state based on current answer
+        let selected = false;
+        if (answers[currentQuestion.id] === option.value) {
+          button.classList.add('selected');
+          selected = true;
+        }
+        button.onclick = () => {
+          container.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('selected');
+          });
+          answers[currentQuestion.id] = option.value;
+          button.classList.add('selected');
+          // Special handling for settlement_funding question
+          if (currentQuestion.id === 'settlement_funding' && option.value !== 'not_sure') {
+            toastVisible = true;
+            render();
+          }
+        };
+        container.appendChild(button);
+      }
+    });
+  } else if (currentQuestion.type === 'text') {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = currentQuestion.placeholder;
+    input.style.margin = '10px 0 0 0';
+    input.style.padding = '20px 24px';
+    input.style.width = '100%';
+    input.style.maxWidth = '600px';
+    input.style.fontFamily = 'Mulish, sans-serif';
+    input.style.fontSize = '16px';
+    input.style.border = '1.5px solid #D1D6DF';
+    input.style.borderRadius = '6px';
+    input.style.boxShadow = '0px 2px 10px 0px rgba(32, 53, 104, 0.12)';
+    input.style.background = '#FFF';
+    input.style.display = 'block';
+    if (answers[currentQuestion.id]) {
+      input.value = answers[currentQuestion.id];
+    }
+    input.onchange = (e) => {
+      answers[currentQuestion.id] = e.target.value;
+    };
+    container.appendChild(input);
+
+    // Example buttons (hardcoded)
+    if (currentQuestion.id === 'steps_taken') {
+      const examples = [
+        'I started a settlement savings goal',
+        'I found a realtor to start the home sale process',
+        "I've contacted Hometap to start the settlement process"
+      ];
+      const examplesContainer = document.createElement('div');
+      examplesContainer.style.display = 'flex';
+      examplesContainer.style.flexDirection = 'column';
+      examplesContainer.style.gap = '20px';
+      examplesContainer.style.margin = '80px 0 0 0';
+      examplesContainer.style.width = '100%';
+      examplesContainer.style.maxWidth = '600px';
+      examplesContainer.style.alignItems = 'center';
+      examples.forEach(example => {
+        const btn = document.createElement('button');
+        btn.textContent = example;
+        btn.style.display = 'flex';
+        btn.style.padding = '20px 24px';
+        btn.style.flexDirection = 'column';
+        btn.style.alignItems = 'flex-start';
+        btn.style.gap = '2px';
+        btn.style.alignSelf = 'stretch';
+        btn.style.borderRadius = '6px';
+        btn.style.background = '#FFF';
+        btn.style.boxShadow = '0px 2px 10px 0px rgba(32, 53, 104, 0.12)';
+        btn.style.fontFamily = 'Mulish, sans-serif';
+        btn.style.fontSize = '16px';
+        btn.style.color = '#152033';
+        btn.style.border = 'none';
+        btn.style.width = '100%';
+        btn.style.maxWidth = '600px';
+        btn.style.cursor = 'pointer';
+        btn.style.transition = 'background 0.2s, box-shadow 0.2s';
+        btn.onmouseover = () => { btn.style.background = '#F5F7FA'; };
+        btn.onmouseout = () => { btn.style.background = '#fff'; };
+        btn.onclick = () => {
+          input.value = example;
+          answers[currentQuestion.id] = example;
+        };
+        examplesContainer.appendChild(btn);
+      });
+      container.appendChild(examplesContainer);
+    }
+  } else if (currentQuestion.type === 'info') {
+    const message = document.createElement('p');
+    message.textContent = currentQuestion.text;
+    container.appendChild(message);
+  }
+
+  document.body.appendChild(container);
+}
+
+// --- Toast Notification ---
+function renderToast() {
+  if (!toastVisible) return;
+
+  // Remove any existing toast
+  const oldToast = document.getElementById('prototype-toast');
+  if (oldToast) oldToast.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'prototype-toast';
+  toast.style.position = 'fixed';
+  toast.style.top = '32px';
+  toast.style.right = '32px';
+  toast.style.display = 'flex';
+  toast.style.alignItems = 'flex-start';
+  toast.style.minWidth = '420px';
+  toast.style.maxWidth = '480px';
+  toast.style.background = '#fff';
+  toast.style.borderRadius = '12px';
+  toast.style.boxShadow = '0 4px 24px 0 rgba(32, 53, 104, 0.10)';
+  toast.style.borderLeft = '6px solid #2AC870';
+  toast.style.padding = '24px 32px 24px 24px';
+  toast.style.zIndex = '1000';
+  toast.style.transition = 'transform 0.4s cubic-bezier(.4,1.3,.5,1), opacity 0.4s';
+  toast.style.transform = 'translateX(40px)';
+  toast.style.opacity = '0';
+  setTimeout(() => {
+    toast.style.transform = 'translateX(0)';
+    toast.style.opacity = '1';
+  }, 10);
+
+  // Checkmark icon
+  const icon = document.createElement('img');
+  icon.src = 'assets/checkmark.svg';
+  icon.alt = 'Success';
+  icon.style.width = '32px';
+  icon.style.height = '32px';
+  icon.style.marginRight = '20px';
+  icon.style.marginTop = '2px';
+  toast.appendChild(icon);
+
+  // Text container
+  const textContainer = document.createElement('div');
+  textContainer.style.flex = '1';
+  textContainer.style.display = 'flex';
+  textContainer.style.flexDirection = 'column';
+  textContainer.style.alignItems = 'flex-start';
+
+  // Title
+  const title = document.createElement('div');
+  title.textContent = 'Recommendation found!';
+  title.style.fontFamily = 'Mulish, sans-serif';
+  title.style.fontWeight = '700';
+  title.style.fontSize = '18px';
+  title.style.color = '#152033';
+  title.style.marginBottom = '4px';
+  textContainer.appendChild(title);
+
+  // Body
+  const body = document.createElement('div');
+  body.textContent = 'We found a recommendation for you and added it to your playbook. You can customize your playbook later.';
+  body.style.fontFamily = 'Mulish, sans-serif';
+  body.style.fontWeight = '400';
+  body.style.fontSize = '16px';
+  body.style.color = '#434C5E';
+  textContainer.appendChild(body);
+
+  toast.appendChild(textContainer);
+
+  // Close button
+  const closeButton = document.createElement('button');
+  closeButton.innerHTML = '&times;';
+  closeButton.style.background = 'none';
+  closeButton.style.border = 'none';
+  closeButton.style.fontSize = '24px';
+  closeButton.style.color = '#687183';
+  closeButton.style.cursor = 'pointer';
+  closeButton.style.marginLeft = '16px';
+  closeButton.style.marginTop = '2px';
+  closeButton.style.lineHeight = '1';
+  closeButton.style.padding = '0';
+  closeButton.setAttribute('aria-label', 'Close');
+  closeButton.onclick = () => {
+    toastVisible = false;
+    render();
+  };
+  toast.appendChild(closeButton);
+
+  document.body.appendChild(toast);
+}
+
+// --- Focus Areas Landing Page ---
+function renderFocusAreasLanding() {
+  // Remove only the main content, not the header
+  let mainContent = document.getElementById('focus-areas-main-content');
+  if (mainContent) mainContent.remove();
+
+  // Add styles for focus areas landing if not present
+  if (!document.getElementById('prototype-focus-areas-style')) {
+    const style = document.createElement('style');
+    style.id = 'prototype-focus-areas-style';
+    style.textContent = `
+      .focus-areas-root {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        width: 100%;
+      }
+      .focus-areas-card {
+        margin: 64px auto 0 auto;
+        background: none;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+        max-width: 900px;
+        width: 100%;
+      }
+      .focus-areas-label {
+        font-family: 'Mulish', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #919aac;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin-bottom: 24px;
+      }
+      .focus-areas-title {
+        font-family: 'Tiempos Headline', serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: #152033;
+        margin-bottom: 20px;
+        line-height: 40px;
+        text-align: left;
+        max-width: 700px;
+      }
+      .focus-areas-title .green {
+        color: #19A274;
+        font-weight: 700;
+      }
+      .focus-areas-helper {
+        font-family: 'Mulish', sans-serif;
+        font-size: 18px;
+        color: #434C5E;
+        margin-bottom: 32px;
+        line-height: 1.4;
+        text-align: left;
+        max-width: 700px;
+      }
+      .focus-areas-image {
+        margin-top: 16px;
+        width: 700px;
+        max-width: 100%;
+        display: block;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Main root
+  const root = document.createElement('div');
+  root.className = 'focus-areas-root';
+  root.id = 'focus-areas-main-content';
+
+  // Card
+  const card = document.createElement('div');
+  card.className = 'focus-areas-card';
+
+  // Section label
+  const label = document.createElement('div');
+  label.className = 'focus-areas-label';
+  label.textContent = 'FOCUS AREAS';
+  card.appendChild(label);
+
+  // Title (with green highlight)
+  const title = document.createElement('div');
+  title.className = 'focus-areas-title';
+  title.innerHTML = `We understand that your Home Equity Investment is just one aspect of <span class="green">your greater financial plan</span>`;
+  card.appendChild(title);
+
+  // Helper text
+  const helper = document.createElement('div');
+  helper.className = 'focus-areas-helper';
+  helper.textContent = `We're dedicated to providing support not only at the time of investment, but as you work toward achieving your long-term goals. So we can better determine what your current focus areas are, help us understand your financial wellbeing.`;
+  card.appendChild(helper);
+
+  // Image
+  const img = document.createElement('img');
+  img.className = 'focus-areas-image';
+  img.src = 'assets/goals-cloud.png';
+  img.alt = 'Goals Cloud';
+  card.appendChild(img);
+
+  root.appendChild(card);
+  document.body.appendChild(root);
 }
 
 // --- Start the app ---
