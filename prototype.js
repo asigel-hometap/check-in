@@ -217,6 +217,30 @@ const recommendations = {
       }
     ]
   },
+  commitment: {
+    still_deciding: [
+      {
+        id: 'commitment_still_deciding',
+        title: 'Review your settlement options',
+        helperText: 'There are several ways to settle your investment. This overview will help you understand your options so you can choose what\'s best for you.',
+        content_type: 'Video',
+        time_estimate: 10,
+        img: 'assets/doors.png',
+        category: 'prep_future'
+      }
+    ],
+    committed_not_started: [
+      {
+        id: 'working_with_hometap',
+        title: 'Request a settlement statement',
+        helperText: 'If you haven\'t done so yet, request a personalized settlement statement from our Investment Support team',
+        content_type: 'Personal Coaching',
+        time_estimate: 30,
+        img: 'assets/dashboard.png',
+        category: 'game_plan'
+      }
+    ]
+  },
   life_events: {
     marriage: [
       {
@@ -225,7 +249,7 @@ const recommendations = {
         helperText: 'Learn how to manage your Investment during major life events',
         content_type: 'Article',
         time_estimate: 7,
-        img: 'assets/house-photo.png',
+        img: 'assets/house-photo.jpg',
         category: 'game_plan',
       }
     ],
@@ -358,7 +382,7 @@ const recommendations = {
         helperText: 'Get answers to frequently asked questions about your Home Equity Investment',
         content_type: 'FAQ',
         time_estimate: 2,
-        img: 'assets/room.jpg',
+        img: 'assets/room.png',
         category: 'game_plan'
       },
       {
@@ -367,7 +391,7 @@ const recommendations = {
         helperText: 'Schedule a time with our Investment Support team to learn anything you may want to know about your investment',
         content_type: 'Personal Coaching',
         time_estimate: 15,
-        img: 'assets/desk.jpg',
+        img: 'assets/desk.png',
         category: 'game_plan'
       }
     ],
@@ -389,7 +413,7 @@ const recommendations = {
         helperText: 'Eligible homeowners can save an average of $1,100 on their property taxes with Ownwell',
         content_type: 'Guides & More',
         time_estimate: 10,
-        img: 'assets/desk.jpg',
+        img: 'assets/desk.png',
         category: 'game_plan'
       },
       {
@@ -398,7 +422,7 @@ const recommendations = {
         helperText: 'The Financial Health Hub offers a free suite of tools and resources to help you make the most of your money',
         content_type: 'Guides & More',
         time_estimate: 10,
-        img: 'assets/laptop.jpg',
+        img: 'assets/laptop.png',
         category: 'game_plan'
       }
     ],
@@ -409,7 +433,7 @@ const recommendations = {
         helperText: 'Contact our team for personalized support with your financial goals',
         content_type: 'Personal Coaching',
         time_estimate: 10,
-        img: 'assets/doors.jpg',
+        img: 'assets/desk.png',
         category: 'game_plan'
       }
     ]
@@ -2368,7 +2392,7 @@ function renderCustomizePlan() {
       // Image
       const img = document.createElement('img');
       img.className = 'rec-card-img';
-      img.src = 'assets/house-photo.jpg';
+      img.src = rec.img || 'assets/house-photo.jpg'; // Use rec.img if available, fallback to house-photo.jpg
       img.alt = 'Recommendation';
       card.appendChild(img);
       // Content
@@ -2441,7 +2465,7 @@ function renderCustomizePlan() {
     // Image
     const img = document.createElement('img');
     img.className = 'rec-card-img';
-    img.src = 'assets/house-photo.jpg';
+    img.src = rec.img || 'assets/house-photo.jpg'; // Use rec.img if available, fallback to house-photo.jpg
     img.alt = 'Recommendation';
     card.appendChild(img);
     // Content
