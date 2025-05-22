@@ -76,6 +76,7 @@ const questions = [
       { value: 'property_transaction', text: 'Bought or sold a property' },
       { value: 'disaster', text: 'Fire, flood, or natural disaster' },
       { value: 'business', text: 'Other significant expense' },
+      { value: 'not_say', text: "I'd rather not say" },
       { value: 'none', text: 'None of the above' }
     ]
   },
@@ -93,6 +94,7 @@ const questions = [
       { value: 'home_repair', text: 'Major home repair or renovation' },
       { value: 'property_transaction', text: 'Buy or sell another property' },
       { value: 'business', text: 'Other significant expense' },
+      { value: 'not_sure', text: "I'm not sure" },
       { value: 'none', text: 'None of the above' }
     ]
   },
@@ -105,7 +107,7 @@ const questions = [
       { value: 'financial_education', text: 'Building financial literacy and education' },
       { value: 'increasing_liquidity', text: 'Increasing liquidity/accessing equity' },
       { value: 'hei_questions', text: 'Getting answers to questions about my HEI' },
-      { value: 'home_renovation', text: 'Planning a home renovation' },
+      { value: 'home_renovation', text: 'Adding value to my home through a renovation or upgrade' },
       { value: 'lower_payments', text: 'Lowering my monthly payments or financial obligations' },
       { value: 'other', text: 'Other' }
     ]
@@ -820,7 +822,7 @@ function renderLanding() {
         margin-left: 40px;
         width: 320px;
         height: 220px;
-        background: url('assets/landing-background.png') center/contain no-repeat;
+        background: url('assets/couch-dog.png') center/contain no-repeat;
         border-radius: 12px;
       }
     `;
@@ -836,8 +838,8 @@ function renderLanding() {
   sidebar.className = 'landing-sidebar';
   sidebar.innerHTML = `
     <div class="sidebar-header">
-      <div class="address">123 Main St</div>
-      <div class="city">Minneapolis, MN 55416</div>
+      <div class="address">2 Second Rd</div>
+      <div class="city">Cleveland, OH 44113</div>
     </div>
     <div class="sidebar-nav">
       <div class="nav-item">Overview</div>
@@ -1099,7 +1101,7 @@ function renderGoalsIntro() {
   // Title (with blue highlight)
   const title = document.createElement('div');
   title.className = 'goals-intro-title';
-  title.innerHTML = `Jane, you've had your Home Equity Investment for <span class="blue">over three years</span>`;
+  title.innerHTML = `You've had your Home Equity Investment for <span class="blue">over three years</span>`;
   card.appendChild(title);
 
   // Description
@@ -1521,6 +1523,7 @@ function renderResultsBreakdown() {
   const root = document.createElement('div');
   root.className = 'results-breakdown-root';
   root.id = 'results-breakdown-main-content';
+  root.style.paddingBottom = "120px";
 
   // Card
   const card = document.createElement('div');
@@ -2631,6 +2634,9 @@ function renderQuestionPage() {
   container.style.display = 'flex';
   container.style.flexDirection = 'column';
   container.style.alignItems = 'center';
+  if (["life_events_past", "life_events_future", "financial_wellbeing"].includes(questions[stepIndex - 2].id)) {
+    container.style.paddingBottom = "120px";
+  }
 
   const currentQuestion = questions[stepIndex - 2]; // Adjust for landing and goals_intro
   if (!currentQuestion) {
@@ -2764,8 +2770,10 @@ function renderQuestionPage() {
           button.classList.add('selected');
           // Special handling for settlement_funding question
           if (currentQuestion.id === 'settlement_funding' && option.value !== 'not_sure') {
-            toastVisible = true;
-            render();
+            if (!toastVisible) {
+              toastVisible = true;
+              render();
+            }
           }
         };
         container.appendChild(button);
@@ -2936,7 +2944,7 @@ function renderFocusAreasLanding() {
         flex-direction: column;
         padding: 0;
         gap: 0;
-        max-width: 900px;
+        max-width: 600px;
         width: 100%;
       }
       .focus-areas-label {
