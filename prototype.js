@@ -124,7 +124,7 @@ const recommendations = {
         helperText: 'Ready to start your settlement? Our Investment Support team is here to help',
         content_type: 'Personal Coaching',
         time_estimate: 15,
-        img: 'assets/rec-settlement-planning.png',
+        img: 'assets/desk.png',
         category: 'game_plan'
       }
     ],
@@ -135,7 +135,7 @@ const recommendations = {
         helperText: 'Estimate your settlement amount at different home values and dates',
         content_type: 'Calculator',
         time_estimate: 7,
-        img: 'assets/rec-long-term.png',
+        img: 'assets/laptop.png',
         category: 'on_track'
       }
     ],
@@ -146,7 +146,7 @@ const recommendations = {
         helperText: 'Stay informed about your home value, equity, and Investment details',
         content_type: 'Guides & More',
         time_estimate: 10,
-        img: 'assets/rec-future-planning.png',
+        img: 'assets/laptop.png',
         category: 'prep_future'
       }
     ],
@@ -157,7 +157,7 @@ const recommendations = {
         helperText: 'Explore different ways to settle your Home Equity Investment',
         content_type: 'Video',
         time_estimate: 6,
-        img: 'assets/rec-future-planning.png',
+        img: 'assets/desk.png',
         category: 'game_plan'
       }
     ]
@@ -179,7 +179,7 @@ const recommendations = {
         helperText: 'Eligible Hometap homeowners are eligible for $1,000 off closing costs with Simplist',
         content_type: 'Guides & More',
         time_estimate: 10,
-        img: 'assets/house-photo.png',
+        img: 'assets/room.png',
         category: 'game_plan'
       }
     ],
@@ -190,7 +190,7 @@ const recommendations = {
         helperText: 'A comprehensive guide to settling your investment with cash savings',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/house-photo.png',
+        img: 'assets/room.png',
         category: 'game_plan'
       }
     ],
@@ -201,7 +201,7 @@ const recommendations = {
         helperText: 'Learn how to settle your Investment with a Home Equity Line of Credit.',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/house-photo.png',
+        img: 'assets/room.png',
         category: 'game_plan'
       }
     ],
@@ -212,7 +212,7 @@ const recommendations = {
         helperText: 'A comprehensive guide to settling your investment through a home sale.',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/house-photo.png',
+        img: 'assets/room.png',
         category: 'game_plan'
       }
     ]
@@ -236,7 +236,7 @@ const recommendations = {
         helperText: 'Financial planning for growing families.',
         content_type: 'Video',
         time_estimate: 6,
-        img: 'assets/house-photo.png',
+        img: 'assets/room.png',
         category: 'game_plan'
       }
     ],
@@ -247,7 +247,7 @@ const recommendations = {
         helperText: 'Learn how to manage your Investment during major life events',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/house-photo.png',
+        img: 'assets/desk.png',
         category: 'prep_future'
       }
     ],
@@ -258,7 +258,7 @@ const recommendations = {
         helperText: 'Learn how to factor your HEI into unexpected financial gains',
         content_type: 'Article',
         time_estimate: 4,
-        img: 'assets/house-photo.png',
+        img: 'assets/doors.png',
         category: 'game_plan'
       }
     ],
@@ -269,7 +269,7 @@ const recommendations = {
         helperText: 'Learn how to manage your investment during major life events.',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/house-photo.png',
+        img: 'assets/laptop.png',
         category: 'game_plan'
       }
     ],
@@ -280,7 +280,7 @@ const recommendations = {
         helperText: 'Try our renovation calculator to see how much equity you can add with an upgrade',
         content_type: 'Calculator',
         time_estimate: 5,
-        img: 'assets/house-photo.png',
+        img: 'assets/desk.png',
         category: 'game_plan'
       },
       {
@@ -300,7 +300,7 @@ const recommendations = {
         helperText: 'Learn how your HEI factors into your property transaction',
         content_type: 'Article',
         time_estimate: 10,
-        img: 'assets/house-photo.png',
+        img: 'assets/doors.png',
         category: 'game_plan'
       }
     ],
@@ -311,7 +311,7 @@ const recommendations = {
         helperText: 'Contact a member of our team and we\'ll do everything we can to help you',
         content_type: 'Personal Coaching',
         time_estimate: 20,
-        img: 'assets/house-photo.png',
+        img: 'assets/doors.png',
         category: 'game_plan'
       }
     ],
@@ -322,7 +322,7 @@ const recommendations = {
         helperText: 'Learn how to make the best use of funds',
         content_type: 'Personal Coaching',
         time_estimate: 12,
-        img: 'assets/house-photo.png',
+        img: 'assets/laptop.png',
         category: 'on_track'
       }
     ]
@@ -336,7 +336,7 @@ const recommendations = {
         helperText: 'Gain confidence and plan for the future with our free suite of personal finance tools, courses, and resources',
         content_type: 'Guides & More',
         time_estimate: 30,
-        img: 'assets/house-photo.jpg',
+        img: 'assets/laptop.jpg',
         category: 'prep_future'
       }
     ],
@@ -347,7 +347,7 @@ const recommendations = {
         helperText: 'If you didn\'t take the full amount from Hometap the first time around, you may be able to access more of your own equity',
         content_type: 'Article',
         time_estimate: 5,
-        img: 'assets/house-photo.jpg',
+        img: 'assets/doors.jpg',
         category: 'on_track'
       }
     ],
@@ -358,7 +358,7 @@ const recommendations = {
         helperText: 'Get answers to frequently asked questions about your Home Equity Investment',
         content_type: 'FAQ',
         time_estimate: 2,
-        img: 'assets/house-photo.jpg',
+        img: 'assets/room.jpg',
         category: 'game_plan'
       },
       {
@@ -367,7 +367,7 @@ const recommendations = {
         helperText: 'Schedule a time with our Investment Support team to learn anything you may want to know about your investment',
         content_type: 'Personal Coaching',
         time_estimate: 15,
-        img: 'assets/house-photo.jpg',
+        img: 'assets/desk.jpg',
         category: 'game_plan'
       }
     ],
@@ -389,7 +389,7 @@ const recommendations = {
         helperText: 'Eligible homeowners can save an average of $1,100 on their property taxes with Ownwell',
         content_type: 'Guides & More',
         time_estimate: 10,
-        img: 'assets/house-photo.jpg',
+        img: 'assets/desk.jpg',
         category: 'game_plan'
       },
       {
@@ -398,7 +398,7 @@ const recommendations = {
         helperText: 'The Financial Health Hub offers a free suite of tools and resources to help you make the most of your money',
         content_type: 'Guides & More',
         time_estimate: 10,
-        img: 'assets/house-photo.jpg',
+        img: 'assets/laptop.jpg',
         category: 'game_plan'
       }
     ],
@@ -409,7 +409,7 @@ const recommendations = {
         helperText: 'Contact our team for personalized support with your financial goals',
         content_type: 'Personal Coaching',
         time_estimate: 10,
-        img: 'assets/house-photo.jpg',
+        img: 'assets/doors.jpg',
         category: 'game_plan'
       }
     ]
