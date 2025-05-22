@@ -629,9 +629,18 @@ function renderTopNav() {
   });
   topRow.appendChild(nav);
 
-  // Right: Save & Exit button
+  // Right: Save & Exit or I'm done button
   const saveExit = document.createElement('button');
-  saveExit.textContent = 'Save & Exit';
+  // If on customize_plan, change label and behavior
+  if (getCurrentStepId() === 'customize_plan') {
+    saveExit.textContent = "I'm done";
+    saveExit.onclick = () => {
+      window.location.href = 'https://asigel-hometap.github.io/check-in/success';
+    };
+  } else {
+    saveExit.textContent = 'Save & Exit';
+    saveExit.onclick = () => { /* existing or default behavior */ };
+  }
   saveExit.style.background = 'white';
   saveExit.style.color = '#434C5E';
   saveExit.style.fontFamily = 'Mulish, sans-serif';
