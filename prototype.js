@@ -2327,6 +2327,61 @@ function renderCustomizePlan() {
 
   container.appendChild(headerRow);
 
+  // Add instructional text box
+  const instructionBox = document.createElement('div');
+  instructionBox.className = 'instruction-box';
+  instructionBox.style.borderRadius = '12px';
+  instructionBox.style.background = 'linear-gradient(269deg, #D4F4FF 0%, #EAFAFF 100%)';
+  instructionBox.style.color = '#152033';
+  instructionBox.style.fontFamily = 'Mulish, sans-serif';
+  instructionBox.style.fontSize = '18px';
+  instructionBox.style.fontStyle = 'normal';
+  instructionBox.style.fontWeight = '400';
+  instructionBox.style.lineHeight = '26px';
+  instructionBox.style.padding = '24px 32px';
+  instructionBox.style.marginBottom = '32px';
+  instructionBox.style.maxWidth = '900px';
+  instructionBox.style.width = '100%';
+  instructionBox.style.position = 'relative';
+  instructionBox.style.transition = 'opacity 0.3s, transform 0.3s';
+  instructionBox.style.opacity = '1';
+  instructionBox.style.transform = 'translateY(0)';
+  instructionBox.style.paddingTop = '36px';
+  instructionBox.style.paddingRight = '48px';
+
+  // Close button
+  const closeButton = document.createElement('button');
+  closeButton.innerHTML = '×';
+  closeButton.style.position = 'absolute';
+  closeButton.style.top = '20px';
+  closeButton.style.right = '24px';
+  closeButton.style.background = 'none';
+  closeButton.style.border = 'none';
+  closeButton.style.fontSize = '24px';
+  closeButton.style.color = '#152033';
+  closeButton.style.cursor = 'pointer';
+  closeButton.style.padding = '8px 12px';
+  closeButton.style.lineHeight = '1';
+  closeButton.style.opacity = '0.6';
+  closeButton.style.transition = 'opacity 0.2s';
+  closeButton.onmouseover = () => { closeButton.style.opacity = '1'; };
+  closeButton.onmouseout = () => { closeButton.style.opacity = '0.6'; };
+  closeButton.onclick = () => {
+    instructionBox.style.opacity = '0';
+    instructionBox.style.transform = 'translateY(-10px)';
+    setTimeout(() => {
+      instructionBox.style.display = 'none';
+    }, 300);
+  };
+  instructionBox.appendChild(closeButton);
+
+  // Text content
+  const instructionText = document.createElement('div');
+  instructionText.innerHTML = "We've prepared your first home equity playbook of personalized tools and resources to help you plan your finances with confidence and prepare for a successful settlement. We'll check in another 90 days from now on your goals and progress. Click the <b>Edit</b> button to customize the playbook to fit your needs and available time.";
+  instructionBox.appendChild(instructionText);
+
+  container.appendChild(instructionBox);
+
   // --- Edit/Save/Cancel buttons ---
   const buttonContainer = document.createElement('div');
   buttonContainer.style.display = 'flex';
