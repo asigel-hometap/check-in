@@ -170,7 +170,7 @@ const recommendations = {
         helperText: 'Learn about the refinancing process, what to consider, and how to prepare for settlement',
         content_type: 'Article',
         time_estimate: 3,
-        img: 'assets/house-photo.png',
+        img: 'assets/house-photo.jpg',
         category: 'game_plan'
       },
       {
@@ -313,7 +313,7 @@ const recommendations = {
         helperText: 'If you\'re worried about large repair bills, a home warranty is budget friendly and offers discounts on replacement appliances and systems',
         content_type: 'Guides & More',
         time_estimate: 10,
-        img: 'assets/house-photo.png',
+        img: 'assets/house-photo.jpg',
         category: 'prep_future'
       }
     ],
@@ -360,7 +360,7 @@ const recommendations = {
         helperText: 'Gain confidence and plan for the future with our free suite of personal finance tools, courses, and resources',
         content_type: 'Guides & More',
         time_estimate: 30,
-        img: 'assets/laptop.jpg',
+        img: 'assets/laptop.png',
         category: 'prep_future'
       }
     ],
@@ -371,7 +371,7 @@ const recommendations = {
         helperText: 'If you didn\'t take the full amount from Hometap the first time around, you may be able to access more of your own equity',
         content_type: 'Article',
         time_estimate: 5,
-        img: 'assets/doors.jpg',
+        img: 'assets/doors.png',
         category: 'on_track'
       }
     ],
@@ -1764,6 +1764,8 @@ function renderResultsBreakdown() {
             groupDiv.appendChild(item);
           }
         });
+        groupDiv.style.maxWidth = 'none';
+        groupDiv.style.width = '100%';
         focusSection.appendChild(groupDiv);
       }
     });
@@ -1956,7 +1958,6 @@ function renderCustomizePlan() {
         align-items: flex-start;
         justify-content: space-between;
         width: 100%;
-        max-width: 900px;
         margin-bottom: 32px;
         margin-top: 8px;
       }
@@ -2023,12 +2024,13 @@ function renderCustomizePlan() {
         max-width: 900px;
       }
       .rec-category-title {
-        font-family: 'Mulish', sans-serif;
-        font-size: 18px;
+        font-family: 'Tiempos Headline', serif;
+        font-size: 24px;
         font-weight: 700;
-        color: #366CED;
+        color: #152033;
         margin-bottom: 18px;
         margin-left: 8px;
+        margin-top: 70px;
         text-align: left;
       }
       .recommendation-card {
@@ -2071,7 +2073,7 @@ function renderCustomizePlan() {
         font-style: normal;
         font-weight: 700;
         line-height: 26px;
-        margin: 0 0 2px 0;
+        margin: 0 0 0 0;
         text-align: left;
         word-break: break-word;
       }
@@ -2082,7 +2084,7 @@ function renderCustomizePlan() {
         font-style: normal;
         font-weight: 400;
         line-height: 23px;
-        margin: 0 0 8px 0;
+        margin: 0 0 0 0;
         text-align: left;
         word-break: break-word;
       }
@@ -2091,7 +2093,7 @@ function renderCustomizePlan() {
         flex-direction: row;
         align-items: center;
         gap: 16px;
-        margin-top: 8px;
+        margin-top: 0px;
       }
       .rec-card-meta-type {
         color: #687183;
@@ -2283,14 +2285,23 @@ function renderCustomizePlan() {
   // Main content
   const container = document.createElement('div');
   container.className = 'customize-main-content';
+  container.style.padding = '40px 32px 40px 32px';
 
   // --- Header Row ---
   const headerRow = document.createElement('div');
   headerRow.className = 'customize-header-row';
+  headerRow.style.justifyContent = 'flex-start';
+  headerRow.style.alignItems = 'flex-start';
+  headerRow.style.textAlign = 'left';
+  headerRow.style.width = '100%';
+  headerRow.style.margin = '0';
+  headerRow.style.paddingLeft = '32px';
 
   // Left side
   const headerLeft = document.createElement('div');
   headerLeft.className = 'customize-header-left';
+  headerLeft.style.width = '100%';
+  headerLeft.style.margin = '0';
   // Label
   const label = document.createElement('div');
   label.className = 'customize-header-label';
@@ -2301,33 +2312,11 @@ function renderCustomizePlan() {
   title.className = 'customize-header-title';
   title.textContent = 'Your quarterly playbook';
   headerLeft.appendChild(title);
-  // Date range
-  const dates = document.createElement('div');
-  dates.className = 'customize-header-dates';
-  dates.textContent = 'May 1, 2021 – May 1, 2031';
-  headerLeft.appendChild(dates);
   headerRow.appendChild(headerLeft);
-
-  // Right side: Estimated time badge
-  const badge = document.createElement('div');
-  badge.className = 'customize-header-badge';
-  // Clock icon
-  const clock = document.createElement('img');
-  clock.src = 'assets/clock.svg';
-  clock.alt = 'Clock';
-  badge.appendChild(clock);
-  // Text
-  // Sum time_estimate of all recs in playbook
-  const allPlaybookRecs = Object.values(workingState.grouped).flat();
-  const totalTime = allPlaybookRecs.reduce((sum, rec) => sum + (rec.time_estimate || 0), 0);
-  const badgeText = document.createElement('span');
-  badgeText.textContent = `EST. ${totalTime} MIN`;
-  badge.appendChild(badgeText);
-  headerRow.appendChild(badge);
 
   container.appendChild(headerRow);
 
-  // Add instructional text box
+  // Instruction box (moved below title)
   const instructionBox = document.createElement('div');
   instructionBox.className = 'instruction-box';
   instructionBox.style.borderRadius = '12px';
@@ -2340,8 +2329,8 @@ function renderCustomizePlan() {
   instructionBox.style.lineHeight = '26px';
   instructionBox.style.padding = '24px 32px';
   instructionBox.style.marginBottom = '32px';
-  instructionBox.style.maxWidth = '900px';
-  instructionBox.style.width = '100%';
+  instructionBox.style.maxWidth = '100%';
+  instructionBox.style.margin = '0 0 32px 0';
   instructionBox.style.position = 'relative';
   instructionBox.style.transition = 'opacity 0.3s, transform 0.3s';
   instructionBox.style.opacity = '1';
@@ -2382,81 +2371,279 @@ function renderCustomizePlan() {
 
   container.appendChild(instructionBox);
 
-  // --- Edit/Save/Cancel buttons ---
-  const buttonContainer = document.createElement('div');
-  buttonContainer.style.display = 'flex';
-  buttonContainer.style.alignItems = 'center';
-  buttonContainer.style.marginLeft = 'auto';
-  buttonContainer.style.marginTop = '8px';
-  if (!isEditMode) {
-    const editBtn = document.createElement('button');
-    editBtn.className = 'edit-btn';
-    editBtn.textContent = 'Edit';
-    editBtn.onclick = () => {
-      isEditMode = true;
-      renderCustomizePlan();
-    };
-    buttonContainer.appendChild(editBtn);
-  } else {
-    const cancelBtn = document.createElement('button');
-    cancelBtn.className = 'cancel-btn';
-    cancelBtn.textContent = 'Cancel';
-    cancelBtn.onclick = () => {
-      // Discard changes
-      if (playbookState._editCopy) delete playbookState._editCopy;
-      isEditMode = false;
-      renderCustomizePlan();
-    };
-    buttonContainer.appendChild(cancelBtn);
-    const saveBtn = document.createElement('button');
-    saveBtn.className = 'save-btn';
-    saveBtn.textContent = 'Save';
-    saveBtn.onclick = () => {
-      // Commit changes
-      if (playbookState._editCopy) {
-        playbookState.grouped = playbookState._editCopy.grouped;
-        playbookState.alsoLike = playbookState._editCopy.alsoLike;
-        delete playbookState._editCopy;
-      }
-      isEditMode = false;
-      renderCustomizePlan();
-    };
-    buttonContainer.appendChild(saveBtn);
+  // --- Tab Bar ---
+  const tabBar = document.createElement('div');
+  tabBar.className = 'customize-tab-bar';
+  tabBar.style.display = 'flex';
+  tabBar.style.gap = '0';
+  tabBar.style.margin = '0 0 32px 0';
+  tabBar.style.borderBottom = '2px solid #E5E8EF';
+  tabBar.style.width = '100%';
+  tabBar.style.maxWidth = 'none';
+  tabBar.style.background = 'none';
+
+  const tabs = [
+    { id: 'recommendations', label: 'Recommendations' },
+    { id: 'summary', label: 'Summary' }
+  ];
+  let activeTab = window.__customizeActiveTab || 'recommendations';
+  function setActiveTab(tab) {
+    window.__customizeActiveTab = tab;
+    renderCustomizePlan();
   }
-  headerRow.appendChild(buttonContainer);
+  tabs.forEach(tab => {
+    const tabBtn = document.createElement('button');
+    tabBtn.textContent = tab.label;
+    tabBtn.className = 'customize-tab-btn';
+    tabBtn.style.background = 'none';
+    tabBtn.style.border = 'none';
+    tabBtn.style.outline = 'none';
+    tabBtn.style.cursor = 'pointer';
+    tabBtn.style.fontFamily = 'Mulish, sans-serif';
+    tabBtn.style.fontSize = '18px';
+    tabBtn.style.padding = '16px 32px 12px 32px';
+    tabBtn.style.margin = '0';
+    tabBtn.style.borderBottom = tab.id === activeTab ? '4px solid #20A277' : '4px solid transparent';
+    tabBtn.style.color = tab.id === activeTab ? '#20A277' : '#687183';
+    tabBtn.style.fontWeight = tab.id === activeTab ? '700' : '400';
+    tabBtn.onclick = () => setActiveTab(tab.id);
+    tabBar.appendChild(tabBtn);
+  });
+  container.appendChild(tabBar);
 
-  container.appendChild(headerRow);
+  // --- Tab Content ---
+  const tabContent = document.createElement('div');
+  tabContent.className = 'customize-tab-content';
+  tabContent.style.width = '100%';
+  tabContent.style.maxWidth = 'none';
+  tabContent.style.background = 'none';
+  tabContent.style.padding = '0';
 
-  // --- Recommendation Groups ---
-  const categoryLabels = {
-    game_plan: 'Game Plan',
-    on_track: 'On Track',
-    prep_future: 'Prep for the Future'
-  };
-  Object.entries(workingState.grouped).forEach(([cat, recs]) => {
-    if (recs.length === 0) return;
-    const groupDiv = document.createElement('div');
-    groupDiv.className = 'rec-category-group';
-    const groupTitle = document.createElement('div');
-    groupTitle.className = 'rec-category-title';
-    groupTitle.textContent = categoryLabels[cat] || cat;
-    groupDiv.appendChild(groupTitle);
-    recs.forEach((rec, idx) => {
+  if (activeTab === 'recommendations') {
+    // --- Row: time estimate, date range, edit/save/cancel ---
+    const topRow = document.createElement('div');
+    topRow.style.display = 'flex';
+    topRow.style.alignItems = 'center';
+    topRow.style.justifyContent = 'space-between';
+    topRow.style.width = '100%';
+    topRow.style.marginBottom = '32px';
+
+    // Left: time estimate and date range
+    const left = document.createElement('div');
+    left.style.display = 'flex';
+    left.style.alignItems = 'center';
+    left.style.gap = '18px';
+    // Time badge
+    const badge = document.createElement('div');
+    badge.className = 'customize-header-badge';
+    const clock = document.createElement('img');
+    clock.src = 'assets/clock.svg';
+    clock.alt = 'Clock';
+    badge.appendChild(clock);
+    const allPlaybookRecs = Object.values(workingState.grouped).flat();
+    const totalTime = allPlaybookRecs.reduce((sum, rec) => sum + (rec.time_estimate || 0), 0);
+    const badgeText = document.createElement('span');
+    badgeText.textContent = `EST. ${totalTime} MIN`;
+    badge.appendChild(badgeText);
+    left.appendChild(badge);
+    // Date range
+    const today = new Date();
+    const in90 = new Date();
+    in90.setDate(today.getDate() + 90);
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const dateRange = `${today.toLocaleDateString('en-US', options)} – ${in90.toLocaleDateString('en-US', options)}`;
+    const dates = document.createElement('div');
+    dates.className = 'customize-header-dates';
+    dates.textContent = dateRange;
+    left.appendChild(dates);
+    topRow.appendChild(left);
+
+    // Right: edit/save/cancel buttons
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.alignItems = 'center';
+    buttonContainer.style.marginLeft = 'auto';
+    buttonContainer.style.gap = '12px';
+    if (!isEditMode) {
+      const editBtn = document.createElement('button');
+      editBtn.className = 'edit-btn';
+      editBtn.textContent = 'Edit';
+      editBtn.onclick = () => { isEditMode = true; renderCustomizePlan(); };
+      buttonContainer.appendChild(editBtn);
+    } else {
+      const cancelBtn = document.createElement('button');
+      cancelBtn.className = 'cancel-btn';
+      cancelBtn.textContent = 'Cancel';
+      cancelBtn.onclick = () => { if (playbookState._editCopy) delete playbookState._editCopy; isEditMode = false; renderCustomizePlan(); };
+      buttonContainer.appendChild(cancelBtn);
+      const saveBtn = document.createElement('button');
+      saveBtn.className = 'save-btn';
+      saveBtn.textContent = 'Save';
+      saveBtn.onclick = () => { if (playbookState._editCopy) { playbookState.grouped = playbookState._editCopy.grouped; playbookState.alsoLike = playbookState._editCopy.alsoLike; delete playbookState._editCopy; } isEditMode = false; renderCustomizePlan(); };
+      buttonContainer.appendChild(saveBtn);
+    }
+    topRow.appendChild(buttonContainer);
+    tabContent.appendChild(topRow);
+
+    // --- Recommendation Groups (playbook) ---
+    const categoryLabels = {
+      game_plan: 'Game Plan',
+      on_track: 'On Track',
+      prep_future: 'Prep for the Future'
+    };
+    Object.entries(workingState.grouped).forEach(([cat, recs]) => {
+      if (recs.length === 0) return;
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'rec-category-group';
+      // REMOVE: rec-category-title (except for 'You might also like')
+      // ...
+      recs.forEach((rec, idx) => {
+        const card = document.createElement('div');
+        card.className = 'recommendation-card rec-card-fade';
+        // Image (left)
+        const img = document.createElement('img');
+        img.className = 'rec-card-img';
+        img.src = rec.img || 'assets/house-photo.jpg'; // Use rec.img if available, fallback to house-photo.jpg
+        img.alt = 'Recommendation';
+        card.appendChild(img);
+        // Content (right)
+        const content = document.createElement('div');
+        content.className = 'rec-card-content';
+        content.style.display = 'flex';
+        content.style.flexDirection = 'column';
+        content.style.alignItems = 'flex-start';
+        content.style.justifyContent = 'flex-start';
+        content.style.minWidth = '0';
+        // Badge (top)
+        const badge = document.createElement('div');
+        const categoryColors = {
+          'game_plan': '#A54F00', // Orange
+          'on_track': '#366CED',  // Blue
+          'prep_future': '#20A277', // Green
+          'you might also like': '#687183', // Gray
+        };
+        const badgeColor = categoryColors[(cat || '').toLowerCase()] || '#A54F00';
+        badge.textContent = (cat || '').replace(/_/g, ' ').toUpperCase();
+        badge.style.color = badgeColor;
+        badge.style.fontFamily = 'Mulish, sans-serif';
+        badge.style.fontSize = '11px';
+        badge.style.fontStyle = 'normal';
+        badge.style.fontWeight = '700';
+        badge.style.lineHeight = 'normal';
+        badge.style.letterSpacing = '1px';
+        badge.style.display = 'flex';
+        badge.style.padding = '4px';
+        badge.style.justifyContent = 'center';
+        badge.style.alignItems = 'center';
+        badge.style.background = 'rgba(0,0,0,0.04)';
+        badge.style.borderRadius = '6px';
+        badge.style.marginBottom = '8px';
+        content.appendChild(badge);
+        // Title
+        const title = document.createElement('div');
+        title.className = 'rec-card-title';
+        title.textContent = rec.title;
+        title.style.fontFamily = 'Tiempos Headline, serif';
+        title.style.fontSize = '16px';
+        title.style.fontStyle = 'normal';
+        title.style.fontWeight = '600';
+        title.style.lineHeight = '24px';
+        content.appendChild(title);
+        // Helper text
+        const helper = document.createElement('div');
+        helper.className = 'rec-card-helper';
+        helper.textContent = rec.helperText;
+        content.appendChild(helper);
+        // Meta row
+        const meta = document.createElement('div');
+        meta.className = 'rec-card-meta';
+        const type = document.createElement('span');
+        type.className = 'rec-card-meta-type';
+        type.textContent = rec.content_type;
+        meta.appendChild(type);
+        const dot = document.createElement('span');
+        dot.className = 'rec-card-meta-dot';
+        meta.appendChild(dot);
+        const time = document.createElement('span');
+        time.className = 'rec-card-meta-time';
+        time.textContent = `${rec.time_estimate} min`;
+        meta.appendChild(time);
+        content.appendChild(meta);
+        card.appendChild(content);
+        // Remove button in edit mode
+        if (isEditMode) {
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'rec-card-remove';
+          removeBtn.title = 'Remove from playbook';
+          removeBtn.innerHTML = `<img src='assets/remove.svg' alt='Remove' width='24' height='24'/>`;
+          removeBtn.onclick = () => {
+            // Animate out, then move to alsoLike
+            card.style.opacity = '0';
+            setTimeout(() => {
+              workingState.grouped[cat].splice(idx, 1);
+              workingState.alsoLike.push({ ...rec });
+              renderCustomizePlan();
+            }, 180);
+          };
+          card.appendChild(removeBtn);
+        }
+        groupDiv.appendChild(card);
+        groupDiv.style.maxWidth = 'none';
+        groupDiv.style.width = '100%';
+      });
+      tabContent.appendChild(groupDiv);
+    });
+
+    // --- You might also like section ---
+    const alsoLikeSection = document.createElement('div');
+    alsoLikeSection.className = 'rec-category-group';
+    alsoLikeSection.style.marginTop = '24px';
+    // Section title
+    const alsoLikeTitle = document.createElement('div');
+    alsoLikeTitle.className = 'rec-category-title';
+    alsoLikeTitle.textContent = 'You might also like';
+    alsoLikeSection.appendChild(alsoLikeTitle);
+    // Cards
+    workingState.alsoLike.forEach((rec, idx) => {
       const card = document.createElement('div');
       card.className = 'recommendation-card rec-card-fade';
-      // Image
+      // Image (left)
       const img = document.createElement('img');
       img.className = 'rec-card-img';
       img.src = rec.img || 'assets/house-photo.jpg'; // Use rec.img if available, fallback to house-photo.jpg
       img.alt = 'Recommendation';
       card.appendChild(img);
-      // Content
+      // Content (right)
       const content = document.createElement('div');
       content.className = 'rec-card-content';
+      content.style.display = 'flex';
+      content.style.flexDirection = 'column';
+      content.style.alignItems = 'flex-start';
+      content.style.justifyContent = 'flex-start';
+      content.style.minWidth = '0';
+      // Badge (top)
+      const badge = document.createElement('div');
+      badge.textContent = 'YOU MIGHT ALSO LIKE';
+      badge.style.background = '#E5F0FB';
+      badge.style.color = '#366CED';
+      badge.style.fontFamily = 'Mulish, sans-serif';
+      badge.style.fontSize = '13px';
+      badge.style.fontWeight = '700';
+      badge.style.textTransform = 'uppercase';
+      badge.style.borderRadius = '8px';
+      badge.style.padding = '4px 12px';
+      badge.style.display = 'inline-block';
+      badge.style.marginBottom = '8px';
+      content.appendChild(badge);
       // Title
       const title = document.createElement('div');
       title.className = 'rec-card-title';
       title.textContent = rec.title;
+      title.style.fontFamily = 'Tiempos Headline, serif';
+      title.style.fontSize = '16px';
+      title.style.fontStyle = 'normal';
+      title.style.fontWeight = '600';
+      title.style.lineHeight = '24px';
       content.appendChild(title);
       // Helper text
       const helper = document.createElement('div');
@@ -2466,116 +2653,292 @@ function renderCustomizePlan() {
       // Meta row
       const meta = document.createElement('div');
       meta.className = 'rec-card-meta';
-      // Content type
       const type = document.createElement('span');
       type.className = 'rec-card-meta-type';
       type.textContent = rec.content_type;
       meta.appendChild(type);
-      // Dot
       const dot = document.createElement('span');
       dot.className = 'rec-card-meta-dot';
       meta.appendChild(dot);
-      // Time estimate
       const time = document.createElement('span');
       time.className = 'rec-card-meta-time';
       time.textContent = `${rec.time_estimate} min`;
       meta.appendChild(time);
       content.appendChild(meta);
       card.appendChild(content);
-      // Remove button in edit mode
+      // Add button in edit mode
       if (isEditMode) {
-        const removeBtn = document.createElement('button');
-        removeBtn.className = 'rec-card-remove';
-        removeBtn.title = 'Remove from playbook';
-        removeBtn.innerHTML = `<img src='assets/remove.svg' alt='Remove' width='24' height='24'/>`;
-        removeBtn.onclick = () => {
-          // Animate out, then move to alsoLike
+        const addBtn = document.createElement('button');
+        addBtn.className = 'rec-card-add';
+        addBtn.title = 'Add to playbook';
+        addBtn.innerHTML = '+';
+        addBtn.onclick = () => {
+          // Animate out, then move to playbook
           card.style.opacity = '0';
           setTimeout(() => {
-            workingState.grouped[cat].splice(idx, 1);
-            workingState.alsoLike.push({ ...rec });
+            const cat = rec.category;
+            workingState.grouped[cat].push({ ...rec });
+            workingState.alsoLike.splice(idx, 1);
             renderCustomizePlan();
           }, 180);
         };
-        card.appendChild(removeBtn);
+        card.appendChild(addBtn);
       }
-      groupDiv.appendChild(card);
+      alsoLikeSection.appendChild(card);
+      alsoLikeSection.style.maxWidth = 'none';
+      alsoLikeSection.style.width = '100%';
     });
-    container.appendChild(groupDiv);
-  });
+    tabContent.appendChild(alsoLikeSection);
+  } else if (activeTab === 'summary') {
+    // --- Summary Tab: Two-column layout ---
+    const summaryRoot = document.createElement('div');
+    summaryRoot.style.display = 'flex';
+    summaryRoot.style.gap = '32px';
+    summaryRoot.style.width = '100%';
+    summaryRoot.style.maxWidth = 'none';
+    summaryRoot.style.flexWrap = 'wrap';
+    summaryRoot.style.margin = '0 auto';
 
-  // --- You might also like section ---
-  const alsoLikeSection = document.createElement('div');
-  alsoLikeSection.className = 'rec-category-group';
-  alsoLikeSection.style.marginTop = '24px';
-  // Section title
-  const alsoLikeTitle = document.createElement('div');
-  alsoLikeTitle.className = 'rec-category-title';
-  alsoLikeTitle.textContent = 'You might also like';
-  alsoLikeSection.appendChild(alsoLikeTitle);
-  // Cards
-  workingState.alsoLike.forEach((rec, idx) => {
-    const card = document.createElement('div');
-    card.className = 'recommendation-card rec-card-fade';
-    // Image
-    const img = document.createElement('img');
-    img.className = 'rec-card-img';
-    img.src = rec.img || 'assets/house-photo.jpg'; // Use rec.img if available, fallback to house-photo.jpg
-    img.alt = 'Recommendation';
-    card.appendChild(img);
-    // Content
-    const content = document.createElement('div');
-    content.className = 'rec-card-content';
-    // Title
-    const title = document.createElement('div');
-    title.className = 'rec-card-title';
-    title.textContent = rec.title;
-    content.appendChild(title);
-    // Helper text
-    const helper = document.createElement('div');
-    helper.className = 'rec-card-helper';
-    helper.textContent = rec.helperText;
-    content.appendChild(helper);
-    // Meta row
-    const meta = document.createElement('div');
-    meta.className = 'rec-card-meta';
-    // Content type
-    const type = document.createElement('span');
-    type.className = 'rec-card-meta-type';
-    type.textContent = rec.content_type;
-    meta.appendChild(type);
-    // Dot
-    const dot = document.createElement('span');
-    dot.className = 'rec-card-meta-dot';
-    meta.appendChild(dot);
-    // Time estimate
-    const time = document.createElement('span');
-    time.className = 'rec-card-meta-time';
-    time.textContent = `${rec.time_estimate} min`;
-    meta.appendChild(time);
-    content.appendChild(meta);
-    card.appendChild(content);
-    // Add button in edit mode
-    if (isEditMode) {
-      const addBtn = document.createElement('button');
-      addBtn.className = 'rec-card-add';
-      addBtn.title = 'Add to playbook';
-      addBtn.innerHTML = '+';
-      addBtn.onclick = () => {
-        // Animate out, then move to playbook
-        card.style.opacity = '0';
-        setTimeout(() => {
-          const cat = rec.category;
-          workingState.grouped[cat].push({ ...rec });
-          workingState.alsoLike.splice(idx, 1);
-          renderCustomizePlan();
-        }, 180);
-      };
-      card.appendChild(addBtn);
+    // Card styling (reuse from results_breakdown)
+    const cardStyle = `
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(26, 51, 101, 0.08);
+      padding: 32px 40px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-width: 0;
+      width: 100%;
+      max-width: 520px;
+      flex: 1 1 0;
+    `;
+
+    // --- Timeline Card ---
+    const timelineCard = document.createElement('div');
+    timelineCard.style = cardStyle;
+    // Section label
+    const timelineLabel = document.createElement('div');
+    timelineLabel.style.fontFamily = 'Mulish, sans-serif';
+    timelineLabel.style.fontSize = '13px';
+    timelineLabel.style.fontWeight = '700';
+    timelineLabel.style.color = '#919aac';
+    timelineLabel.style.textTransform = 'uppercase';
+    timelineLabel.style.letterSpacing = '1.2px';
+    timelineLabel.style.marginBottom = '8px';
+    timelineLabel.textContent = 'SETTLEMENT TIMELINE';
+    timelineCard.appendChild(timelineLabel);
+    // Dynamic summary sentence (reuse from results_breakdown)
+    let summarySentence = '';
+    const timelineMap = {
+      within_year: 'in the next 12 months',
+      within_three_years: 'in 1 to 3 years',
+      more_than_three_years: 'in more than 3 years',
+      not_sure: 'at a future date to be determined'
+    };
+    const fundingMap = {
+      refinancing: 'a refinance',
+      cash_savings: 'cash savings',
+      loan_heloc: 'a home equity loan or HELOC',
+      home_sale: 'a home sale',
+      not_sure: 'a method to be determined'
+    };
+    if (answers.settlement_timeline) {
+      const timelineText = timelineMap[answers.settlement_timeline] || '';
+      const fundingText = fundingMap[answers.settlement_funding] || '';
+      const dynamicPart = `${fundingText ? 'through ' + fundingText + ' ' : ''}${timelineText}`;
+      summarySentence = `You plan to settle your HEI <b>${dynamicPart}</b>.`;
     }
-    alsoLikeSection.appendChild(card);
-  });
-  container.appendChild(alsoLikeSection);
+    if (summarySentence) {
+      const desc = document.createElement('div');
+      desc.style.fontFamily = 'Mulish, sans-serif';
+      desc.style.fontSize = '16px';
+      desc.style.color = '#434C5E';
+      desc.style.marginBottom = '8px';
+      desc.innerHTML = summarySentence;
+      timelineCard.appendChild(desc);
+    }
+    // Timeline visualization (reuse from results_breakdown)
+    // ... copy timeline visualization code from renderResultsBreakdown ...
+    // --- Timeline visualization code start ---
+    const effectiveDate = new Date('2021-05-01');
+    const deadlineDate = new Date('2031-05-01');
+    const today = new Date();
+    const startYear = effectiveDate.getFullYear();
+    const endYear = deadlineDate.getFullYear();
+    const years = [];
+    for (let y = startYear; y <= endYear; y += 1) years.push(y);
+    const numSegments = years.length - 1;
+    // Calculate purple segment (possible settlement window) based on answer
+    let purpleStartDate = null, purpleEndDate = null;
+    if (answers.settlement_timeline === 'within_year') {
+      purpleStartDate = today;
+      purpleEndDate = new Date(today);
+      purpleEndDate.setFullYear(today.getFullYear() + 1);
+    } else if (answers.settlement_timeline === 'within_three_years') {
+      purpleStartDate = today;
+      purpleEndDate = new Date(today);
+      purpleEndDate.setFullYear(today.getFullYear() + 3);
+    } else if (answers.settlement_timeline === 'more_than_three_years') {
+      purpleStartDate = new Date(today);
+      purpleStartDate.setFullYear(today.getFullYear() + 3);
+      purpleEndDate = new Date(today);
+      purpleEndDate.setFullYear(today.getFullYear() + 5);
+    }
+    // Clamp purpleEndDate to deadline
+    if (purpleEndDate && purpleEndDate > deadlineDate) purpleEndDate = new Date(deadlineDate);
+    if (purpleStartDate && purpleStartDate > deadlineDate) purpleStartDate = new Date(deadlineDate);
+    // Timeline bar
+    const timelineBar = document.createElement('div');
+    timelineBar.className = 'results-breakdown-timeline-bar';
+    for (let i = 0; i < numSegments; i++) {
+      const segStart = new Date(startYear + i, 4, 1).getTime();
+      const segEnd = new Date(startYear + i + 1, 4, 1).getTime();
+      let segmentClass = 'results-breakdown-timeline-segment';
+      // Determine color for this segment
+      if (today > segEnd) {
+        segmentClass += ' filled';
+      } else if (
+        purpleStartDate && purpleEndDate &&
+        segEnd > purpleStartDate.getTime() && segStart < purpleEndDate.getTime()
+      ) {
+        segmentClass += ' purple';
+      }
+      const segment = document.createElement('div');
+      segment.className = segmentClass;
+      timelineBar.appendChild(segment);
+    }
+    // Add today circle and caret
+    const segments = timelineBar.querySelectorAll('.results-breakdown-timeline-segment');
+    let todaySegmentIdx = 0;
+    let todaySegmentPct = 0;
+    for (let i = 0; i < numSegments; i++) {
+      const segStart = new Date(startYear + i, 4, 1).getTime();
+      const segEnd = new Date(startYear + i + 1, 4, 1).getTime();
+      if (today >= segStart && today <= segEnd) {
+        todaySegmentIdx = i;
+        todaySegmentPct = (today - segStart) / (segEnd - segStart);
+        break;
+      }
+    }
+    if (segments.length > 0) {
+      const seg = segments[todaySegmentIdx];
+      setTimeout(() => {
+        const left = seg.offsetLeft + seg.offsetWidth * todaySegmentPct;
+        // Today circle
+        let todayCircle = document.createElement('div');
+        todayCircle.className = 'results-breakdown-timeline-today-circle';
+        todayCircle.style.left = `${left}px`;
+        timelineBar.appendChild(todayCircle);
+        // Caret label
+        let todayLabel = document.createElement('div');
+        todayLabel.className = 'results-breakdown-timeline-label';
+        todayLabel.innerText = 'Today';
+        todayLabel.style.left = `${left}px`;
+        timelineBar.appendChild(todayLabel);
+      }, 0);
+    }
+    timelineCard.appendChild(timelineBar);
+    // Years (every other year)
+    const yearsRow = document.createElement('div');
+    yearsRow.className = 'results-breakdown-timeline-years';
+    years.forEach((y, i) => {
+      if (i % 2 === 0) {
+        const year = document.createElement('div');
+        year.textContent = y;
+        yearsRow.appendChild(year);
+      } else {
+        const spacer = document.createElement('div');
+        spacer.textContent = '';
+        yearsRow.appendChild(spacer);
+      }
+    });
+    timelineCard.appendChild(yearsRow);
+    // Legend
+    const legend = document.createElement('div');
+    legend.className = 'results-breakdown-timeline-legend';
+    legend.innerHTML = `<span class="results-breakdown-timeline-legend-dot"></span> Your HEI to date &nbsp;&nbsp; <span class="results-breakdown-timeline-legend-dot-purple"></span> Possible settlement window`;
+    timelineCard.appendChild(legend);
+    // --- Timeline visualization code end ---
+    summaryRoot.appendChild(timelineCard);
+
+    // --- Focus Areas Card ---
+    const focusCard = document.createElement('div');
+    focusCard.style = cardStyle;
+    // Section label
+    const focusLabel = document.createElement('div');
+    focusLabel.style.fontFamily = 'Mulish, sans-serif';
+    focusLabel.style.fontSize = '13px';
+    focusLabel.style.fontWeight = '700';
+    focusLabel.style.color = '#919aac';
+    focusLabel.style.textTransform = 'uppercase';
+    focusLabel.style.letterSpacing = '1.2px';
+    focusLabel.style.marginBottom = '8px';
+    focusLabel.textContent = 'GOALS';
+    focusCard.appendChild(focusLabel);
+    // Goals summary
+    const goalsSummary = document.createElement('div');
+    goalsSummary.style.fontFamily = 'Mulish, sans-serif';
+    goalsSummary.style.fontSize = '16px';
+    goalsSummary.style.color = '#434C5E';
+    goalsSummary.style.marginBottom = '8px';
+    goalsSummary.textContent = 'You shared that your goals are ...';
+    focusCard.appendChild(goalsSummary);
+    // Focus areas chips (reuse from results_breakdown)
+    const focusGroups = [
+      {
+        key: 'financial_wellbeing',
+        label: 'Focusing on',
+        answers: answers.financial_wellbeing,
+      },
+      {
+        key: 'life_events_future',
+        label: 'Preparing for',
+        answers: answers.life_events_future,
+      },
+      {
+        key: 'life_events_past',
+        label: 'Managing',
+        answers: answers.life_events_past,
+      },
+    ];
+    focusGroups.forEach(group => {
+      if (Array.isArray(group.answers) && group.answers.length > 0) {
+        const groupDiv = document.createElement('div');
+        groupDiv.style.marginBottom = '12px';
+        const groupTitle = document.createElement('div');
+        groupTitle.style.fontFamily = 'Mulish, sans-serif';
+        groupTitle.style.fontSize = '15px';
+        groupTitle.style.fontWeight = '700';
+        groupTitle.style.color = '#366CED';
+        groupTitle.style.marginBottom = '4px';
+        groupTitle.textContent = group.label;
+        groupDiv.appendChild(groupTitle);
+        group.answers.forEach(val => {
+          const question = questions.find(q => q.id === group.key);
+          const opt = question && question.options.find(o => o.value === val);
+          if (opt) {
+            const item = document.createElement('span');
+            item.style.background = '#F5F7FA';
+            item.style.borderRadius = '8px';
+            item.style.padding = '8px 16px';
+            item.style.marginRight = '8px';
+            item.style.fontFamily = 'Mulish, sans-serif';
+            item.style.fontSize = '15px';
+            item.style.color = '#434C5E';
+            item.style.display = 'inline-block';
+            item.style.marginBottom = '6px';
+            item.textContent = opt.text;
+            groupDiv.appendChild(item);
+          }
+        });
+        focusCard.appendChild(groupDiv);
+      }
+    });
+    summaryRoot.appendChild(focusCard);
+    tabContent.appendChild(summaryRoot);
+  }
+  container.appendChild(tabContent);
 
   wrapper.appendChild(container);
   document.body.appendChild(wrapper);
@@ -3107,7 +3470,7 @@ function renderFocusAreasLanding() {
   // Image
   const img = document.createElement('img');
   img.className = 'focus-areas-image';
-  img.src = 'assets/goals-cloud.png';
+  img.src = 'assets/focus-cloud.png';
   img.alt = 'Goals Cloud';
   card.appendChild(img);
 
