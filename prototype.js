@@ -1467,7 +1467,7 @@ function renderGoalsIntro() {
   // Legend
   const legend = document.createElement('div');
   legend.className = 'goals-intro-timeline-legend';
-  legend.innerHTML = `<span class="goals-intro-timeline-legend-dot"></span> HEI to date`;
+  legend.innerHTML = `<span class="goals-intro-timeline-legend-dot"></span> Investment to date`;
   timelineCard.appendChild(legend);
 
   card.appendChild(timelineCard);
@@ -1796,37 +1796,31 @@ function renderResultsBreakdown() {
   // Title
   const title = document.createElement('div');
   title.className = 'results-breakdown-title';
-  title.textContent = "Here's what we learned about your goals";
+  title.textContent = "Your financial profile";
   card.appendChild(title);
 
   // --- Dynamic summary sentence ---
   let summarySentence = '';
   const timelineMap = {
-    within_year: 'in the next 12 months',
-    within_three_years: 'in 1 to 3 years',
-    more_than_three_years: 'in more than 3 years',
-    not_sure: 'at a future date to be determined'
+    within_year: 'in the <b>next 12 months</b>',
+    within_three_years: 'in <b>1 to 3 years</b>',
+    more_than_three_years: '<b>after 2028</b>',
+    not_sure: 'by <b>May 1, 2031</b>'
   };
   const fundingMap = {
-    refinancing: 'a refinance',
-    cash_savings: 'cash savings',
-    loan_heloc: 'a home equity loan or HELOC',
-    home_sale: 'a home sale',
-    not_sure: 'a method to be determined'
+    refinancing: 'by <b>refinancing</b>',
+    cash_savings: 'with <b>cash savings</b>',
+    loan_heloc: 'with a <b>Home Equity Loan or HELOC</b>',
+    home_sale: 'by <b>selling your home</b>',
+    not_sure: ''
   };
   if (answers.settlement_timeline) {
     const timelineText = timelineMap[answers.settlement_timeline] || '';
     const fundingText = fundingMap[answers.settlement_funding] || '';
-    const dynamicPart = `${fundingText ? 'through ' + fundingText + ' ' : ''}${timelineText}`;
-    summarySentence = `You plan to settle your HEI <b>${dynamicPart}</b>.`;
-  }
-  if (summarySentence) {
-    const desc = document.createElement('div');
-    desc.className = 'results-breakdown-desc';
-    desc.innerHTML = summarySentence;
-    card.appendChild(desc);
-  }
+    summarySentence = `You plan to settle your Investment ${timelineText} ${fundingText}`;
 
+  }
+ 
   // --- Timeline visualization (year-based segments with white lines/gaps) ---
   const effectiveDate = new Date('2021-05-01');
   const deadlineDate = new Date('2031-05-01');
@@ -1860,6 +1854,37 @@ function renderResultsBreakdown() {
   // Timeline card
   const timelineCard = document.createElement('div');
   timelineCard.className = 'results-breakdown-timeline-card';
+
+  // Timeline card label
+  const timelineLabel = document.createElement('div');
+  timelineLabel.style.fontFamily = 'Mulish, sans-serif';
+  timelineLabel.style.fontSize = '13px';
+  timelineLabel.style.fontWeight = '700';
+  timelineLabel.style.color = '#919aac';
+  timelineLabel.style.textTransform = 'uppercase';
+  timelineLabel.style.letterSpacing = '1.2px';
+  timelineLabel.style.marginBottom = '8px';
+  timelineLabel.textContent = 'SETTLEMENT GOALS';
+  timelineCard.appendChild(timelineLabel);
+    
+  //Timeline card description 
+  if (summarySentence) {
+    const desc = document.createElement('div');
+    desc.style.fontFamily = 'Mulish, sans-serif';
+    desc.style.fontSize = '18px';
+    desc.style.color = '#434C5E';
+    desc.style.marginBottom = '0px';
+    desc.innerHTML = summarySentence;
+    timelineCard.appendChild(desc);
+  };
+
+  //Timeline card divider
+  const divider = document.createElement('hr');
+  divider.style.border = 'none';
+  divider.style.borderTop = '1px solid #E5E8EF';
+  divider.style.margin = '12px 0 20px 0';
+  divider.style.paddingBottom = '8px';
+  timelineCard.appendChild(divider);
 
   // Address row (above timeline)
   const address = '2 Second Rd., Cleveland, OH 44113';
@@ -1940,7 +1965,7 @@ function renderResultsBreakdown() {
   // Legend
   const legend = document.createElement('div');
   legend.className = 'results-breakdown-timeline-legend';
-  legend.innerHTML = `<span class="results-breakdown-timeline-legend-dot"></span> HEI to date &nbsp;&nbsp; <span class="results-breakdown-timeline-legend-dot-purple"></span> Possible settlement window`;
+  legend.innerHTML = `<span class="results-breakdown-timeline-legend-dot"></span> Investment to date &nbsp;&nbsp; <span class="results-breakdown-timeline-legend-dot-purple"></span> Settlement window`;
   timelineCard.appendChild(legend);
 
   card.appendChild(timelineCard);
@@ -2537,8 +2562,9 @@ function renderCustomizePlan() {
   // Title
   const title = document.createElement('div');
   title.className = 'customize-header-title';
-  title.textContent = "Let's do this!";
+  title.textContent = "This season's strategy";
   headerLeft.appendChild(title);
+
   // Add new subtitle below the title
   const subtitle = document.createElement('div');
   subtitle.textContent = 'Get closer to your financial goals with a playbook personalized to your financial profile';
@@ -2552,9 +2578,9 @@ function renderCustomizePlan() {
   subtitle.style.marginBottom = '32px'; // Add spacing below subtitle
   headerLeft.appendChild(subtitle);
 
-  // Add "I'm done" button to the right of the header row
+  // Add "Complete task" button to take participants back to UserTesting
   const doneBtn = document.createElement('button');
-  doneBtn.textContent = "I'm done";
+  doneBtn.textContent = "Finish task";
   doneBtn.style.background = '#20A277';
   doneBtn.style.color = '#fff';
   doneBtn.style.fontFamily = 'Mulish, sans-serif';
@@ -2587,7 +2613,7 @@ function renderCustomizePlan() {
 
   const tabs = [
     { id: 'recommendations', label: 'Playbook' },
-    { id: 'summary', label: 'Financial Profile' }
+    { id: 'summary', label: 'Financial profile' }
   ];
   let activeTab = window.__customizeActiveTab || 'recommendations';
 
@@ -2878,7 +2904,7 @@ function renderCustomizePlan() {
     // Section title
     const alsoLikeTitle = document.createElement('div');
     alsoLikeTitle.className = 'rec-category-title';
-    alsoLikeTitle.textContent = 'You might also like';
+    alsoLikeTitle.textContent = 'More recommendations';
     alsoLikeSection.appendChild(alsoLikeTitle);
     // Cards
     workingState.alsoLike.forEach((rec, idx) => {
@@ -2900,7 +2926,7 @@ function renderCustomizePlan() {
       content.style.minWidth = '0';
       // Badge (top)
       const badge = document.createElement('div');
-      badge.textContent = 'YOU MIGHT ALSO LIKE';
+      badge.textContent = 'More recommendations';
       badge.style.background = '#E5F0FB';
       badge.style.color = '#366CED';
       badge.style.fontFamily = 'Mulish, sans-serif';
@@ -3059,6 +3085,7 @@ function renderCustomizePlan() {
     // --- Timeline Card ---
     const timelineCard = document.createElement('div');
     timelineCard.style = cardStyle;
+    
     // Section label
     const timelineLabel = document.createElement('div');
     timelineLabel.style.fontFamily = 'Mulish, sans-serif';
@@ -3070,36 +3097,47 @@ function renderCustomizePlan() {
     timelineLabel.style.marginBottom = '8px';
     timelineLabel.textContent = 'SETTLEMENT GOALS';
     timelineCard.appendChild(timelineLabel);
+    
     // Dynamic summary sentence (reuse from results_breakdown)
     let summarySentence = '';
     const timelineMap = {
-      within_year: 'in the next 12 months',
-      within_three_years: 'in 1 to 3 years',
-      more_than_three_years: 'in more than 3 years',
-      not_sure: 'at a future date to be determined'
+      within_year: 'in the <b>next 12 months</b>',
+      within_three_years: 'in <b>1 to 3 years</b>',
+      more_than_three_years: '<b>after 2028</b>',
+      not_sure: 'by <b>May 1, 2031</b>'
     };
     const fundingMap = {
-      refinancing: 'a refinance',
-      cash_savings: 'cash savings',
-      loan_heloc: 'a home equity loan or HELOC',
-      home_sale: 'a home sale',
-      not_sure: 'a method to be determined'
+      refinancing: 'by <b>refinancing</b>',
+      cash_savings: 'with <b>cash savings</b>',
+      loan_heloc: 'with a <b>Home Equity Loan or HELOC</b>',
+      home_sale: 'by <b>selling your home</b>',
+      not_sure: ''
     };
     if (answers.settlement_timeline) {
       const timelineText = timelineMap[answers.settlement_timeline] || '';
       const fundingText = fundingMap[answers.settlement_funding] || '';
-      const dynamicPart = `${fundingText ? 'through ' + fundingText + ' ' : ''}${timelineText}`;
-      summarySentence = `You plan to settle your HEI <b>${dynamicPart}</b>.`;
+      summarySentence = `You plan to settle your Investment ${timelineText} ${fundingText}`;
     }
+
+    //Timeline card header, Financial profile tab
     if (summarySentence) {
       const desc = document.createElement('div');
       desc.style.fontFamily = 'Mulish, sans-serif';
       desc.style.fontSize = '16px';
       desc.style.color = '#434C5E';
-      desc.style.marginBottom = '8px';
+      desc.style.marginBottom = '0px';
       desc.innerHTML = summarySentence;
       timelineCard.appendChild(desc);
-    }
+
+      const divider = document.createElement('hr');
+      divider.style.border = 'none';
+      divider.style.borderTop = '1px solid #E5E8EF';
+      divider.style.margin = '12px 0 20px 0';
+      divider.style.paddingBottom = '8px';
+      timelineCard.appendChild(divider);
+
+    };
+
     // Timeline visualization (reuse from results_breakdown)
     // --- Timeline visualization code start ---
     const effectiveDate = new Date('2021-05-01');
@@ -3198,7 +3236,7 @@ function renderCustomizePlan() {
     // Legend
     const legend = document.createElement('div');
     legend.className = 'results-breakdown-timeline-legend';
-    legend.innerHTML = `<span class="results-breakdown-timeline-legend-dot"></span> Your HEI to date &nbsp;&nbsp; <span class="results-breakdown-timeline-legend-dot-purple"></span> Possible settlement window`;
+    legend.innerHTML = `<span class="results-breakdown-timeline-legend-dot"></span> Investment to date &nbsp;&nbsp; <span class="results-breakdown-timeline-legend-dot-purple"></span> Settlement window`;
     timelineCard.appendChild(legend);
     // --- Timeline visualization code end ---
     summaryRoot.appendChild(timelineCard);
@@ -3464,7 +3502,7 @@ function renderQuestionPage() {
   // Small caption for life_events_past and life_events_future
   if (currentQuestion.id === 'life_events_past' || currentQuestion.id === 'life_events_future') {
     const small = document.createElement('div');
-    small.textContent = 'Select all that apply to you or an immediate family member.';
+    small.textContent = 'Select all that apply to you or an immediate family member';
     small.style.fontFamily = 'Mulish, sans-serif';
     small.style.fontSize = '12px';
     small.style.color = '#687183';

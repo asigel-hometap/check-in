@@ -373,7 +373,7 @@ input[type="radio"]:checked + .option .option-title {
     border-radius: var(--border-radius);
     font-family: 'Mulish', sans-serif;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     transition: all var(--transition-speed) ease-in-out;
 }
@@ -1564,6 +1564,7 @@ body.modal-open {
     display: flex;
     justify-content: flex-end;
     gap: 16px;
+    font-weight: 500;
 }
 
 .primary-button, .secondary-button {
