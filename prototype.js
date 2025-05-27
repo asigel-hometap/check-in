@@ -2506,12 +2506,14 @@ function renderCustomizePlan() {
   // --- Header Row ---
   const headerRow = document.createElement('div');
   headerRow.className = 'customize-header-row';
-  headerRow.style.justifyContent = 'flex-start';
+  headerRow.style.display = 'flex';
+  headerRow.style.justifyContent = 'space-between';
   headerRow.style.alignItems = 'flex-start';
   headerRow.style.textAlign = 'left';
   headerRow.style.width = '100%';
   headerRow.style.margin = '0';
   headerRow.style.paddingLeft = '32px';
+  headerRow.style.position = 'relative';
 
   // Left side
   const headerLeft = document.createElement('div');
@@ -2528,7 +2530,6 @@ function renderCustomizePlan() {
   title.className = 'customize-header-title';
   title.textContent = "Let's do this!";
   headerLeft.appendChild(title);
-
   // Add new subtitle below the title
   const subtitle = document.createElement('div');
   subtitle.textContent = 'Get closer to your financial goals with a playbook personalized to your financial profile';
@@ -2542,7 +2543,25 @@ function renderCustomizePlan() {
   subtitle.style.marginBottom = '32px'; // Add spacing below subtitle
   headerLeft.appendChild(subtitle);
 
+  // Add "I'm done" button to the right of the header row
+  const doneBtn = document.createElement('button');
+  doneBtn.textContent = "I'm done";
+  doneBtn.style.background = '#20A277';
+  doneBtn.style.color = '#fff';
+  doneBtn.style.fontFamily = 'Mulish, sans-serif';
+  doneBtn.style.fontSize = '16px';
+  doneBtn.style.fontWeight = '700';
+  doneBtn.style.border = 'none';
+  doneBtn.style.borderRadius = '6px';
+  doneBtn.style.padding = '14px 32px';
+  doneBtn.style.cursor = 'pointer';
+  doneBtn.style.boxShadow = '0 1px 2px rgba(26,51,101,0.04)';
+  doneBtn.style.zIndex = '1000';
+  doneBtn.style.marginLeft = '32px';
+  doneBtn.onclick = () => { window.location.href = 'success.html'; };
+
   headerRow.appendChild(headerLeft);
+  headerRow.appendChild(doneBtn);
 
   container.appendChild(headerRow);
 
@@ -2589,79 +2608,9 @@ function renderCustomizePlan() {
   tabContent.style.width = '100%';
   tabContent.style.maxWidth = 'none';
 
-  // if (activeTab === 'recommendations') {
-  //   // --- Instruction box (now inside Playbook tab, above Playbook heading) ---
-  //   const instructionBox = document.createElement('div');
-  //   instructionBox.className = 'instruction-box';
-  //   instructionBox.style.borderRadius = '12px';
-  //   instructionBox.style.background = 'linear-gradient(269deg, #D4F4FF 0%, #EAFAFF 100%)';
-  //   instructionBox.style.color = '#152033';
-  //   instructionBox.style.fontFamily = 'Mulish, sans-serif';
-  //   instructionBox.style.fontSize = '18px';
-  //   instructionBox.style.fontStyle = 'normal';
-  //   instructionBox.style.fontWeight = '400';
-  //   instructionBox.style.lineHeight = '26px';
-  //   instructionBox.style.padding = '24px 32px';
-  //   instructionBox.style.marginBottom = '32px';
-  //   instructionBox.style.maxWidth = '100%';
-  //   instructionBox.style.margin = '0 0 32px 0';
-  //   instructionBox.style.position = 'relative';
-  //   instructionBox.style.transition = 'opacity 0.3s, transform 0.3s';
-  //   instructionBox.style.opacity = '1';
-  //   instructionBox.style.transform = 'translateY(0)';
-  //   instructionBox.style.paddingTop = '36px';
-  //   instructionBox.style.paddingRight = '48px';
-
-  //   // Close button
-  //   const closeButton = document.createElement('button');
-  //   closeButton.innerHTML = '×';
-  //   closeButton.style.position = 'absolute';
-  //   closeButton.style.top = '20px';
-  //   closeButton.style.right = '24px';
-  //   closeButton.style.background = 'none';
-  //   closeButton.style.border = 'none';
-  //   closeButton.style.fontSize = '24px';
-  //   closeButton.style.color = '#152033';
-  //   closeButton.style.cursor = 'pointer';
-  //   closeButton.style.padding = '8px 12px';
-  //   closeButton.style.lineHeight = '1';
-  //   closeButton.style.opacity = '0.6';
-  //   closeButton.style.transition = 'opacity 0.2s';
-  //   closeButton.onmouseover = () => { closeButton.style.opacity = '1'; };
-  //   closeButton.onmouseout = () => { closeButton.style.opacity = '0.6'; };
-  //   closeButton.onclick = () => {
-  //     instructionBox.style.opacity = '0';
-  //     instructionBox.style.transform = 'translateY(-10px)';
-  //     setTimeout(() => {
-  //       instructionBox.style.display = 'none';
-  //     }, 300);
-  //   };
-  //   instructionBox.appendChild(closeButton);
-
-  //   // Headline
-  //   const instructionHeadline = document.createElement('div');
-  //   instructionHeadline.textContent = 'Welcome to your playbook 👋';
-  //   instructionHeadline.style.color = '#152033';
-  //   instructionHeadline.style.fontFamily = 'Tiempos Headline, serif';
-  //   instructionHeadline.style.fontSize = '18px';
-  //   instructionHeadline.style.fontStyle = 'normal';
-  //   instructionHeadline.style.fontWeight = '600';
-  //   instructionHeadline.style.lineHeight = '26px';
-  //   instructionHeadline.style.marginBottom = '8px';
-  //   instructionBox.appendChild(instructionHeadline);
-
-  //   // Body text
-  //   const instructionText = document.createElement('div');
-  //   instructionText.textContent = 'Start with resources curated to your financial profile, or customize your playbook to make it your own. Either way, these resources should get you closer to meeting your financial goals.';
-  //   instructionText.style.fontFamily = 'Mulish, sans-serif';
-  //   instructionText.style.fontSize = '18px';
-  //   instructionText.style.fontWeight = '400';
-  //   instructionText.style.lineHeight = '26px';
-  //   instructionText.style.color = '#152033';
-  //   instructionBox.appendChild(instructionText);
-
-  //   tabContent.appendChild(instructionBox);
-  if (activeTab === 'recommendations' || activeTab === 'summary') {
+  // Tab content logic
+  if (activeTab === 'recommendations') {
+    // --- Playbook Tab ---
     const instructionBox = document.createElement('div');
     instructionBox.className = 'instruction-box';
     instructionBox.style.borderRadius = '12px';
@@ -2682,7 +2631,6 @@ function renderCustomizePlan() {
     instructionBox.style.transform = 'translateY(0)';
     instructionBox.style.paddingTop = '36px';
     instructionBox.style.paddingRight = '48px';
-
     // Close button
     const closeButton = document.createElement('button');
     closeButton.innerHTML = '×';
@@ -2708,14 +2656,9 @@ function renderCustomizePlan() {
       }, 300);
     };
     instructionBox.appendChild(closeButton);
-
     // Headline
     const instructionHeadline = document.createElement('div');
-    if (activeTab === 'recommendations') {
-      instructionHeadline.textContent = 'Welcome to your playbook 👋';
-    } else {
-      instructionHeadline.textContent = 'Check out your financial profile 👇 ';
-    }
+    instructionHeadline.textContent = 'Welcome to your playbook 👋';
     instructionHeadline.style.color = '#152033';
     instructionHeadline.style.fontFamily = 'Tiempos Headline, serif';
     instructionHeadline.style.fontSize = '18px';
@@ -2724,22 +2667,17 @@ function renderCustomizePlan() {
     instructionHeadline.style.lineHeight = '26px';
     instructionHeadline.style.marginBottom = '8px';
     instructionBox.appendChild(instructionHeadline);
-
     // Body text
     const instructionText = document.createElement('div');
-    if (activeTab === 'recommendations') {
-      instructionText.textContent = 'Start with resources curated to your financial profile, or customize your playbook to make it your own. Either way, these resources should get you closer to meeting your financial goals.';
-    } else {
-      instructionText.textContent = 'We use your financial profile to find the best resources for your playbook';
-    }
+    instructionText.textContent = 'Start with resources curated to your financial profile, or customize your playbook to make it your own. Either way, these resources should get you closer to meeting your financial goals.';
     instructionText.style.fontFamily = 'Mulish, sans-serif';
     instructionText.style.fontSize = '18px';
     instructionText.style.fontWeight = '400';
     instructionText.style.lineHeight = '26px';
     instructionText.style.color = '#152033';
     instructionBox.appendChild(instructionText);
-
     tabContent.appendChild(instructionBox);
+
     // Add Playbook heading
     const playbookHeading = document.createElement('h2');
     playbookHeading.textContent = 'Playbook';
@@ -2827,8 +2765,6 @@ function renderCustomizePlan() {
       if (recs.length === 0) return;
       const groupDiv = document.createElement('div');
       groupDiv.className = 'rec-category-group';
-      // REMOVE: rec-category-title (except for 'You might also like')
-      // ...
       recs.forEach((rec, idx) => {
         const card = document.createElement('div');
         card.className = 'recommendation-card rec-card-fade';
@@ -3022,7 +2958,74 @@ function renderCustomizePlan() {
     });
     tabContent.appendChild(alsoLikeSection);
   } else if (activeTab === 'summary') {
-    // --- Summary Tab: Two-column layout ---
+    // --- Financial Profile tab: settlement timeline + focus areas summary side by side ---
+    const instructionBox = document.createElement('div');
+    instructionBox.className = 'instruction-box';
+    instructionBox.style.borderRadius = '12px';
+    instructionBox.style.background = 'linear-gradient(269deg, #D4F4FF 0%, #EAFAFF 100%)';
+    instructionBox.style.color = '#152033';
+    instructionBox.style.fontFamily = 'Mulish, sans-serif';
+    instructionBox.style.fontSize = '18px';
+    instructionBox.style.fontStyle = 'normal';
+    instructionBox.style.fontWeight = '400';
+    instructionBox.style.lineHeight = '26px';
+    instructionBox.style.padding = '24px 32px';
+    instructionBox.style.marginBottom = '32px';
+    instructionBox.style.maxWidth = '100%';
+    instructionBox.style.margin = '0 0 32px 0';
+    instructionBox.style.position = 'relative';
+    instructionBox.style.transition = 'opacity 0.3s, transform 0.3s';
+    instructionBox.style.opacity = '1';
+    instructionBox.style.transform = 'translateY(0)';
+    instructionBox.style.paddingTop = '36px';
+    instructionBox.style.paddingRight = '48px';
+    // Close button
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '×';
+    closeButton.style.position = 'absolute';
+    closeButton.style.top = '20px';
+    closeButton.style.right = '24px';
+    closeButton.style.background = 'none';
+    closeButton.style.border = 'none';
+    closeButton.style.fontSize = '24px';
+    closeButton.style.color = '#152033';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.padding = '8px 12px';
+    closeButton.style.lineHeight = '1';
+    closeButton.style.opacity = '0.6';
+    closeButton.style.transition = 'opacity 0.2s';
+    closeButton.onmouseover = () => { closeButton.style.opacity = '1'; };
+    closeButton.onmouseout = () => { closeButton.style.opacity = '0.6'; };
+    closeButton.onclick = () => {
+      instructionBox.style.opacity = '0';
+      instructionBox.style.transform = 'translateY(-10px)';
+      setTimeout(() => {
+        instructionBox.style.display = 'none';
+      }, 300);
+    };
+    instructionBox.appendChild(closeButton);
+    // Headline
+    const instructionHeadline = document.createElement('div');
+    instructionHeadline.textContent = 'Check out your financial profile 👇 ';
+    instructionHeadline.style.color = '#152033';
+    instructionHeadline.style.fontFamily = 'Tiempos Headline, serif';
+    instructionHeadline.style.fontSize = '18px';
+    instructionHeadline.style.fontStyle = 'normal';
+    instructionHeadline.style.fontWeight = '600';
+    instructionHeadline.style.lineHeight = '26px';
+    instructionHeadline.style.marginBottom = '8px';
+    instructionBox.appendChild(instructionHeadline);
+    // Body text
+    const instructionText = document.createElement('div');
+    instructionText.textContent = 'We use your financial profile to find the best resources for your playbook';
+    instructionText.style.fontFamily = 'Mulish, sans-serif';
+    instructionText.style.fontSize = '18px';
+    instructionText.style.fontWeight = '400';
+    instructionText.style.lineHeight = '26px';
+    instructionText.style.color = '#152033';
+    instructionBox.appendChild(instructionText);
+    tabContent.appendChild(instructionBox);
+    // --- Financial Profile tab: settlement timeline + focus areas summary side by side ---
     const summaryRoot = document.createElement('div');
     summaryRoot.style.display = 'flex';
     summaryRoot.style.gap = '32px';
@@ -3030,7 +3033,6 @@ function renderCustomizePlan() {
     summaryRoot.style.maxWidth = 'none';
     summaryRoot.style.flexWrap = 'wrap';
     summaryRoot.style.margin = '0 auto';
-
     // Card styling (reuse from results_breakdown)
     const cardStyle = `
       background: #fff;
@@ -3045,7 +3047,6 @@ function renderCustomizePlan() {
       max-width: 520px;
       flex: 1 1 0;
     `;
-
     // --- Timeline Card ---
     const timelineCard = document.createElement('div');
     timelineCard.style = cardStyle;
@@ -3058,7 +3059,7 @@ function renderCustomizePlan() {
     timelineLabel.style.textTransform = 'uppercase';
     timelineLabel.style.letterSpacing = '1.2px';
     timelineLabel.style.marginBottom = '8px';
-    timelineLabel.textContent = 'SETTLEMENT TIMELINE';
+    timelineLabel.textContent = 'SETTLEMENT GOALS';
     timelineCard.appendChild(timelineLabel);
     // Dynamic summary sentence (reuse from results_breakdown)
     let summarySentence = '';
@@ -3091,7 +3092,6 @@ function renderCustomizePlan() {
       timelineCard.appendChild(desc);
     }
     // Timeline visualization (reuse from results_breakdown)
-    // ... copy timeline visualization code from renderResultsBreakdown ...
     // --- Timeline visualization code start ---
     const effectiveDate = new Date('2021-05-01');
     const deadlineDate = new Date('2031-05-01');
@@ -3193,7 +3193,6 @@ function renderCustomizePlan() {
     timelineCard.appendChild(legend);
     // --- Timeline visualization code end ---
     summaryRoot.appendChild(timelineCard);
-
     // --- Focus Areas Card ---
     const focusCard = document.createElement('div');
     focusCard.style = cardStyle;
@@ -3206,7 +3205,7 @@ function renderCustomizePlan() {
     focusLabel.style.textTransform = 'uppercase';
     focusLabel.style.letterSpacing = '1.2px';
     focusLabel.style.marginBottom = '8px';
-    focusLabel.textContent = 'GOALS';
+    focusLabel.textContent = 'FINANCIAL PICTURE';
     focusCard.appendChild(focusLabel);
     // Goals summary
     const goalsSummary = document.createElement('div');
@@ -3214,8 +3213,14 @@ function renderCustomizePlan() {
     goalsSummary.style.fontSize = '16px';
     goalsSummary.style.color = '#434C5E';
     goalsSummary.style.marginBottom = '8px';
-    goalsSummary.textContent = 'You shared that your goals are ...';
+    goalsSummary.textContent = 'These are your overall financial priorities';
     focusCard.appendChild(goalsSummary);
+    // Divider
+    const divider = document.createElement('hr');
+    divider.style.border = 'none';
+    divider.style.borderTop = '1px solid #E5E8EF';
+    divider.style.margin = '12px 0 20px 0';
+    focusCard.appendChild(divider);
     // Focus areas chips (reuse from results_breakdown)
     const focusGroups = [
       {
