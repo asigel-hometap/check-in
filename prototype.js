@@ -1192,7 +1192,7 @@ function renderGoalsIntro() {
   // Description
   const desc = document.createElement('div');
   desc.className = 'goals-intro-desc';
-  desc.textContent = `Your answers won't affect your investment —— they'll just help us share resources to get you where you want to go`;
+  desc.textContent = `Your answers won't affect your investment — they'll just help us share resources to get you where you want to go`;
   card.appendChild(desc);
 
   // Timeline card
@@ -2375,6 +2375,7 @@ function renderCustomizePlan() {
   subtitle.style.fontWeight = '400';
   subtitle.style.lineHeight = '30px';
   subtitle.style.marginTop = '8px';
+  subtitle.style.marginBottom = '32px'; // Add spacing below subtitle
   headerLeft.appendChild(subtitle);
 
   headerRow.appendChild(headerLeft);
@@ -2424,8 +2425,79 @@ function renderCustomizePlan() {
   tabContent.style.width = '100%';
   tabContent.style.maxWidth = 'none';
 
-  if (activeTab === 'recommendations') {
-    // --- Instruction box (now inside Playbook tab, above Playbook heading) ---
+  // if (activeTab === 'recommendations') {
+  //   // --- Instruction box (now inside Playbook tab, above Playbook heading) ---
+  //   const instructionBox = document.createElement('div');
+  //   instructionBox.className = 'instruction-box';
+  //   instructionBox.style.borderRadius = '12px';
+  //   instructionBox.style.background = 'linear-gradient(269deg, #D4F4FF 0%, #EAFAFF 100%)';
+  //   instructionBox.style.color = '#152033';
+  //   instructionBox.style.fontFamily = 'Mulish, sans-serif';
+  //   instructionBox.style.fontSize = '18px';
+  //   instructionBox.style.fontStyle = 'normal';
+  //   instructionBox.style.fontWeight = '400';
+  //   instructionBox.style.lineHeight = '26px';
+  //   instructionBox.style.padding = '24px 32px';
+  //   instructionBox.style.marginBottom = '32px';
+  //   instructionBox.style.maxWidth = '100%';
+  //   instructionBox.style.margin = '0 0 32px 0';
+  //   instructionBox.style.position = 'relative';
+  //   instructionBox.style.transition = 'opacity 0.3s, transform 0.3s';
+  //   instructionBox.style.opacity = '1';
+  //   instructionBox.style.transform = 'translateY(0)';
+  //   instructionBox.style.paddingTop = '36px';
+  //   instructionBox.style.paddingRight = '48px';
+
+  //   // Close button
+  //   const closeButton = document.createElement('button');
+  //   closeButton.innerHTML = '×';
+  //   closeButton.style.position = 'absolute';
+  //   closeButton.style.top = '20px';
+  //   closeButton.style.right = '24px';
+  //   closeButton.style.background = 'none';
+  //   closeButton.style.border = 'none';
+  //   closeButton.style.fontSize = '24px';
+  //   closeButton.style.color = '#152033';
+  //   closeButton.style.cursor = 'pointer';
+  //   closeButton.style.padding = '8px 12px';
+  //   closeButton.style.lineHeight = '1';
+  //   closeButton.style.opacity = '0.6';
+  //   closeButton.style.transition = 'opacity 0.2s';
+  //   closeButton.onmouseover = () => { closeButton.style.opacity = '1'; };
+  //   closeButton.onmouseout = () => { closeButton.style.opacity = '0.6'; };
+  //   closeButton.onclick = () => {
+  //     instructionBox.style.opacity = '0';
+  //     instructionBox.style.transform = 'translateY(-10px)';
+  //     setTimeout(() => {
+  //       instructionBox.style.display = 'none';
+  //     }, 300);
+  //   };
+  //   instructionBox.appendChild(closeButton);
+
+  //   // Headline
+  //   const instructionHeadline = document.createElement('div');
+  //   instructionHeadline.textContent = 'Welcome to your playbook 👋';
+  //   instructionHeadline.style.color = '#152033';
+  //   instructionHeadline.style.fontFamily = 'Tiempos Headline, serif';
+  //   instructionHeadline.style.fontSize = '18px';
+  //   instructionHeadline.style.fontStyle = 'normal';
+  //   instructionHeadline.style.fontWeight = '600';
+  //   instructionHeadline.style.lineHeight = '26px';
+  //   instructionHeadline.style.marginBottom = '8px';
+  //   instructionBox.appendChild(instructionHeadline);
+
+  //   // Body text
+  //   const instructionText = document.createElement('div');
+  //   instructionText.textContent = 'Start with resources curated to your financial profile, or customize your playbook to make it your own. Either way, these resources should get you closer to meeting your financial goals.';
+  //   instructionText.style.fontFamily = 'Mulish, sans-serif';
+  //   instructionText.style.fontSize = '18px';
+  //   instructionText.style.fontWeight = '400';
+  //   instructionText.style.lineHeight = '26px';
+  //   instructionText.style.color = '#152033';
+  //   instructionBox.appendChild(instructionText);
+
+  //   tabContent.appendChild(instructionBox);
+  if (activeTab === 'recommendations' || activeTab === 'summary') {
     const instructionBox = document.createElement('div');
     instructionBox.className = 'instruction-box';
     instructionBox.style.borderRadius = '12px';
@@ -2475,7 +2547,11 @@ function renderCustomizePlan() {
 
     // Headline
     const instructionHeadline = document.createElement('div');
-    instructionHeadline.textContent = 'Welcome to your playbook 👋';
+    if (activeTab === 'recommendations') {
+      instructionHeadline.textContent = 'Welcome to your playbook 👋';
+    } else {
+      instructionHeadline.textContent = 'Check out your financial profile 👇 ';
+    }
     instructionHeadline.style.color = '#152033';
     instructionHeadline.style.fontFamily = 'Tiempos Headline, serif';
     instructionHeadline.style.fontSize = '18px';
@@ -2487,7 +2563,11 @@ function renderCustomizePlan() {
 
     // Body text
     const instructionText = document.createElement('div');
-    instructionText.textContent = 'Start with resources curated to your financial profile, or customize your playbook to make it your own. Either way, these resources should get you closer to meeting your financial goals.';
+    if (activeTab === 'recommendations') {
+      instructionText.textContent = 'Start with resources curated to your financial profile, or customize your playbook to make it your own. Either way, these resources should get you closer to meeting your financial goals.';
+    } else {
+      instructionText.textContent = 'We use your financial profile to find the best resources for your playbook';
+    }
     instructionText.style.fontFamily = 'Mulish, sans-serif';
     instructionText.style.fontSize = '18px';
     instructionText.style.fontWeight = '400';
@@ -2496,7 +2576,6 @@ function renderCustomizePlan() {
     instructionBox.appendChild(instructionText);
 
     tabContent.appendChild(instructionBox);
-
     // Add Playbook heading
     const playbookHeading = document.createElement('h2');
     playbookHeading.textContent = 'Playbook';
