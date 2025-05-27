@@ -2426,4 +2426,30 @@ function showGoalsIntroScreen() {
         renderQuestion(0);
         console.log('Called renderQuestion(0)');
     });
+
+    // Add instruction box
+    const instructionBox = document.createElement('div');
+    instructionBox.className = 'instruction-box';
+    instructionBox.innerHTML = `
+        <h2 class="instruction-title">Welcome to Your Home Equity Playbook</h2>
+    `;
+
+    // Add instruction text
+    const instructionText = document.createElement('p');
+    instructionText.innerHTML = "We've prepared your first home equity playbook of personalized tools and resources to help you plan your finances with confidence and prepare for a successful settlement. We'll check in another 90 days from now on your goals and progress. Click the <b>Edit</b> button to customize the playbook to fit your needs and available time.";
+    instructionBox.appendChild(instructionText);
+
+    // Add new text element
+    const subText = document.createElement('div');
+    subText.innerHTML = "Get closer to your financial goals with a playbook personalized to your financial profile";
+    subText.style.color = '#434C5E';
+    subText.style.fontFamily = 'Mulish';
+    subText.style.fontSize = '18px';
+    subText.style.fontStyle = 'normal';
+    subText.style.fontWeight = '400';
+    subText.style.lineHeight = '30px';
+    subText.style.marginTop = '16px';
+    instructionBox.appendChild(subText);
+
+    container.appendChild(instructionBox);
 }

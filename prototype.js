@@ -1,6 +1,58 @@
 // prototype.js
 // Minimal rebuild for rapid iteration, based on user flow blueprint
 
+// Inject tab bar and tab CSS for Playbook/Financial Profile tabs at the very top
+if (!document.getElementById('customize-tab-style')) {
+  const style = document.createElement('style');
+  style.id = 'customize-tab-style';
+  style.textContent = `
+    .customize-tab-bar {
+      display: flex;
+      align-items: flex-end;
+      gap: 32px;
+      border-bottom: 2px solid #E5E8EF;
+      margin-bottom: 32px;
+      margin-top: 32px;
+      background: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .customize-tab {
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-family: 'Mulish', sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 26px;
+      color: #434C5E;
+      padding: 0 0 8px 0;
+      margin: 0 24px 0 0;
+      position: relative;
+      transition: color 0.2s, font-weight 0.2s;
+      text-align: center;
+    }
+    .customize-tab.active {
+      font-weight: 700;
+      color: #434C5E;
+    }
+    .customize-tab-underline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 4px;
+      background: #20A277;
+      border-radius: 2px 2px 0 0;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 function formatDate(date) {
   if (!(date instanceof Date)) date = new Date(date);
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -13,8 +65,8 @@ const questions = [
   {
     id: 'settlement_timeline',
     type: 'radio',
-    title: 'How ready are you to settle your investment?',
-    helperText: `As a reminder, your settlement must be settled on or before <span style='font-weight: bold'>May 1, 2031</span> but you can settle before then if you're ready. Let us know your plans and we'll share tips to put you in the best position possible. Your answer will not effect your investment in any way.`,
+    title: 'First off, when do you think you\'ll settle your Investment?',
+    helperText: `There's no rush! You can settle at any time before <span style='font-weight: bold'>May 1, 2031</span>`,
     options: [
       { value: 'within_year', text: 'In the next 12 months' },
       { value: 'within_three_years', text: 'In 1 to 3 years' },
@@ -26,7 +78,7 @@ const questions = [
     id: 'settlement_funding',
     type: 'radio',
     title: 'How do you plan to fund your settlement?',
-    helperText: 'Let us know your plans and we will share tips to [something]. Your answer will not effect your investment in any way.',
+    helperText: 'No worries if you\'re unsure — you can always change your mind later',
     options: [
       { value: 'refinancing', text: 'Refinancing mortgage and other debts' },
       { value: 'cash_savings', text: 'Savings' },
@@ -38,8 +90,8 @@ const questions = [
   {
     id: 'commitment',
     type: 'radio',
-    title: 'Which best describes where you are in the settlement process?',
-    helperText: 'Let us know your plans and we will share tips to [something]. Your answer will not effect your investment in any way.',
+    title: 'How committed are you to your settlement plan?',
+    helperText: 'We\'ll use this info to share resources that meet you where you are',
     options: [
       { value: 'still_deciding', text: "I'm still deciding if my settlement plan is right for me" },
       { value: 'committed_not_started', text: "I'm committed, but haven't started making progress" },
@@ -64,8 +116,8 @@ const questions = [
   {
     id: 'life_events_past',
     type: 'checkbox',
-    title: `What life events have occurred in the <span style="color: #19A274; font-weight: 700;">past 6 months</span>?`,
-    helperText: 'Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+    title: `In the <span style="color: #19A274; font-weight: 700;">past 6 months</span>, have you experienced any of these life events?`,
+    // helperText: 'Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
     options: [
       { value: 'marriage', text: 'Marital status change' },
       { value: 'birth', text: 'Growing family' },
@@ -83,8 +135,8 @@ const questions = [
   {
     id: 'life_events_future',
     type: 'checkbox',
-    title: `Do you anticipate any life events to occur in the <span style="color: #19A274; font-weight: 700;">next 6 months</span>?`,
-    helperText: 'We know it\'s difficult to predict the future. If you happen to be expecting any of these events in the next 6 months, please let us know and we can help you be financially prepared.',
+    title: `Do you expect any life events to occur in the <span style="color: #19A274; font-weight: 700;">next 6 months</span>?`,
+    helperText: 'We know you can\'t predict the future, but take your best guess',
     options: [
       { value: 'marriage', text: 'Marital status change' },
       { value: 'birth', text: 'Growing family' },
@@ -102,7 +154,7 @@ const questions = [
     id: 'financial_wellbeing',
     type: 'checkbox',
     title: 'What is most important to your financial wellbeing?',
-    helperText: 'We know that we\'re just one piece of your larger financial picture. Let us know what\'s most important to you so we can provide the most relevant information.',  
+    // helperText: 'We know that we\'re just one piece of your larger financial picture. Let us know what\'s most important to you so we can provide the most relevant information.',  
     options: [
       { value: 'financial_education', text: 'Building financial literacy and education' },
       { value: 'increasing_liquidity', text: 'Increasing liquidity/accessing equity' },
@@ -595,7 +647,7 @@ function renderTopNav() {
   topRow.style.alignItems = 'center';
   topRow.style.justifyContent = 'space-between';
   topRow.style.height = '64px';
-  topRow.style.padding = '0 40px';
+  topRow.style.padding = '0 0 0 32px'; // Left align with main content
 
   // Left: Home equity coach label
   const brand = document.createElement('div');
@@ -812,8 +864,8 @@ function renderLanding() {
         font-family: 'Mulish', sans-serif;
         font-size: 13px;
         font-weight: 700;
-        color: #687183;
-        background: #F5F7FA;
+        color: #20A277;
+        background: #DEF5ED;
         border-radius: 6px;
         padding: 4px 12px;
         margin-bottom: 16px;
@@ -1128,19 +1180,19 @@ function renderGoalsIntro() {
   // Section label
   const label = document.createElement('div');
   label.className = 'goals-intro-label';
-  label.textContent = 'Goals';
+  label.textContent = 'Settlement Goals';
   card.appendChild(label);
 
   // Title (with blue highlight)
   const title = document.createElement('div');
   title.className = 'goals-intro-title';
-  title.innerHTML = `You've had your Home Equity Investment for <span class="blue">over three years</span>`;
+  title.innerHTML = `Let's chat about your <span class="green">settlement goals</span>`;
   card.appendChild(title);
 
   // Description
   const desc = document.createElement('div');
   desc.className = 'goals-intro-desc';
-  desc.textContent = `Thank you for being a valued Hometap Homeowner! Let's get caught up on how things have been going with your investment and where you're at with achieving your goals.`;
+  desc.textContent = `Your answers won't affect your investment —— they'll just help us share resources to get you where you want to go`;
   card.appendChild(desc);
 
   // Timeline card
@@ -2310,66 +2362,24 @@ function renderCustomizePlan() {
   // Title
   const title = document.createElement('div');
   title.className = 'customize-header-title';
-  title.textContent = 'Your quarterly playbook';
+  title.textContent = "Let's do this!";
   headerLeft.appendChild(title);
+
+  // Add new subtitle below the title
+  const subtitle = document.createElement('div');
+  subtitle.textContent = 'Get closer to your financial goals with a playbook personalized to your financial profile';
+  subtitle.style.color = '#434C5E';
+  subtitle.style.fontFamily = 'Mulish';
+  subtitle.style.fontSize = '18px';
+  subtitle.style.fontStyle = 'normal';
+  subtitle.style.fontWeight = '400';
+  subtitle.style.lineHeight = '30px';
+  subtitle.style.marginTop = '8px';
+  headerLeft.appendChild(subtitle);
+
   headerRow.appendChild(headerLeft);
 
   container.appendChild(headerRow);
-
-  // Instruction box (moved below title)
-  const instructionBox = document.createElement('div');
-  instructionBox.className = 'instruction-box';
-  instructionBox.style.borderRadius = '12px';
-  instructionBox.style.background = 'linear-gradient(269deg, #D4F4FF 0%, #EAFAFF 100%)';
-  instructionBox.style.color = '#152033';
-  instructionBox.style.fontFamily = 'Mulish, sans-serif';
-  instructionBox.style.fontSize = '18px';
-  instructionBox.style.fontStyle = 'normal';
-  instructionBox.style.fontWeight = '400';
-  instructionBox.style.lineHeight = '26px';
-  instructionBox.style.padding = '24px 32px';
-  instructionBox.style.marginBottom = '32px';
-  instructionBox.style.maxWidth = '100%';
-  instructionBox.style.margin = '0 0 32px 0';
-  instructionBox.style.position = 'relative';
-  instructionBox.style.transition = 'opacity 0.3s, transform 0.3s';
-  instructionBox.style.opacity = '1';
-  instructionBox.style.transform = 'translateY(0)';
-  instructionBox.style.paddingTop = '36px';
-  instructionBox.style.paddingRight = '48px';
-
-  // Close button
-  const closeButton = document.createElement('button');
-  closeButton.innerHTML = '×';
-  closeButton.style.position = 'absolute';
-  closeButton.style.top = '20px';
-  closeButton.style.right = '24px';
-  closeButton.style.background = 'none';
-  closeButton.style.border = 'none';
-  closeButton.style.fontSize = '24px';
-  closeButton.style.color = '#152033';
-  closeButton.style.cursor = 'pointer';
-  closeButton.style.padding = '8px 12px';
-  closeButton.style.lineHeight = '1';
-  closeButton.style.opacity = '0.6';
-  closeButton.style.transition = 'opacity 0.2s';
-  closeButton.onmouseover = () => { closeButton.style.opacity = '1'; };
-  closeButton.onmouseout = () => { closeButton.style.opacity = '0.6'; };
-  closeButton.onclick = () => {
-    instructionBox.style.opacity = '0';
-    instructionBox.style.transform = 'translateY(-10px)';
-    setTimeout(() => {
-      instructionBox.style.display = 'none';
-    }, 300);
-  };
-  instructionBox.appendChild(closeButton);
-
-  // Text content
-  const instructionText = document.createElement('div');
-  instructionText.innerHTML = "We've prepared your first home equity playbook of personalized tools and resources to help you plan your finances with confidence and prepare for a successful settlement. We'll check in another 90 days from now on your goals and progress. Click the <b>Edit</b> button to customize the playbook to fit your needs and available time.";
-  instructionBox.appendChild(instructionText);
-
-  container.appendChild(instructionBox);
 
   // --- Tab Bar ---
   const tabBar = document.createElement('div');
@@ -2383,43 +2393,122 @@ function renderCustomizePlan() {
   tabBar.style.background = 'none';
 
   const tabs = [
-    { id: 'recommendations', label: 'Recommendations' },
-    { id: 'summary', label: 'Summary' }
+    { id: 'recommendations', label: 'Playbook' },
+    { id: 'summary', label: 'Financial Profile' }
   ];
   let activeTab = window.__customizeActiveTab || 'recommendations';
-  function setActiveTab(tab) {
-    window.__customizeActiveTab = tab;
-    renderCustomizePlan();
-  }
+
   tabs.forEach(tab => {
     const tabBtn = document.createElement('button');
+    tabBtn.className = `customize-tab${tab.id === activeTab ? ' active' : ''}`;
     tabBtn.textContent = tab.label;
-    tabBtn.className = 'customize-tab-btn';
-    tabBtn.style.background = 'none';
-    tabBtn.style.border = 'none';
-    tabBtn.style.outline = 'none';
-    tabBtn.style.cursor = 'pointer';
-    tabBtn.style.fontFamily = 'Mulish, sans-serif';
-    tabBtn.style.fontSize = '18px';
-    tabBtn.style.padding = '16px 32px 12px 32px';
-    tabBtn.style.margin = '0';
-    tabBtn.style.borderBottom = tab.id === activeTab ? '4px solid #20A277' : '4px solid transparent';
-    tabBtn.style.color = tab.id === activeTab ? '#20A277' : '#687183';
-    tabBtn.style.fontWeight = tab.id === activeTab ? '700' : '400';
-    tabBtn.onclick = () => setActiveTab(tab.id);
+    tabBtn.onclick = () => {
+      window.__customizeActiveTab = tab.id;
+      renderCustomizePlan();
+    };
+    // Add green underline for active tab
+    if (tab.id === activeTab) {
+      const underline = document.createElement('div');
+      underline.className = 'customize-tab-underline';
+      tabBtn.appendChild(underline);
+    }
     tabBar.appendChild(tabBtn);
   });
+
   container.appendChild(tabBar);
 
-  // --- Tab Content ---
   const tabContent = document.createElement('div');
   tabContent.className = 'customize-tab-content';
+  tabContent.style.padding = '0';
+  tabContent.style.margin = '0';
   tabContent.style.width = '100%';
   tabContent.style.maxWidth = 'none';
-  tabContent.style.background = 'none';
-  tabContent.style.padding = '0';
 
   if (activeTab === 'recommendations') {
+    // --- Instruction box (now inside Playbook tab, above Playbook heading) ---
+    const instructionBox = document.createElement('div');
+    instructionBox.className = 'instruction-box';
+    instructionBox.style.borderRadius = '12px';
+    instructionBox.style.background = 'linear-gradient(269deg, #D4F4FF 0%, #EAFAFF 100%)';
+    instructionBox.style.color = '#152033';
+    instructionBox.style.fontFamily = 'Mulish, sans-serif';
+    instructionBox.style.fontSize = '18px';
+    instructionBox.style.fontStyle = 'normal';
+    instructionBox.style.fontWeight = '400';
+    instructionBox.style.lineHeight = '26px';
+    instructionBox.style.padding = '24px 32px';
+    instructionBox.style.marginBottom = '32px';
+    instructionBox.style.maxWidth = '100%';
+    instructionBox.style.margin = '0 0 32px 0';
+    instructionBox.style.position = 'relative';
+    instructionBox.style.transition = 'opacity 0.3s, transform 0.3s';
+    instructionBox.style.opacity = '1';
+    instructionBox.style.transform = 'translateY(0)';
+    instructionBox.style.paddingTop = '36px';
+    instructionBox.style.paddingRight = '48px';
+
+    // Close button
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '×';
+    closeButton.style.position = 'absolute';
+    closeButton.style.top = '20px';
+    closeButton.style.right = '24px';
+    closeButton.style.background = 'none';
+    closeButton.style.border = 'none';
+    closeButton.style.fontSize = '24px';
+    closeButton.style.color = '#152033';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.padding = '8px 12px';
+    closeButton.style.lineHeight = '1';
+    closeButton.style.opacity = '0.6';
+    closeButton.style.transition = 'opacity 0.2s';
+    closeButton.onmouseover = () => { closeButton.style.opacity = '1'; };
+    closeButton.onmouseout = () => { closeButton.style.opacity = '0.6'; };
+    closeButton.onclick = () => {
+      instructionBox.style.opacity = '0';
+      instructionBox.style.transform = 'translateY(-10px)';
+      setTimeout(() => {
+        instructionBox.style.display = 'none';
+      }, 300);
+    };
+    instructionBox.appendChild(closeButton);
+
+    // Headline
+    const instructionHeadline = document.createElement('div');
+    instructionHeadline.textContent = 'Welcome to your playbook 👋';
+    instructionHeadline.style.color = '#152033';
+    instructionHeadline.style.fontFamily = 'Tiempos Headline, serif';
+    instructionHeadline.style.fontSize = '18px';
+    instructionHeadline.style.fontStyle = 'normal';
+    instructionHeadline.style.fontWeight = '600';
+    instructionHeadline.style.lineHeight = '26px';
+    instructionHeadline.style.marginBottom = '8px';
+    instructionBox.appendChild(instructionHeadline);
+
+    // Body text
+    const instructionText = document.createElement('div');
+    instructionText.textContent = 'Start with resources curated to your financial profile, or customize your playbook to make it your own. Either way, these resources should get you closer to meeting your financial goals.';
+    instructionText.style.fontFamily = 'Mulish, sans-serif';
+    instructionText.style.fontSize = '18px';
+    instructionText.style.fontWeight = '400';
+    instructionText.style.lineHeight = '26px';
+    instructionText.style.color = '#152033';
+    instructionBox.appendChild(instructionText);
+
+    tabContent.appendChild(instructionBox);
+
+    // Add Playbook heading
+    const playbookHeading = document.createElement('h2');
+    playbookHeading.textContent = 'Playbook';
+    playbookHeading.style.color = '#152033';
+    playbookHeading.style.fontFamily = 'Tiempos Headline';
+    playbookHeading.style.fontSize = '28px';
+    playbookHeading.style.fontStyle = 'normal';
+    playbookHeading.style.fontWeight = '600';
+    playbookHeading.style.lineHeight = '40px';
+    playbookHeading.style.marginBottom = '24px';
+    tabContent.appendChild(playbookHeading);
+
     // --- Row: time estimate, date range, edit/save/cancel ---
     const topRow = document.createElement('div');
     topRow.style.display = 'flex';
@@ -2467,7 +2556,7 @@ function renderCustomizePlan() {
     if (!isEditMode) {
       const editBtn = document.createElement('button');
       editBtn.className = 'edit-btn';
-      editBtn.textContent = 'Edit';
+      editBtn.textContent = 'Edit playbook';
       editBtn.onclick = () => { isEditMode = true; renderCustomizePlan(); };
       buttonContainer.appendChild(editBtn);
     } else {
@@ -3452,19 +3541,19 @@ function renderFocusAreasLanding() {
   // Section label
   const label = document.createElement('div');
   label.className = 'focus-areas-label';
-  label.textContent = 'FOCUS AREAS';
+  label.textContent = 'FINANCIAL PICTURE';
   card.appendChild(label);
 
   // Title (with green highlight)
   const title = document.createElement('div');
   title.className = 'focus-areas-title';
-  title.innerHTML = `We understand that your Home Equity Investment is just one aspect of <span class="green">your greater financial plan</span>`;
+  title.innerHTML = `Let's take a look at your <span class="green">bigger financial picture</span>`;
   card.appendChild(title);
 
   // Helper text
   const helper = document.createElement('div');
   helper.className = 'focus-areas-helper';
-  helper.textContent = `We're dedicated to providing support not only at the time of investment, but as you work toward achieving your long-term goals. So we can better determine what your current focus areas are, help us understand your financial wellbeing.`;
+  helper.textContent = `We're committed to helping you meet your long-term goals, and your Hometap Investment is just one piece of the puzzle`;
   card.appendChild(helper);
 
   // Image
