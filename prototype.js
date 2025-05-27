@@ -418,13 +418,22 @@ const recommendations = {
     ],
     increasing_liquidity: [
       {
-        id: 'wellbeing_liquidity',
-        title: 'Learn about Investment Increases',
-        helperText: 'If you didn\'t take the full amount from Hometap the first time around, you may be able to access more of your own equity',
+        id: 'wellbeing_liquidity_heloc',
+        title: 'Compare your options',
+        helperText: 'Take a look at our comparison table to understand the differences between home equity investments, HELOCs, and other ways of increasing your liquidity',
         content_type: 'Article',
         time_estimate: 5,
         img: 'assets/doors.png',
         category: 'on_track'
+      },
+      {
+        id: 'wellbeing_liquidity_increase',
+        title: 'Contact the Hometap team',
+        helperText: 'Schedule a time with our Investment Support team to learn anything you may want to know about your investment',
+        content_type: 'Personal Coaching',
+        time_estimate: 15,
+        img: 'assets/desk.png',
+        category: 'game_plan'
       }
     ],
     hei_questions: [
