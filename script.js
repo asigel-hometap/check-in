@@ -26,7 +26,7 @@ const surveyData = {
     questions: [
         {
             id: 'settlement_timeline',
-            section: 'Settlement',
+            section: 'Settlement goals',
             type: 'radio',
             title: 'How ready are you to settle your investment?',
             reminder: `As a reminder, your settlement must be settled on or before <span style='font-weight: bold'>${formatDate(settlementDeadline)}</span> but you can settle before then if you're ready. Let us know your plans and we'll share tips to put you in the best position possible. Your answer will not effect your investment in any way.`,
@@ -238,7 +238,7 @@ const surveyData = {
         },
         {
             id: 7,
-            section: 'Financial wellbeing',
+            section: 'Financial picture',
             type: 'multi_select_with_other',
             title: 'What is most important to your financial wellbeing?',
             reminder: 'Select all that apply',
@@ -2240,7 +2240,7 @@ function showPersonaScreen() {
         .join('');
     
     personaGraph.innerHTML = `
-        <h2>Your Focus Areas</h2>
+        <h2>Financial picture</h2>
         <div class="focus-areas-bar">
             ${barSegments}
         </div>
@@ -2257,7 +2257,7 @@ function showPersonaScreen() {
     `;
     
     // Log the final rendered structure
-    console.log('Focus areas structure:', {
+    console.log('Financial picture structure:', {
         graphElement: personaGraph,
         barElement: personaGraph.querySelector('.focus-areas-bar'),
         segments: personaGraph.querySelectorAll('.focus-area-segment')
