@@ -69,7 +69,7 @@ const questions = [
     helperText: `There\'s no rush! You can settle at any time before <span style='font-weight: bold'>May 1, 2031</span>`,
     options: [
       { value: 'within_year', text: 'In the next 12 months' },
-      { value: 'within_three_years', text: 'In 1 to 3 years' },
+      { value: 'within_three_years', text: 'In 1 – 3 years' },
       { value: 'more_than_three_years', text: 'In more than 3 years' },
       { value: 'not_sure', text: 'Not sure' }
     ]
@@ -80,9 +80,9 @@ const questions = [
     title: 'How do you plan to fund your settlement?',
     helperText: 'No worries if you\'re unsure — you can always change your mind later',
     options: [
-      { value: 'refinancing', text: 'Refinancing mortgage and other debts' },
-      { value: 'cash_savings', text: 'Savings' },
-      { value: 'loan_heloc', text: 'Home Equity Loan or HELOC' },
+      { value: 'refinancing', text: 'Refinancing mortgage or other debts' },
+      { value: 'cash_savings', text: 'Savings or cash on hand' },
+      { value: 'loan_heloc', text: 'Home Equity Loan or Home Equity Line of Credit (HELOC)' },
       { value: 'home_sale', text: 'Proceeds from a home sale' },
       { value: 'not_sure', text: 'Not sure' }
     ]
@@ -91,33 +91,33 @@ const questions = [
     id: 'commitment',
     type: 'radio',
     title: 'How committed are you to your settlement plan?',
-    helperText: 'We\'ll use this info to share resources that meet you where you are',
+    helperText: 'We’ll use this info to share resources that meet you where you are',
     options: [
-      { value: 'still_deciding', text: 'I\'m still deciding if my settlement plan is right for me' },
-      { value: 'committed_not_started', text: 'I\'m committed, but haven\'t started making progress' },
-      { value: 'committed_active', text: 'I\'ve taken steps towards my settlement plan' },
-      { value: 'working_with_hometap', text: 'I\'m actively working with Hometap in the settlement process' }
+      { value: 'still_deciding', text: "I'm still deciding if my settlement plan is right for me" },
+      { value: 'committed_not_started', text: "I'm committed to my settlement plan, but haven't gotten started" },
+      { value: 'committed_active', text: "I've started working on my settlement plan" },
+      { value: 'working_with_hometap', text: "I'm actively working with Hometap to settle" }
     ]
   },
   {
     id: 'steps_taken',
     type: 'text',
-    title: 'What steps towards settlement have you taken so far, if any?',
-    helperText: 'Type your response or choose from the examples below.',
-    placeholder: "Tell us what you've been up to",
+    title: 'What steps towards settlement have you taken so far?',
+    //helperText: 'Type your response or choose from the examples below.',
+    placeholder: "Example: I've started talking to a realtor",
   },
-  // Focus Areas Landing (no question)
+  // Financial picture landing (no question)
   {
     id: 'focus_areas_landing',
     type: 'info',
-    title: 'Focus Areas',
+    title: 'Financial picture',
     text: 'This section introduces your focus areas. Placeholder copy here.'
   },
   {
     id: 'life_events_past',
     type: 'checkbox',
-    title: `In the <span style="color: #19A274; font-weight: 700;">past 6 months</span>, have you experienced any of these life events?`,
-    // helperText: 'Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+    title: `In the <span style="color: #19A274; font-weight: 700;">past</span> 6 months, have you experienced any of these life events?`,
+    //helperText: 'Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
     options: [
       { value: 'marriage', text: 'Marital status change' },
       { value: 'birth', text: 'Growing family' },
@@ -135,7 +135,7 @@ const questions = [
   {
     id: 'life_events_future',
     type: 'checkbox',
-    title: `Do you expect any life events to occur in the <span style="color: #19A274; font-weight: 700;">next 6 months</span>?`,
+    title: `Do you expect any of these life events in the <span style="color: #19A274; font-weight: 700;">next</span> 6 months?`,
     helperText: 'We know you can\'t predict the future, but take your best guess',
     options: [
       { value: 'marriage', text: 'Marital status change' },
@@ -153,15 +153,15 @@ const questions = [
   {
     id: 'financial_wellbeing',
     type: 'checkbox',
-    title: 'What is most important to your financial wellbeing?',
-    // helperText: 'We know that we\'re just one piece of your larger financial picture. Let us know what\'s most important to you so we can provide the most relevant information.',  
+    title: 'What\'s most important to your financial wellbeing?',
+    //helperText: 'We know that we\'re just one piece of your larger financial picture. Let us know what\'s most important to you so we can provide the most relevant information.',  
     options: [
-      { value: 'financial_education', text: 'Building financial literacy and education' },
-      { value: 'increasing_liquidity', text: 'Increasing liquidity/accessing equity' },
-      { value: 'hei_questions', text: 'Getting answers to questions about my HEI' },
-      { value: 'home_renovation', text: 'Adding value to my home through a renovation or upgrade' },
-      { value: 'lower_payments', text: 'Lowering my monthly payments or financial obligations' },
-      { value: 'other', text: 'Other' }
+      { value: 'financial_education', text: 'Learning about personal finance' },
+      { value: 'increasing_liquidity', text: 'Accessing equity or increasing cash on hand' },
+      { value: 'hei_questions', text: 'Understanding your Hometap Investment' },
+      { value: 'home_renovation', text: 'Planning home renovations or upgrades' },
+      { value: 'lower_payments', text: 'Reducing monthly payments or financial obligations' },
+      { value: 'other', text: 'Something else' }
     ]
   }
 ];
@@ -744,7 +744,7 @@ function renderTopNav() {
   nav.style.flex = '1 1 auto';
   nav.style.gap = '0';
 
-  const sections = ['Goals', 'Focus areas', 'Playbook'];
+  const sections = ['Settlement goals', 'Financial picture', 'Playbook'];
   const currentStep = getCurrentStepId();
   let activeSectionIdx = 0;
   if ([
@@ -1936,7 +1936,7 @@ function renderResultsBreakdown() {
 
   card.appendChild(timelineCard);
 
-  // --- Focus Areas Section: Focusing on, Preparing for, Managing ---
+  // --- Financial picture section: Focusing on, Preparing for, Managing ---
   const focusGroups = [
     {
       key: 'financial_wellbeing',
@@ -1960,7 +1960,7 @@ function renderResultsBreakdown() {
     focusSection.className = 'results-breakdown-focus-areas-section';
     const focusTitle = document.createElement('div');
     focusTitle.className = 'results-breakdown-focus-areas-title';
-    focusTitle.textContent = 'Your Focus Areas';
+    focusTitle.textContent = 'Financial picture';
     focusSection.appendChild(focusTitle);
     focusGroups.forEach(group => {
       if (Array.isArray(group.answers) && group.answers.length > 0) {
@@ -3193,7 +3193,7 @@ function renderCustomizePlan() {
     timelineCard.appendChild(legend);
     // --- Timeline visualization code end ---
     summaryRoot.appendChild(timelineCard);
-    // --- Focus Areas Card ---
+    // --- Financial picture card ---
     const focusCard = document.createElement('div');
     focusCard.style = cardStyle;
     // Section label
@@ -3215,13 +3215,13 @@ function renderCustomizePlan() {
     goalsSummary.style.marginBottom = '8px';
     goalsSummary.textContent = 'These are your overall financial priorities';
     focusCard.appendChild(goalsSummary);
+    // Focus areas chips (reuse from results_breakdown)
     // Divider
     const divider = document.createElement('hr');
     divider.style.border = 'none';
     divider.style.borderTop = '1px solid #E5E8EF';
     divider.style.margin = '12px 0 20px 0';
     focusCard.appendChild(divider);
-    // Focus areas chips (reuse from results_breakdown)
     const focusGroups = [
       {
         key: 'financial_wellbeing',
@@ -3601,7 +3601,7 @@ function renderQuestionPage() {
       examplesText.style.margin = '24px 0 0 0';
       examplesText.style.maxWidth = '600px';
       examplesText.style.textAlign = 'left';
-      examplesText.innerHTML = `Examples:<br>I've started talking to a Realtor.<br>I've contacted Hometap to start the settlement process<br>I started a settlement savings goal`;
+      //examplesText.innerHTML = `Examples:<br>I've started talking to a Realtor.<br>I've contacted Hometap to start the settlement process<br>I started a settlement savings goal`;
       container.appendChild(examplesText);
     }
   } else if (currentQuestion.type === 'info') {
@@ -3616,13 +3616,13 @@ function renderQuestionPage() {
 // --- Toast Notification ---
 function renderToast() { /* no-op, modal disabled */ }
 
-// --- Focus Areas Landing Page ---
+// --- Financial picture landing ---
 function renderFocusAreasLanding() {
   // Remove only the main content, not the header
   let mainContent = document.getElementById('focus-areas-main-content');
   if (mainContent) mainContent.remove();
 
-  // Add styles for focus areas landing if not present
+  // Add styles for financial picture landing if not present
   if (!document.getElementById('prototype-focus-areas-style')) {
     const style = document.createElement('style');
     style.id = 'prototype-focus-areas-style';
@@ -3700,7 +3700,7 @@ function renderFocusAreasLanding() {
   // Section label
   const label = document.createElement('div');
   label.className = 'focus-areas-label';
-  label.textContent = 'FINANCIAL PICTURE';
+  label.textContent = 'Financial picture';
   card.appendChild(label);
 
   // Title (with green highlight)
