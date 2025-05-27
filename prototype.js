@@ -1,6 +1,58 @@
 // prototype.js
 // Minimal rebuild for rapid iteration, based on user flow blueprint
 
+// Inject tab bar and tab CSS for Playbook/Financial Profile tabs at the very top
+if (!document.getElementById('customize-tab-style')) {
+  const style = document.createElement('style');
+  style.id = 'customize-tab-style';
+  style.textContent = `
+    .customize-tab-bar {
+      display: flex;
+      align-items: flex-end;
+      gap: 32px;
+      border-bottom: 2px solid #E5E8EF;
+      margin-bottom: 32px;
+      margin-top: 32px;
+      background: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .customize-tab {
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-family: 'Mulish', sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 26px;
+      color: #434C5E;
+      padding: 0 0 8px 0;
+      margin: 0 24px 0 0;
+      position: relative;
+      transition: color 0.2s, font-weight 0.2s;
+      text-align: center;
+    }
+    .customize-tab.active {
+      font-weight: 700;
+      color: #434C5E;
+    }
+    .customize-tab-underline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 4px;
+      background: #20A277;
+      border-radius: 2px 2px 0 0;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 function formatDate(date) {
   if (!(date instanceof Date)) date = new Date(date);
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -13,8 +65,8 @@ const questions = [
   {
     id: 'settlement_timeline',
     type: 'radio',
-    title: 'First off, when do you think you’ll settle your Investment?',
-    helperText: `There's no rush! You can settle at any time before <span style='font-weight: bold'>May 1, 2031</span>`,
+    title: 'First off, when do you think you\'ll settle your Investment?',
+    helperText: `There\'s no rush! You can settle at any time before <span style='font-weight: bold'>May 1, 2031</span>`,
     options: [
       { value: 'within_year', text: 'In the next 12 months' },
       { value: 'within_three_years', text: 'In 1 – 3 years' },
@@ -26,7 +78,7 @@ const questions = [
     id: 'settlement_funding',
     type: 'radio',
     title: 'How do you plan to fund your settlement?',
-    helperText: 'No worries if you’re unsure — you can always change your mind later.',
+    helperText: 'No worries if you\'re unsure — you can always change your mind later',
     options: [
       { value: 'refinancing', text: 'Refinancing mortgage or other debts' },
       { value: 'cash_savings', text: 'Savings or cash on hand' },
@@ -449,6 +501,50 @@ let toastVisible = false;
 let isEditMode = false;
 let playbookState = null; // { grouped, alsoLike }
 
+// --- Add global flag for playbook badge and tooltip ---
+let showPlaybookBadge = false;
+let showPlaybookTooltip = true;
+let playbookTooltipHasShown = false;
+let playbookBadgeHasShown = false; // NEW: track if badge has ever shown
+
+// Function to get badge count based on current step
+function getBadgeCount() {
+  const step = getCurrentStepId();
+  switch (step) {
+    case 'settlement_funding':
+    case 'commitment':
+      return 1;
+    case 'steps_taken':
+    case 'focus_areas_landing':
+      return 2;
+    case 'life_events_past':
+      return 3;
+    case 'life_events_future':
+      return 4;
+    case 'financial_wellbeing':
+    case 'results_breakdown':
+    case 'customize_plan':
+      return 5;
+    default:
+      return 0;
+  }
+}
+
+// Helper: should badge be shown on this step?
+function shouldShowBadge() {
+  const step = getCurrentStepId();
+  // Only hide on landing, goals_intro, settlement_timeline
+  if ([
+    'landing',
+    'goals_intro',
+    'settlement_timeline'
+  ].includes(step)) {
+    return false;
+  }
+  // Once badge is first shown, keep showing it
+  return true;
+}
+
 // --- Main Render Function ---
 function render() {
   // Clear main content
@@ -499,8 +595,25 @@ function render() {
   }
 
   // Render toast if visible
-  if (toastVisible) {
-    renderToast();
+  // if (toastVisible) {
+  //   renderToast();
+  // }
+
+  // Set badge visibility for this step
+  if (shouldShowBadge()) {
+    showPlaybookBadge = true;
+    playbookBadgeHasShown = true;
+  } else if (playbookBadgeHasShown) {
+    showPlaybookBadge = true;
+  } else {
+    showPlaybookBadge = false;
+  }
+  // Tooltip logic: only show on first visit to settlement_funding
+  if (getCurrentStepId() === 'settlement_funding' && !playbookTooltipHasShown) {
+    showPlaybookTooltip = true;
+    playbookTooltipHasShown = true;
+  } else {
+    showPlaybookTooltip = false;
   }
 }
 
@@ -543,6 +656,12 @@ function goToNextStep() {
     toastVisible = false;
   }
   
+  // Show badge when appropriate
+  const currentStep = getCurrentStepId();
+  if (['settlement_funding', 'commitment', 'life_events_past', 'life_events_future', 'financial_wellbeing'].includes(currentStep)) {
+    showPlaybookBadge = true;
+  }
+  
   // Normal advance
   stepIndex++;
   render();
@@ -550,7 +669,9 @@ function goToNextStep() {
 
 function goToPrevStep() {
   // Don't allow back from landing or customize_plan or closing
-  if (stepIndex === 0 || getCurrentStepId() === 'customize_plan' || getCurrentStepId() === 'closing') return;
+  if (['landing', 'customize_plan', 'closing'].includes(getCurrentStepId())) {
+    return;
+  }
   
   // Special: if on loading, go back to results_breakdown
   if (getCurrentStepId() === 'loading') {
@@ -564,6 +685,12 @@ function goToPrevStep() {
     toastVisible = false;
     render();
     return;
+  }
+  
+  // Hide badge if going back to steps before settlement_funding
+  const nextStep = stepOrder[stepIndex - 1];
+  if (!['settlement_funding', 'commitment', 'life_events_past', 'life_events_future', 'financial_wellbeing'].includes(nextStep)) {
+    showPlaybookBadge = false;
   }
   
   stepIndex--;
@@ -595,7 +722,7 @@ function renderTopNav() {
   topRow.style.alignItems = 'center';
   topRow.style.justifyContent = 'space-between';
   topRow.style.height = '64px';
-  topRow.style.padding = '0 40px';
+  topRow.style.padding = '0 0 0 32px'; // Left align with main content
 
   // Left: Home equity coach label
   const brand = document.createElement('div');
@@ -630,8 +757,13 @@ function renderTopNav() {
     activeSectionIdx = 2;
   }
 
+  let playbookBadgeEl = null;
+  let playbookSectionDiv = null;
+
   sections.forEach((section, idx) => {
     const sectionDiv = document.createElement('div');
+    sectionDiv.style.display = 'inline-flex';
+    sectionDiv.style.alignItems = 'center';
     sectionDiv.textContent = section;
     sectionDiv.style.fontFamily = 'Mulish, sans-serif';
     sectionDiv.style.fontWeight = '700';
@@ -640,11 +772,32 @@ function renderTopNav() {
     sectionDiv.style.color = idx === activeSectionIdx ? '#366CED' : '#687183';
     sectionDiv.style.transition = 'color 0.3s';
     sectionDiv.style.margin = '0 12px';
+    // Add badge to Playbook if needed
+    if (section === 'Playbook' && showPlaybookBadge) {
+      const badge = document.createElement('span');
+      badge.textContent = getBadgeCount().toString();
+      badge.style.borderRadius = '4px';
+      badge.style.background = '#DEF5ED';
+      badge.style.color = '#20A277';
+      badge.style.fontFamily = 'Mulish';
+      badge.style.fontSize = '11px';
+      badge.style.fontStyle = 'normal';
+      badge.style.fontWeight = '700';
+      badge.style.lineHeight = 'normal';
+      badge.style.letterSpacing = '1px';
+      badge.style.textTransform = 'uppercase';
+      badge.style.padding = '2px 7px 2px 7px';
+      badge.style.marginLeft = '6px';
+      badge.style.position = 'relative';
+      sectionDiv.appendChild(badge);
+      playbookBadgeEl = badge;
+      playbookSectionDiv = sectionDiv;
+    }
     nav.appendChild(sectionDiv);
     if (idx < sections.length - 1) {
       // Dot and line separator
       const sep = document.createElement('span');
-      sep.innerHTML = `<svg width="40" height="8" viewBox="0 0 40 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="4" fill="#D1D6DF"/><rect x="8" y="3" width="24" height="2" rx="1" fill="#D1D6DF"/><circle cx="36" cy="4" r="4" fill="#D1D6DF"/></svg>`;
+      sep.innerHTML = `<svg width=\"40\" height=\"8\" viewBox=\"0 0 40 8\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"4\" cy=\"4\" r=\"4\" fill=\"#D1D6DF\"/><rect x=\"8\" y=\"3\" width=\"24\" height=\"2\" rx=\"1\" fill=\"#D1D6DF\"/><circle cx=\"36\" cy=\"4\" r=\"4\" fill=\"#D1D6DF\"/></svg>`;
       sep.style.display = 'inline-block';
       sep.style.verticalAlign = 'middle';
       sep.style.margin = '0 0px';
@@ -653,32 +806,95 @@ function renderTopNav() {
   });
   topRow.appendChild(nav);
 
-  // Right: Save & Exit or I'm done button
-  const saveExit = document.createElement('button');
-  // If on customize_plan, change label and behavior
-  if (getCurrentStepId() === 'customize_plan') {
-    saveExit.textContent = "I'm done";
-    saveExit.onclick = () => {
-      window.location.href = 'https://asigel-hometap.github.io/check-in/success';
+  // Tooltip logic (only show once per session, below badge)
+  if (showPlaybookBadge && showPlaybookTooltip && playbookBadgeEl) {
+    // Remove any existing tooltip
+    const oldTooltip = document.getElementById('playbook-badge-tooltip');
+    if (oldTooltip) oldTooltip.remove();
+    // Create tooltip
+    const tooltip = document.createElement('div');
+    tooltip.id = 'playbook-badge-tooltip';
+    tooltip.style.position = 'absolute';
+    tooltip.style.zIndex = '9999';
+    tooltip.style.left = '0';
+    tooltip.style.top = '0';
+    tooltip.style.pointerEvents = 'auto';
+    tooltip.style.opacity = '0';
+    tooltip.style.transition = 'opacity 0.3s';
+    tooltip.style.display = 'flex';
+    tooltip.style.flexDirection = 'column';
+    // Tooltip box
+    const box = document.createElement('div');
+    box.style.background = '#fff';
+    box.style.borderRadius = '12px';
+    box.style.boxShadow = '0 4px 24px 0 rgba(32, 53, 104, 0.10)';
+    box.style.padding = '28px 32px 24px 32px';
+    box.style.fontFamily = 'Mulish, sans-serif';
+    box.style.fontSize = '18px';
+    box.style.color = '#152033';
+    box.style.fontWeight = '400';
+    box.style.lineHeight = '30px';
+    box.style.maxWidth = '400px';
+    box.style.position = 'relative';
+    box.style.textAlign = 'left';
+    // Caret
+    const caret = document.createElement('div');
+    caret.style.position = 'absolute';
+    caret.style.top = '-16px';
+    caret.style.left = '50%';
+    caret.style.transform = 'translateX(-50%)';
+    caret.style.width = '32px';
+    caret.style.height = '16px';
+    caret.innerHTML = '<svg width="32" height="16" viewBox="0 0 32 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 16L0 0H32L16 16Z" fill="white"/></svg>';
+    box.appendChild(caret);
+    // Title
+    const title = document.createElement('div');
+    title.textContent = 'Recommendation added';
+    title.style.fontWeight = '700';
+    title.style.fontSize = '20px';
+    title.style.marginBottom = '8px';
+    box.appendChild(title);
+    // Body
+    const body = document.createElement('div');
+    body.textContent = 'We\'re collecting recommendations based on your answers, but you can customize your playbook later';
+    box.appendChild(body);
+    // Close button
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '&times;';
+    closeButton.style.position = 'absolute';
+    closeButton.style.top = '16px';
+    closeButton.style.right = '20px';
+    closeButton.style.background = 'none';
+    closeButton.style.border = 'none';
+    closeButton.style.fontSize = '28px';
+    closeButton.style.color = '#687183';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.lineHeight = '1';
+    closeButton.style.padding = '0';
+    closeButton.setAttribute('aria-label', 'Close');
+    closeButton.onclick = () => {
+      tooltip.style.opacity = '0';
+      setTimeout(() => {
+        tooltip.remove();
+        showPlaybookTooltip = false;
+      }, 300);
     };
+    box.appendChild(closeButton);
+    tooltip.appendChild(box);
+    document.body.appendChild(tooltip);
+    // Position tooltip below badge
+    setTimeout(() => {
+      const badgeRect = playbookBadgeEl.getBoundingClientRect();
+      const tooltipRect = tooltip.getBoundingClientRect();
+      tooltip.style.left = `${badgeRect.left + badgeRect.width / 2 - tooltipRect.width / 2}px`;
+      tooltip.style.top = `${badgeRect.bottom + 12}px`;
+      tooltip.style.opacity = '1';
+    }, 10);
   } else {
-    saveExit.textContent = 'Save & Exit';
-    saveExit.onclick = () => { /* existing or default behavior */ };
+    // Remove tooltip if not needed
+    const oldTooltip = document.getElementById('playbook-badge-tooltip');
+    if (oldTooltip) oldTooltip.remove();
   }
-  saveExit.style.background = 'white';
-  saveExit.style.color = '#434C5E';
-  saveExit.style.fontFamily = 'Mulish, sans-serif';
-  saveExit.style.fontWeight = '600';
-  saveExit.style.fontSize = '15px';
-  saveExit.style.border = '1px solid #D1D6DF';
-  saveExit.style.borderRadius = '6px';
-  saveExit.style.padding = '8px 20px';
-  saveExit.style.cursor = 'pointer';
-  saveExit.style.boxShadow = '0 1px 2px rgba(26,51,101,0.04)';
-  saveExit.style.transition = 'background 0.2s, color 0.2s';
-  saveExit.onmouseover = () => { saveExit.style.background = '#F5F7FA'; };
-  saveExit.onmouseout = () => { saveExit.style.background = 'white'; };
-  topRow.appendChild(saveExit);
 
   header.appendChild(topRow);
 
@@ -812,8 +1028,8 @@ function renderLanding() {
         font-family: 'Mulish', sans-serif;
         font-size: 13px;
         font-weight: 700;
-        color: #687183;
-        background: #F5F7FA;
+        color: #20A277;
+        background: #DEF5ED;
         border-radius: 6px;
         padding: 4px 12px;
         margin-bottom: 16px;
@@ -1128,19 +1344,19 @@ function renderGoalsIntro() {
   // Section label
   const label = document.createElement('div');
   label.className = 'goals-intro-label';
-  label.textContent = 'Goals';
+  label.textContent = 'Settlement Goals';
   card.appendChild(label);
 
   // Title (with blue highlight)
   const title = document.createElement('div');
   title.className = 'goals-intro-title';
-  title.innerHTML = `Let's chat about your <span class="blue">settlement goals</span>`;
+  title.innerHTML = `Let's chat about your <span class="green">settlement goals</span>`;
   card.appendChild(title);
 
   // Description
   const desc = document.createElement('div');
   desc.className = 'goals-intro-desc';
-  desc.textContent = `Your answers won’t affect your Investment — they’ll just help us share resources to get you where you want to go`;
+  desc.textContent = `Your answers won't affect your investment — they'll just help us share resources to get you where you want to go`;
   card.appendChild(desc);
 
   // Timeline card
@@ -2310,66 +2526,25 @@ function renderCustomizePlan() {
   // Title
   const title = document.createElement('div');
   title.className = 'customize-header-title';
-  title.textContent = 'Your quarterly playbook';
+  title.textContent = "Let's do this!";
   headerLeft.appendChild(title);
+
+  // Add new subtitle below the title
+  const subtitle = document.createElement('div');
+  subtitle.textContent = 'Get closer to your financial goals with a playbook personalized to your financial profile';
+  subtitle.style.color = '#434C5E';
+  subtitle.style.fontFamily = 'Mulish';
+  subtitle.style.fontSize = '18px';
+  subtitle.style.fontStyle = 'normal';
+  subtitle.style.fontWeight = '400';
+  subtitle.style.lineHeight = '30px';
+  subtitle.style.marginTop = '8px';
+  subtitle.style.marginBottom = '32px'; // Add spacing below subtitle
+  headerLeft.appendChild(subtitle);
+
   headerRow.appendChild(headerLeft);
 
   container.appendChild(headerRow);
-
-  // Instruction box (moved below title)
-  const instructionBox = document.createElement('div');
-  instructionBox.className = 'instruction-box';
-  instructionBox.style.borderRadius = '12px';
-  instructionBox.style.background = 'linear-gradient(269deg, #D4F4FF 0%, #EAFAFF 100%)';
-  instructionBox.style.color = '#152033';
-  instructionBox.style.fontFamily = 'Mulish, sans-serif';
-  instructionBox.style.fontSize = '18px';
-  instructionBox.style.fontStyle = 'normal';
-  instructionBox.style.fontWeight = '400';
-  instructionBox.style.lineHeight = '26px';
-  instructionBox.style.padding = '24px 32px';
-  instructionBox.style.marginBottom = '32px';
-  instructionBox.style.maxWidth = '100%';
-  instructionBox.style.margin = '0 0 32px 0';
-  instructionBox.style.position = 'relative';
-  instructionBox.style.transition = 'opacity 0.3s, transform 0.3s';
-  instructionBox.style.opacity = '1';
-  instructionBox.style.transform = 'translateY(0)';
-  instructionBox.style.paddingTop = '36px';
-  instructionBox.style.paddingRight = '48px';
-
-  // Close button
-  const closeButton = document.createElement('button');
-  closeButton.innerHTML = '×';
-  closeButton.style.position = 'absolute';
-  closeButton.style.top = '20px';
-  closeButton.style.right = '24px';
-  closeButton.style.background = 'none';
-  closeButton.style.border = 'none';
-  closeButton.style.fontSize = '24px';
-  closeButton.style.color = '#152033';
-  closeButton.style.cursor = 'pointer';
-  closeButton.style.padding = '8px 12px';
-  closeButton.style.lineHeight = '1';
-  closeButton.style.opacity = '0.6';
-  closeButton.style.transition = 'opacity 0.2s';
-  closeButton.onmouseover = () => { closeButton.style.opacity = '1'; };
-  closeButton.onmouseout = () => { closeButton.style.opacity = '0.6'; };
-  closeButton.onclick = () => {
-    instructionBox.style.opacity = '0';
-    instructionBox.style.transform = 'translateY(-10px)';
-    setTimeout(() => {
-      instructionBox.style.display = 'none';
-    }, 300);
-  };
-  instructionBox.appendChild(closeButton);
-
-  // Text content
-  const instructionText = document.createElement('div');
-  instructionText.innerHTML = "We've prepared your first home equity playbook of personalized tools and resources to help you plan your finances with confidence and prepare for a successful settlement. We'll check in another 90 days from now on your goals and progress. Click the <b>Edit</b> button to customize the playbook to fit your needs and available time.";
-  instructionBox.appendChild(instructionText);
-
-  container.appendChild(instructionBox);
 
   // --- Tab Bar ---
   const tabBar = document.createElement('div');
@@ -2383,43 +2558,200 @@ function renderCustomizePlan() {
   tabBar.style.background = 'none';
 
   const tabs = [
-    { id: 'recommendations', label: 'Recommendations' },
-    { id: 'summary', label: 'Summary' }
+    { id: 'recommendations', label: 'Playbook' },
+    { id: 'summary', label: 'Financial Profile' }
   ];
   let activeTab = window.__customizeActiveTab || 'recommendations';
-  function setActiveTab(tab) {
-    window.__customizeActiveTab = tab;
-    renderCustomizePlan();
-  }
+
   tabs.forEach(tab => {
     const tabBtn = document.createElement('button');
+    tabBtn.className = `customize-tab${tab.id === activeTab ? ' active' : ''}`;
     tabBtn.textContent = tab.label;
-    tabBtn.className = 'customize-tab-btn';
-    tabBtn.style.background = 'none';
-    tabBtn.style.border = 'none';
-    tabBtn.style.outline = 'none';
-    tabBtn.style.cursor = 'pointer';
-    tabBtn.style.fontFamily = 'Mulish, sans-serif';
-    tabBtn.style.fontSize = '18px';
-    tabBtn.style.padding = '16px 32px 12px 32px';
-    tabBtn.style.margin = '0';
-    tabBtn.style.borderBottom = tab.id === activeTab ? '4px solid #20A277' : '4px solid transparent';
-    tabBtn.style.color = tab.id === activeTab ? '#20A277' : '#687183';
-    tabBtn.style.fontWeight = tab.id === activeTab ? '700' : '400';
-    tabBtn.onclick = () => setActiveTab(tab.id);
+    tabBtn.onclick = () => {
+      window.__customizeActiveTab = tab.id;
+      renderCustomizePlan();
+    };
+    // Add green underline for active tab
+    if (tab.id === activeTab) {
+      const underline = document.createElement('div');
+      underline.className = 'customize-tab-underline';
+      tabBtn.appendChild(underline);
+    }
     tabBar.appendChild(tabBtn);
   });
+
   container.appendChild(tabBar);
 
-  // --- Tab Content ---
   const tabContent = document.createElement('div');
   tabContent.className = 'customize-tab-content';
+  tabContent.style.padding = '0';
+  tabContent.style.margin = '0';
   tabContent.style.width = '100%';
   tabContent.style.maxWidth = 'none';
-  tabContent.style.background = 'none';
-  tabContent.style.padding = '0';
 
-  if (activeTab === 'recommendations') {
+  // if (activeTab === 'recommendations') {
+  //   // --- Instruction box (now inside Playbook tab, above Playbook heading) ---
+  //   const instructionBox = document.createElement('div');
+  //   instructionBox.className = 'instruction-box';
+  //   instructionBox.style.borderRadius = '12px';
+  //   instructionBox.style.background = 'linear-gradient(269deg, #D4F4FF 0%, #EAFAFF 100%)';
+  //   instructionBox.style.color = '#152033';
+  //   instructionBox.style.fontFamily = 'Mulish, sans-serif';
+  //   instructionBox.style.fontSize = '18px';
+  //   instructionBox.style.fontStyle = 'normal';
+  //   instructionBox.style.fontWeight = '400';
+  //   instructionBox.style.lineHeight = '26px';
+  //   instructionBox.style.padding = '24px 32px';
+  //   instructionBox.style.marginBottom = '32px';
+  //   instructionBox.style.maxWidth = '100%';
+  //   instructionBox.style.margin = '0 0 32px 0';
+  //   instructionBox.style.position = 'relative';
+  //   instructionBox.style.transition = 'opacity 0.3s, transform 0.3s';
+  //   instructionBox.style.opacity = '1';
+  //   instructionBox.style.transform = 'translateY(0)';
+  //   instructionBox.style.paddingTop = '36px';
+  //   instructionBox.style.paddingRight = '48px';
+
+  //   // Close button
+  //   const closeButton = document.createElement('button');
+  //   closeButton.innerHTML = '×';
+  //   closeButton.style.position = 'absolute';
+  //   closeButton.style.top = '20px';
+  //   closeButton.style.right = '24px';
+  //   closeButton.style.background = 'none';
+  //   closeButton.style.border = 'none';
+  //   closeButton.style.fontSize = '24px';
+  //   closeButton.style.color = '#152033';
+  //   closeButton.style.cursor = 'pointer';
+  //   closeButton.style.padding = '8px 12px';
+  //   closeButton.style.lineHeight = '1';
+  //   closeButton.style.opacity = '0.6';
+  //   closeButton.style.transition = 'opacity 0.2s';
+  //   closeButton.onmouseover = () => { closeButton.style.opacity = '1'; };
+  //   closeButton.onmouseout = () => { closeButton.style.opacity = '0.6'; };
+  //   closeButton.onclick = () => {
+  //     instructionBox.style.opacity = '0';
+  //     instructionBox.style.transform = 'translateY(-10px)';
+  //     setTimeout(() => {
+  //       instructionBox.style.display = 'none';
+  //     }, 300);
+  //   };
+  //   instructionBox.appendChild(closeButton);
+
+  //   // Headline
+  //   const instructionHeadline = document.createElement('div');
+  //   instructionHeadline.textContent = 'Welcome to your playbook 👋';
+  //   instructionHeadline.style.color = '#152033';
+  //   instructionHeadline.style.fontFamily = 'Tiempos Headline, serif';
+  //   instructionHeadline.style.fontSize = '18px';
+  //   instructionHeadline.style.fontStyle = 'normal';
+  //   instructionHeadline.style.fontWeight = '600';
+  //   instructionHeadline.style.lineHeight = '26px';
+  //   instructionHeadline.style.marginBottom = '8px';
+  //   instructionBox.appendChild(instructionHeadline);
+
+  //   // Body text
+  //   const instructionText = document.createElement('div');
+  //   instructionText.textContent = 'Start with resources curated to your financial profile, or customize your playbook to make it your own. Either way, these resources should get you closer to meeting your financial goals.';
+  //   instructionText.style.fontFamily = 'Mulish, sans-serif';
+  //   instructionText.style.fontSize = '18px';
+  //   instructionText.style.fontWeight = '400';
+  //   instructionText.style.lineHeight = '26px';
+  //   instructionText.style.color = '#152033';
+  //   instructionBox.appendChild(instructionText);
+
+  //   tabContent.appendChild(instructionBox);
+  if (activeTab === 'recommendations' || activeTab === 'summary') {
+    const instructionBox = document.createElement('div');
+    instructionBox.className = 'instruction-box';
+    instructionBox.style.borderRadius = '12px';
+    instructionBox.style.background = 'linear-gradient(269deg, #D4F4FF 0%, #EAFAFF 100%)';
+    instructionBox.style.color = '#152033';
+    instructionBox.style.fontFamily = 'Mulish, sans-serif';
+    instructionBox.style.fontSize = '18px';
+    instructionBox.style.fontStyle = 'normal';
+    instructionBox.style.fontWeight = '400';
+    instructionBox.style.lineHeight = '26px';
+    instructionBox.style.padding = '24px 32px';
+    instructionBox.style.marginBottom = '32px';
+    instructionBox.style.maxWidth = '100%';
+    instructionBox.style.margin = '0 0 32px 0';
+    instructionBox.style.position = 'relative';
+    instructionBox.style.transition = 'opacity 0.3s, transform 0.3s';
+    instructionBox.style.opacity = '1';
+    instructionBox.style.transform = 'translateY(0)';
+    instructionBox.style.paddingTop = '36px';
+    instructionBox.style.paddingRight = '48px';
+
+    // Close button
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '×';
+    closeButton.style.position = 'absolute';
+    closeButton.style.top = '20px';
+    closeButton.style.right = '24px';
+    closeButton.style.background = 'none';
+    closeButton.style.border = 'none';
+    closeButton.style.fontSize = '24px';
+    closeButton.style.color = '#152033';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.padding = '8px 12px';
+    closeButton.style.lineHeight = '1';
+    closeButton.style.opacity = '0.6';
+    closeButton.style.transition = 'opacity 0.2s';
+    closeButton.onmouseover = () => { closeButton.style.opacity = '1'; };
+    closeButton.onmouseout = () => { closeButton.style.opacity = '0.6'; };
+    closeButton.onclick = () => {
+      instructionBox.style.opacity = '0';
+      instructionBox.style.transform = 'translateY(-10px)';
+      setTimeout(() => {
+        instructionBox.style.display = 'none';
+      }, 300);
+    };
+    instructionBox.appendChild(closeButton);
+
+    // Headline
+    const instructionHeadline = document.createElement('div');
+    if (activeTab === 'recommendations') {
+      instructionHeadline.textContent = 'Welcome to your playbook 👋';
+    } else {
+      instructionHeadline.textContent = 'Check out your financial profile 👇 ';
+    }
+    instructionHeadline.style.color = '#152033';
+    instructionHeadline.style.fontFamily = 'Tiempos Headline, serif';
+    instructionHeadline.style.fontSize = '18px';
+    instructionHeadline.style.fontStyle = 'normal';
+    instructionHeadline.style.fontWeight = '600';
+    instructionHeadline.style.lineHeight = '26px';
+    instructionHeadline.style.marginBottom = '8px';
+    instructionBox.appendChild(instructionHeadline);
+
+    // Body text
+    const instructionText = document.createElement('div');
+    if (activeTab === 'recommendations') {
+      instructionText.textContent = 'Start with resources curated to your financial profile, or customize your playbook to make it your own. Either way, these resources should get you closer to meeting your financial goals.';
+    } else {
+      instructionText.textContent = 'We use your financial profile to find the best resources for your playbook';
+    }
+    instructionText.style.fontFamily = 'Mulish, sans-serif';
+    instructionText.style.fontSize = '18px';
+    instructionText.style.fontWeight = '400';
+    instructionText.style.lineHeight = '26px';
+    instructionText.style.color = '#152033';
+    instructionBox.appendChild(instructionText);
+
+    tabContent.appendChild(instructionBox);
+    // Add Playbook heading
+    const playbookHeading = document.createElement('h2');
+    playbookHeading.textContent = 'Playbook';
+    playbookHeading.style.color = '#152033';
+    playbookHeading.style.fontFamily = 'Tiempos Headline';
+    playbookHeading.style.fontSize = '28px';
+    playbookHeading.style.fontStyle = 'normal';
+    playbookHeading.style.fontWeight = '600';
+    playbookHeading.style.lineHeight = '40px';
+    playbookHeading.style.marginBottom = '24px';
+    tabContent.appendChild(playbookHeading);
+
     // --- Row: time estimate, date range, edit/save/cancel ---
     const topRow = document.createElement('div');
     topRow.style.display = 'flex';
@@ -2467,7 +2799,7 @@ function renderCustomizePlan() {
     if (!isEditMode) {
       const editBtn = document.createElement('button');
       editBtn.className = 'edit-btn';
-      editBtn.textContent = 'Edit';
+      editBtn.textContent = 'Edit playbook';
       editBtn.onclick = () => { isEditMode = true; renderCustomizePlan(); };
       buttonContainer.appendChild(editBtn);
     } else {
@@ -3221,10 +3553,9 @@ function renderQuestionPage() {
           button.classList.add('selected');
           // Special handling for settlement_funding question
           if (currentQuestion.id === 'settlement_funding' && option.value !== 'not_sure') {
-            if (!toastVisible) {
-              toastVisible = true;
-              render();
-            }
+            showPlaybookBadge = true;
+            if (showPlaybookTooltip !== false) showPlaybookTooltip = true;
+            render();
           }
         };
         container.appendChild(button);
@@ -3278,95 +3609,7 @@ function renderQuestionPage() {
 }
 
 // --- Toast Notification ---
-function renderToast() {
-  if (!toastVisible) return;
-
-  // Remove any existing toast
-  const oldToast = document.getElementById('prototype-toast');
-  if (oldToast) oldToast.remove();
-
-  const toast = document.createElement('div');
-  toast.id = 'prototype-toast';
-  toast.style.position = 'fixed';
-  toast.style.top = '32px';
-  toast.style.right = '32px';
-  toast.style.display = 'flex';
-  toast.style.alignItems = 'flex-start';
-  toast.style.minWidth = '420px';
-  toast.style.maxWidth = '480px';
-  toast.style.background = '#fff';
-  toast.style.borderRadius = '12px';
-  toast.style.boxShadow = '0 4px 24px 0 rgba(32, 53, 104, 0.10)';
-  toast.style.borderLeft = '6px solid #2AC870';
-  toast.style.padding = '24px 32px 24px 24px';
-  toast.style.zIndex = '1000';
-  toast.style.transition = 'transform 0.4s cubic-bezier(.4,1.3,.5,1), opacity 0.4s';
-  toast.style.transform = 'translateX(40px)';
-  toast.style.opacity = '0';
-  setTimeout(() => {
-    toast.style.transform = 'translateX(0)';
-    toast.style.opacity = '1';
-  }, 10);
-
-  // Checkmark icon
-  const icon = document.createElement('img');
-  icon.src = 'assets/checkmark.svg';
-  icon.alt = 'Success';
-  icon.style.width = '32px';
-  icon.style.height = '32px';
-  icon.style.marginRight = '20px';
-  icon.style.marginTop = '2px';
-  toast.appendChild(icon);
-
-  // Text container
-  const textContainer = document.createElement('div');
-  textContainer.style.flex = '1';
-  textContainer.style.display = 'flex';
-  textContainer.style.flexDirection = 'column';
-  textContainer.style.alignItems = 'flex-start';
-
-  // Title
-  const title = document.createElement('div');
-  title.textContent = 'Recommendation found!';
-  title.style.fontFamily = 'Mulish, sans-serif';
-  title.style.fontWeight = '700';
-  title.style.fontSize = '18px';
-  title.style.color = '#152033';
-  title.style.marginBottom = '4px';
-  textContainer.appendChild(title);
-
-  // Body
-  const body = document.createElement('div');
-  body.textContent = 'We found a recommendation for you and added it to your playbook. You can customize your playbook later.';
-  body.style.fontFamily = 'Mulish, sans-serif';
-  body.style.fontWeight = '400';
-  body.style.fontSize = '16px';
-  body.style.color = '#434C5E';
-  textContainer.appendChild(body);
-
-  toast.appendChild(textContainer);
-
-  // Close button
-  const closeButton = document.createElement('button');
-  closeButton.innerHTML = '&times;';
-  closeButton.style.background = 'none';
-  closeButton.style.border = 'none';
-  closeButton.style.fontSize = '24px';
-  closeButton.style.color = '#687183';
-  closeButton.style.cursor = 'pointer';
-  closeButton.style.marginLeft = '16px';
-  closeButton.style.marginTop = '2px';
-  closeButton.style.lineHeight = '1';
-  closeButton.style.padding = '0';
-  closeButton.setAttribute('aria-label', 'Close');
-  closeButton.onclick = () => {
-    toastVisible = false;
-    render();
-  };
-  toast.appendChild(closeButton);
-
-  document.body.appendChild(toast);
-}
+function renderToast() { /* no-op, modal disabled */ }
 
 // --- Financial picture landing ---
 function renderFocusAreasLanding() {
@@ -3464,7 +3707,7 @@ function renderFocusAreasLanding() {
   // Helper text
   const helper = document.createElement('div');
   helper.className = 'focus-areas-helper';
-  helper.textContent = `We’re committed to helping you meet your long-term goals, and your Hometap Investment is just one piece of the puzzle`;
+  helper.textContent = `We\'re committed to helping you meet your long-term goals, and your Hometap Investment is just one piece of the puzzle`;
   card.appendChild(helper);
 
   // Image
